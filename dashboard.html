@@ -72,6 +72,8 @@
       height: 100%;
       overflow: auto;
       background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
     }
     .modal-content {
       background: #fff;
@@ -124,6 +126,21 @@
       border-radius: 10px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
+    /* Edit Modal Form */
+    #editModal form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    #editModal input, #editModal select {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-family: inherit;
+    }
+    #editModal button {
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -149,6 +166,7 @@
         <th>School Year</th>
         <th>Grade Level</th>
         <th>Last School</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody id="student-table"></tbody>
@@ -161,14 +179,11 @@
         <h2>Enrollment Reports</h2>
         <span class="close" onclick="closeModal()">&times;</span>
       </div>
-
-      <!-- Filters inside modal -->
       <div class="filter-box">
         <label for="reportYear">School Year:</label>
         <select id="reportYear" onchange="renderChartsForFilters()">
           <option value="">All</option>
         </select>
-
         <label for="reportGrade">Grade Level:</label>
         <select id="reportGrade" onchange="renderChartsForFilters()">
           <option value="">All</option>
@@ -176,7 +191,6 @@
           <option value="12">Grade 12</option>
         </select>
       </div>
-
       <div class="charts">
         <div class="chart-box">
           <canvas id="barChart"></canvas>
@@ -188,9 +202,62 @@
     </div>
   </div>
 
+  <!-- Edit Student Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content" style="max-width:500px;">
+      <div class="modal-header">
+        <h2>Edit Student</h2>
+        <span class="close" onclick="closeEditModal()">&times;</span>
+      </div>
+      <form id="editForm">
+        <input type="hidden" id="edit_id">
+
+        <label>LRN</label>
+        <input type="text" id="edit_lrn" required>
+
+        <label>First Name</label>
+        <input type="text" id="edit_first_name" required>
+
+        <label>Last Name</label>
+        <input type="text" id="edit_last_name" required>
+
+        <label>Age</label>
+        <input type="number" id="edit_age">
+
+        <label>Sex</label>
+        <select id="edit_sex">
+          <option value="">Select</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+
+        <label>Track/Strand</label>
+        <input type="text" id="edit_track_strand">
+
+        <label>School Year</label>
+        <input type="text" id="edit_last_sy">
+
+        <label>Grade Level</label>
+        <select id="edit_last_grade">
+          <option value="">Select</option>
+          <option value="11">Grade 11</option>
+          <option value="12">Grade 12</option>
+        </select>
+
+        <label>Last School</label>
+        <input type="text" id="edit_last_school">
+
+        <div style="margin-top:15px; text-align:center;">
+          <button type="submit" style="background:#4CAF50;color:#fff;padding:8px 15px;border:none;border-radius:6px;cursor:pointer;">💾 Save</button>
+          <button type="button" onclick="closeEditModal()" style="background:#f44336;color:#fff;padding:8px 15px;border:none;border-radius:6px;cursor:pointer;">❌ Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script>
     const SUPABASE_URL = "https://ccwzchkkyyxrvfoqiiuq.supabase.co";
-    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjd3pjaGtreXl4cnZmb3FpaXVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyNTE0NTYsImV4cCI6MjA3MzgyNzQ1Nn0.oNbjo1D8OVIuwrvKm9HRsIhXAV89dfRZRyGYmL6oHzs";
+    const SUPABASE_KEY = "YOUR_PUBLIC_KEY"; // replace with your anon/public key
     const { createClient } = supabase;
     const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -215,7 +282,6 @@
         console.error(error);
         return;
       }
-
       allData = data;
       renderTable(data);
       populateYearFilter(data);
@@ -224,6 +290,7 @@
     function populateYearFilter(data) {
       const yearSet = new Set(data.map(s => s.last_sy).filter(Boolean));
       const yearSelect = document.getElementById("reportYear");
+      yearSelect.innerHTML = '<option value="">All</option>';
       yearSet.forEach(year => {
         const option = document.createElement("option");
         option.value = year;
@@ -248,6 +315,10 @@
             <td>${student.last_sy || "—"}</td>
             <td>${student.last_grade || "—"}</td>
             <td>${student.last_school || "—"}</td>
+            <td>
+              <button onclick="openEditModal(${student.id})" style="background:#2196F3;color:#fff;padding:4px 8px;border:none;border-radius:4px;cursor:pointer;">✏️ Edit</button>
+              <button onclick="deleteStudent(${student.id})" style="background:#f44336;color:#fff;padding:4px 8px;border:none;border-radius:4px;cursor:pointer;">🗑️ Delete</button>
+            </td>
           </tr>
         `;
         table.innerHTML += row;
@@ -281,36 +352,20 @@
       const trackLabels = Object.keys(trackCounts);
       const trackValues = Object.values(trackCounts);
 
-      // Bar Chart
       barChart = new Chart(document.getElementById("barChart"), {
         type: "bar",
         data: {
           labels: ["Male", "Female"],
-          datasets: [{
-            label: "Enrolled Students",
-            data: [maleCount, femaleCount],
-            backgroundColor: ["#36A2EB", "#FF6384"]
-          }]
+          datasets: [{ label: "Enrolled Students", data: [maleCount, femaleCount], backgroundColor: ["#36A2EB", "#FF6384"] }]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: { legend: { display: false } }
-        }
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
       });
 
-      // Pie Chart
       pieChart = new Chart(document.getElementById("pieChart"), {
         type: "pie",
         data: {
           labels: trackLabels,
-          datasets: [{
-            data: trackValues,
-            backgroundColor: [
-              "#FF6384","#36A2EB","#FFCE56",
-              "#4BC0C0","#9966FF","#FF9F40","#66BB6A"
-            ]
-          }]
+          datasets: [{ data: trackValues, backgroundColor: ["#FF6384","#36A2EB","#FFCE56","#4BC0C0","#9966FF","#FF9F40","#66BB6A"] }]
         },
         options: {
           responsive: true,
@@ -325,10 +380,7 @@
                   return chart.data.labels.map((label, i) => {
                     const value = dataset[i];
                     const percentage = total ? ((value / total) * 100).toFixed(1) + "%" : "0%";
-                    return {
-                      text: `${label}: ${value} (${percentage})`,
-                      fillStyle: chart.data.datasets[0].backgroundColor[i]
-                    };
+                    return { text: `${label}: ${value} (${percentage})`, fillStyle: chart.data.datasets[0].backgroundColor[i] };
                   });
                 }
               }
@@ -348,12 +400,51 @@
       });
     }
 
-    function openModal() {
-      document.getElementById("reportModal").style.display = "block";
-      renderChartsForFilters();
+    function openModal() { document.getElementById("reportModal").style.display = "flex"; renderChartsForFilters(); }
+    function closeModal() { document.getElementById("reportModal").style.display = "none"; }
+
+    // === Edit Modal ===
+    function openEditModal(id) {
+      const student = allData.find(s => s.id == id);
+      if (!student) return;
+      document.getElementById("edit_id").value = student.id;
+      document.getElementById("edit_lrn").value = student.lrn || "";
+      document.getElementById("edit_first_name").value = student.first_name || "";
+      document.getElementById("edit_last_name").value = student.last_name || "";
+      document.getElementById("edit_age").value = student.age || "";
+      document.getElementById("edit_sex").value = student.sex || "";
+      document.getElementById("edit_track_strand").value = student.track_strand || "";
+      document.getElementById("edit_last_sy").value = student.last_sy || "";
+      document.getElementById("edit_last_grade").value = student.last_grade || "";
+      document.getElementById("edit_last_school").value = student.last_school || "";
+      document.getElementById("editModal").style.display = "flex";
     }
-    function closeModal() {
-      document.getElementById("reportModal").style.display = "none";
+    function closeEditModal() { document.getElementById("editModal").style.display = "none"; }
+
+    document.getElementById("editForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const id = document.getElementById("edit_id").value;
+      const updatedData = {
+        lrn: document.getElementById("edit_lrn").value,
+        first_name: document.getElementById("edit_first_name").value,
+        last_name: document.getElementById("edit_last_name").value,
+        age: document.getElementById("edit_age").value,
+        sex: document.getElementById("edit_sex").value,
+        track_strand: document.getElementById("edit_track_strand").value,
+        last_sy: document.getElementById("edit_last_sy").value,
+        last_grade: document.getElementById("edit_last_grade").value,
+        last_school: document.getElementById("edit_last_school").value,
+      };
+      const { error } = await supabaseClient.from("enrollments").update(updatedData).eq("id", id);
+      if (error) alert("❌ Error updating: " + error.message);
+      else { alert("✔️ Student updated!"); closeEditModal(); loadData(); }
+    });
+
+    async function deleteStudent(id) {
+      if (!confirm("Are you sure you want to delete this student?")) return;
+      const { error } = await supabaseClient.from("enrollments").delete().eq("id", id);
+      if (error) alert("❌ Error deleting: " + error.message);
+      else { alert("✔️ Student deleted!"); loadData(); }
     }
 
     loadData();
