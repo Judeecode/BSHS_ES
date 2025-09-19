@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enrollment - Step 1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {font-family:'Poppins',sans-serif;background:#f9f9f9;margin:0;padding:0;color:#333;}
+    header {background:#FCF259;padding:20px;text-align:center;font-size:1.4em;font-weight:600;}
+    form {max-width:1000px;margin:30px auto;padding:25px;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    h2 {margin-bottom:20px;font-size:1.5em;text-align:center;color:#2c3e50;}
+    fieldset {border:1px solid #ddd;border-radius:8px;margin-bottom:25px;padding:20px;}
+    legend {font-weight:600;color:#2c3e50;padding:0 10px;}
+    .form-grid {display:grid;grid-template-columns:1fr 1fr;gap:15px 25px;margin-top:15px;}
+    .form-grid-full {grid-column:1 / span 2;}
+    label {font-weight:500;display:block;margin-bottom:6px;font-size:0.9em;}
+    input,select {width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:1em;}
+    .radio-group label{margin-right:15px;}
+    .btn {display:block;background:#ff7b00;color:#fff;padding:12px 25px;border-radius:6px;font-size:1.1em;font-weight:500;cursor:pointer;border:none;margin:20px auto 0;}
+    .btn:hover {background:#e86a00;}
+  </style>
+</head>
+<body>
+  <header>Enrollment - Step 1</header>
+
+  <form id="step1Form">
+    <h2>Learner Information Form</h2>
+
+    <!-- Learner Info -->
+    <fieldset>
+      <legend>Learner Information</legend>
+      <div class="form-grid">
+        <div><label>Last Name</label><input type="text" name="last_name" required></div>
+        <div><label>First Name</label><input type="text" name="first_name" required></div>
+        <div><label>Middle Name</label><input type="text" name="middle_name"></div>
+        <div><label>Extension Name</label><input type="text" name="ext_name"></div>
+        <div><label>Birthdate</label><input type="date" name="birthdate" required></div>
+        <div><label>Sex</label>
+          <select name="sex" required>
+            <option value="">-- Select --</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+        <div><label>Age</label><input type="number" name="age" min="1"></div>
+        <div><label>Learner Reference No. (LRN)</label><input type="text" name="lrn"></div>
+        <div class="form-grid-full"><label>Mother Tongue</label><input type="text" name="mother_tongue"></div>
+        <div class="form-grid-full"><label>IP Group</label><input type="text" name="ip_status"></div>
+        <div class="form-grid-full"><label>4Ps ID Number</label><input type="text" name="fourps_id"></div>
+      </div>
+    </fieldset>
+
+    <!-- Address -->
+    <fieldset>
+      <legend>Current Address</legend>
+      <div class="form-grid">
+        <div><label>House No.</label><input type="text" name="house_no"></div>
+        <div><label>Street</label><input type="text" name="street"></div>
+        <div><label>Barangay</label><input type="text" name="barangay"></div>
+        <div><label>Municipality/City</label><input type="text" name="city"></div>
+        <div><label>Province</label><input type="text" name="province"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Permanent Address</legend>
+      <div class="form-grid">
+        <div><label>House No.</label><input type="text" name="perm_house_no"></div>
+        <div><label>Street</label><input type="text" name="perm_street"></div>
+        <div><label>Barangay</label><input type="text" name="perm_barangay"></div>
+        <div><label>Municipality/City</label><input type="text" name="perm_city"></div>
+        <div><label>Province</label><input type="text" name="perm_province"></div>
+      </div>
+    </fieldset>
+
+    <div style="display:flex;justify-content:space-between;">
+      <button type="button" class="btn" onclick="goBack()">⬅️ Previous</button>
+      <button type="button" class="btn" onclick="saveStep1()">Next Step ➡️</button>
+    </div>
+  </form>
+
+  <script>
+    function saveStep1() {
+      const f = document.forms['step1Form'];
+      sessionStorage.setItem("last_name", f.last_name.value);
+      sessionStorage.setItem("first_name", f.first_name.value);
+      sessionStorage.setItem("middle_name", f.middle_name.value);
+      sessionStorage.setItem("ext_name", f.ext_name.value);
+      sessionStorage.setItem("birthdate", f.birthdate.value);
+      sessionStorage.setItem("sex", f.sex.value);
+      sessionStorage.setItem("age", f.age.value);
+      sessionStorage.setItem("lrn", f.lrn.value);
+      sessionStorage.setItem("mother_tongue", f.mother_tongue.value);
+      sessionStorage.setItem("ip_status", f.ip_status.value);
+      sessionStorage.setItem("fourps_id", f.fourps_id.value);
+      sessionStorage.setItem("current_address", `${f.house_no.value} ${f.street.value}, ${f.barangay.value}, ${f.city.value}, ${f.province.value}`);
+      sessionStorage.setItem("perm_address", `${f.perm_house_no.value} ${f.perm_street.value}, ${f.perm_barangay.value}, ${f.perm_city.value}, ${f.perm_province.value}`);
+      window.location.href = "step2.html";
+    }
+    function goBack() {
+      window.location.href = "index.html"; // Landing page before Step 1
+    }
+  </script>
+</body>
+</html>

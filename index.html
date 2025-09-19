@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balangkayan Senior High School - Stand Alone</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ---------- RESET ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      background: #ffffff;
+      color: #333;
+      overflow-x: hidden;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    ul {
+      list-style: none;
+    }
+
+    /* ---------- COLORS ---------- */
+    :root {
+      --primary: #FCF259;
+      --secondary: #B4E50D;
+      --button: #ff7b00;
+      --button-hover: #e86a00;
+      --accent: #4a90e2;
+      --text-dark: #2c3e50;
+      --text-light: #7f8c8d;
+      --shadow: 0 2px 10px rgba(0,0,0,0.1);
+      --shadow-hover: 0 4px 20px rgba(0,0,0,0.15);
+      --border: #e1e8ed;
+    }
+
+    /* ---------- ANIMATIONS ---------- */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ---------- SCROLL ANIMATIONS ---------- */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s ease;
+    }
+
+    .animate-on-scroll.animated {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ---------- HEADER ---------- */
+    header {
+      background: var(--primary);
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: var(--shadow);
+    }
+    .logo {
+      font-size: 1.6em;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    nav ul {
+      display: flex;
+      gap: 30px;
+    }
+    nav a {
+      font-weight: 500;
+      color: var(--text-dark);
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+    nav a:hover {
+      color: var(--accent);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ---------- HERO SECTION ---------- */
+    .hero {
+      background: linear-gradient(135deg, rgba(155, 226, 74, 0.8), rgba(113, 219, 52, 0.8)),
+                  url('https://images.unsplash.com/photo-1596495577886-d920f1fb7238?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80') 
+                  no-repeat center center/cover;
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      padding: 40px;
+    }
+    .hero h1 {
+      font-size: 5em;
+      font-weight: 600;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0);
+    }
+    .hero p {
+      color: #fff;
+      font-size: 1.2em;
+      font-weight: 600;
+      margin-bottom: 30px;
+      max-width: 600px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+      line-height: 1.6;
+    }
+    .btn {
+      background: var(--button);
+      color: #fff;
+      padding: 12px 30px;
+      border-radius: 6px;
+      font-size: 1.1em;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background: var(--button-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* ---------- SECTIONS ---------- */
+    section {
+      padding: 60px 40px;
+      text-align: center;
+    }
+    section h2 {
+      font-size: 2.2em;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text-dark);
+    }
+    section p {
+      max-width: 700px;
+      margin: 0 auto 25px;
+      font-size: 1.1em;
+      color: var(--text-light);
+      line-height: 1.7;
+    }
+
+    /* ---------- DARK SECTIONS ---------- */
+    #about, #programs, #contact {
+      background: var(--text-dark);
+      color: #fff;
+    }
+    #about h2, #programs h2, #contact h2 {
+      color: #fff;
+    }
+    #about p, #contact p {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* ---------- PROGRAMS ---------- */
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+      margin-top: 40px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .program-card:nth-child(4) {
+      grid-column: 1;
+    }
+    
+    .program-card:nth-child(5) {
+      grid-column: 2;
+    }
+    .program-card {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 25px;
+      border-radius: 8px;
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+    }
+    .program-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ---------- TESTIMONIALS ---------- */
+    .testimonials {
+      background: #f8f9fa;
+    }
+    .testimonial {
+      background: #fff;
+      padding: 25px;
+      margin: 15px auto;
+      max-width: 600px;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      font-style: italic;
+      font-size: 1.1em;
+      color: var(--text-dark);
+      border-left: 4px solid var(--accent);
+      transition: all 0.3s ease;
+    }
+    .testimonial:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* ---------- CONTACT ---------- */
+    .contact-info {
+      margin-bottom: 30px;
+    }
+    .contact-info p {
+      font-size: 1.1em;
+      margin: 8px 0;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .contact-info strong {
+      color: var(--accent);
+    }
+    form {
+      max-width: 500px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    input, textarea {
+      padding: 12px 15px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 6px;
+      font-size: 1em;
+      font-family: 'Poppins', sans-serif;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      backdrop-filter: blur(10px);
+    }
+    input::placeholder, textarea::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+    form .btn {
+      align-self: center;
+      margin-top: 10px;
+    }
+
+    /* ---------- FOOTER ---------- */
+    footer {
+      background: #6B8E23;
+      padding: 30px 20px;
+      text-align: center;
+      color: #fff;
+    }
+    footer p {
+      font-size: 0.9em;
+      margin-bottom: 15px;
+      opacity: 0.8;
+    }
+    .social-icons {
+      margin: 15px 0;
+    }
+    .social-icons a {
+      display: inline-block;
+      margin: 0 10px;
+      font-size: 1.3em;
+      color: #fff;
+      transition: all 0.3s ease;
+      padding: 8px;
+      border-radius: 50%;
+    }
+    .social-icons a:hover {
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ---------- RESPONSIVE DESIGN ---------- */
+    @media (max-width: 768px) {
+      header {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+      }
+      nav ul {
+        gap: 20px;
+      }
+      .hero h1 {
+        font-size: 2.5em;
+      }
+      .hero p {
+        font-size: 1.1em;
+      }
+      section {
+        padding: 60px 20px;
+      }
+      section h2 {
+        font-size: 2em;
+      }
+      .programs-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        max-width: none;
+      }
+      
+      .program-card:nth-child(4),
+      .program-card:nth-child(5) {
+        grid-column: auto;
+      }
+      .program-card {
+        padding: 25px 20px;
+      }
+      .testimonial {
+        padding: 25px 20px;
+        margin: 15px 10px;
+      }
+      form {
+        gap: 15px;
+      }
+      input, textarea {
+        padding: 12px 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2em;
+        color: #fff;
+      }
+      .hero p {
+        font-size: 1em;
+      }
+      .btn {
+        padding: 12px 25px;
+        font-size: 1em;
+      }
+      section h2 {
+        font-size: 1.8em;
+      }
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Balangkayan SHS - Enrollment System</div>
+    <nav>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#programs">Programs</a></li>
+        <li><a href="login.html">Dashboard</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <h1>Building Bright Futures</h1>
+    <p>At Balangkayan Senior High School - Stand Alone, we empower learners with knowledge, skills, and values to thrive in life.</p>
+    <button class="btn" onclick="window.location.href='step1.html'">Enroll Now</button>
+  </section>
+
+  <!-- ABOUT -->                                                    
+  <section id="about" class="animate-on-scroll">
+    <h2>About Us</h2>
+    <p>
+      Balangkayan Senior High School - Stand Alone is committed to academic excellence and holistic development.
+      With dedicated educators, modern facilities, and innovative programs, we nurture students to become leaders of tomorrow.
+    </p>
+  </section>
+
+  <!-- PROGRAMS -->
+  <section id="programs" class="animate-on-scroll">
+    <h2>Our Programs</h2>
+    <div class="programs-grid">
+      <div class="program-card animate-on-scroll">Academic Track - HUMSS</div>
+      <div class="program-card animate-on-scroll">Academic Track - ABM</div>
+      <div class="program-card animate-on-scroll">Technical-Vocational Track - Cookery</div>
+      <div class="program-card animate-on-scroll">Technical-Vocational Track - EIM</div>
+      <div class="program-card animate-on-scroll">Technical-Vocational Track - CSS</div>
+    </div>
+    <br>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials animate-on-scroll">
+    <h2>What People Say</h2>
+    <div class="testimonial animate-on-scroll">"This school has truly transformed my child's confidence and future!" – Parent</div>
+    <div class="testimonial animate-on-scroll">"The teachers are supportive, and the programs prepare us well for college." – Student</div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 Balangkayan Senior High School - Stand Alone. All rights reserved.</p>
+    <div class="social-icons">
+      <a href="#">ⓕ</a>
+      <a href="#">📧</a>
+      <a href="#">💬</a>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    // Form validation with enhanced feedback
+    function validateForm() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+      
+      if (!name || !email || !message) {
+        showNotification("Please fill in all fields ❗", "error");
+        return false;
+      }
+      
+      // Email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showNotification("Please enter a valid email address ❗", "error");
+        return false;
+      }
+      
+      showNotification("Thank you for contacting us, " + name + "! We'll get back to you soon. ✔️", "success");
+      
+      // Reset form
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      document.getElementById('message').value = '';
+      
+      return true;
+    }
+
+    // Enhanced notification system
+    function showNotification(message, type) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 15px 25px;
+        border-radius: 10px;
+        color: white;
+        font-weight: 500;
+        z-index: 10000;
+        transform: translateX(400px);
+        transition: transform 0.3s ease;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        max-width: 300px;
+        word-wrap: break-word;
+      `;
+      
+      if (type === 'success') {
+        notification.style.background = 'linear-gradient(45deg, #4CAF50, #45a049)';
+      } else {
+        notification.style.background = 'linear-gradient(45deg, #f44336, #d32f2f)';
+      }
+      
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      // Animate in
+      setTimeout(() => {
+        notification.style.transform = 'translateX(0)';
+      }, 100);
+      
+      // Auto remove after 4 seconds
+      setTimeout(() => {
+        notification.style.transform = 'translateX(400px)';
+        setTimeout(() => {
+          document.body.removeChild(notification);
+        }, 300);
+      }, 4000);
+    }
+
+    // Scroll animations
+    function animateOnScroll() {
+      const elements = document.querySelectorAll('.animate-on-scroll');
+      const windowHeight = window.innerHeight;
+      
+      elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          element.classList.add('animated');
+        }
+      });
+    }
+
+    // Smooth scrolling for navigation links
+    function initSmoothScrolling() {
+      const navLinks = document.querySelectorAll('nav a[href^="#"]');
+      
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const targetSection = document.querySelector(targetId);
+          
+          if (targetSection) {
+            targetSection.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    }
+
+    // Add loading animation
+    function initLoadingAnimation() {
+      document.body.style.opacity = '0';
+      document.body.style.transition = 'opacity 0.3s ease';
+      
+      window.addEventListener('load', () => {
+        document.body.style.opacity = '1';
+      });
+    }
+
+    // Initialize all functions when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      initSmoothScrolling();
+      initLoadingAnimation();
+      animateOnScroll();
+      
+      // Add scroll event listener for animations
+      window.addEventListener('scroll', animateOnScroll);
+      
+      // Add intersection observer for better performance
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animated');
+          }
+        });
+      }, observerOptions);
+      
+      document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enrollment - Step 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {font-family:'Poppins',sans-serif;background:#f9f9f9;margin:0;padding:0;color:#333;}
+    header {background:#FCF259;padding:20px;text-align:center;font-size:1.4em;font-weight:600;}
+    form {max-width:900px;margin:30px auto;padding:25px;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    h2 {margin-bottom:20px;text-align:center;color:#2c3e50;}
+    fieldset {border:1px solid #ddd;border-radius:8px;margin-bottom:25px;padding:20px;}
+    legend {font-weight:600;color:#2c3e50;padding:0 10px;}
+    .form-row {display:grid;grid-template-columns:1fr 1fr;gap:25px;margin-bottom:20px;}
+    label {font-weight:500;display:block;margin-bottom:6px;}
+    input {width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:1em;}
+    .btn {display:block;background:#ff7b00;color:#fff;padding:12px 25px;border-radius:6px;font-size:1.1em;cursor:pointer;border:none;margin:20px auto 0;}
+    .btn:hover {background:#e86a00;}
+  </style>
+</head>
+<body>
+  <header>Enrollment - Step 2</header>
+
+  <form id="step2Form">
+    <h2>Parent / Guardian Information</h2>
+
+    <fieldset>
+      <legend>Father's Information</legend>
+      <div class="form-row"><div><label>Last Name</label><input type="text" name="father_last"></div><div><label>First Name</label><input type="text" name="father_first"></div></div>
+      <div class="form-row"><div><label>Middle Name</label><input type="text" name="father_middle"></div><div><label>Contact</label><input type="text" name="father_contact"></div></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Mother's Information</legend>
+      <div class="form-row"><div><label>Last Name</label><input type="text" name="mother_last"></div><div><label>First Name</label><input type="text" name="mother_first"></div></div>
+      <div class="form-row"><div><label>Middle Name</label><input type="text" name="mother_middle"></div><div><label>Contact</label><input type="text" name="mother_contact"></div></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Guardian's Information</legend>
+      <div class="form-row"><div><label>Last Name</label><input type="text" name="guardian_last"></div><div><label>First Name</label><input type="text" name="guardian_first"></div></div>
+      <div class="form-row"><div><label>Middle Name</label><input type="text" name="guardian_middle"></div><div><label>Contact</label><input type="text" name="guardian_contact"></div></div>
+    </fieldset>
+
+    <div style="display:flex;justify-content:space-between;">
+        <button type="button" class="btn" onclick="goBack()">⬅️ Previous</button>
+        <button type="button" class="btn" onclick="saveStep2()">Next Step ➡️</button>
+      </div>
+  </form>
+
+  <script>
+    function saveStep2() {
+      const f = document.forms['step2Form'];
+      sessionStorage.setItem("father", `${f.father_last.value} ${f.father_first.value} ${f.father_middle.value} (${f.father_contact.value})`);
+      sessionStorage.setItem("mother", `${f.mother_last.value} ${f.mother_first.value} ${f.mother_middle.value} (${f.mother_contact.value})`);
+      sessionStorage.setItem("guardian", `${f.guardian_last.value} ${f.guardian_first.value} ${f.guardian_middle.value} (${f.guardian_contact.value})`);
+      window.location.href = "step3.html";
+    }
+    function goBack() {
+  window.location.href = "step1.html";
+}
+  </script>
+</body>
+</html>

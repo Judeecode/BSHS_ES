@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enrollment Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+    }
+    header {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-bottom: 20px;
+      gap: 10px;
+    }
+    .btn {
+      background: #ff7b00;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 0.95em;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background: #e86a00;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .stats {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.2em;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+      font-size: 0.9em;
+    }
+    th {
+      background: #f0f0f0;
+    }
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background: rgba(0, 0, 0, 0.6);
+    }
+    .modal-content {
+      background: #fff;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 900px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .close {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+    }
+    .filter-box {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .filter-box select {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-family: inherit;
+      margin: 0 10px;
+    }
+    .charts {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .chart-box {
+      flex: 1 1 300px;
+      max-width: 400px;
+    }
+    canvas {
+      width: 100% !important;
+      height: 250px !important;
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <button type="button" class="btn" onclick="logout()">🚪 Logout</button>
+    <button type="button" class="btn" onclick="openModal()">📊 View Reports</button>
+  </header>
+
+  <!-- Dashboard Content -->
+  <h1>Enrollment Dashboard</h1>
+  <div class="stats">Total Enrolled Students: <span id="total">0</span></div>
+
+  <!-- Student Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>LRN</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Sex</th>
+        <th>Track/Strand</th>
+        <th>School Year</th>
+        <th>Grade Level</th>
+        <th>Last School</th>
+      </tr>
+    </thead>
+    <tbody id="student-table"></tbody>
+  </table>
+
+  <!-- Modal for Charts -->
+  <div id="reportModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Enrollment Reports</h2>
+        <span class="close" onclick="closeModal()">&times;</span>
+      </div>
+
+      <!-- Filters inside modal -->
+      <div class="filter-box">
+        <label for="reportYear">School Year:</label>
+        <select id="reportYear" onchange="renderChartsForFilters()">
+          <option value="">All</option>
+        </select>
+
+        <label for="reportGrade">Grade Level:</label>
+        <select id="reportGrade" onchange="renderChartsForFilters()">
+          <option value="">All</option>
+          <option value="11">Grade 11</option>
+          <option value="12">Grade 12</option>
+        </select>
+      </div>
+
+      <div class="charts">
+        <div class="chart-box">
+          <canvas id="barChart"></canvas>
+        </div>
+        <div class="chart-box">
+          <canvas id="pieChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SUPABASE_URL = "https://ccwzchkkyyxrvfoqiiuq.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjd3pjaGtreXl4cnZmb3FpaXVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyNTE0NTYsImV4cCI6MjA3MzgyNzQ1Nn0.oNbjo1D8OVIuwrvKm9HRsIhXAV89dfRZRyGYmL6oHzs";
+    const { createClient } = supabase;
+    const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let allData = [];
+    let barChart, pieChart;
+
+    async function checkAuth() {
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if (!session) {
+        window.location.href = "login.html";
+      }
+    }
+    checkAuth();
+
+    async function loadData() {
+      const { data, error } = await supabaseClient
+        .from("enrollments")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+
+      allData = data;
+      renderTable(data);
+      populateYearFilter(data);
+    }
+
+    function populateYearFilter(data) {
+      const yearSet = new Set(data.map(s => s.last_sy).filter(Boolean));
+      const yearSelect = document.getElementById("reportYear");
+      yearSet.forEach(year => {
+        const option = document.createElement("option");
+        option.value = year;
+        option.textContent = year;
+        yearSelect.appendChild(option);
+      });
+    }
+
+    function renderTable(data) {
+      document.getElementById("total").innerText = data.length;
+      const table = document.getElementById("student-table");
+      table.innerHTML = "";
+
+      data.forEach(student => {
+        const row = `
+          <tr>
+            <td>${student.lrn || "—"}</td>
+            <td>${student.last_name}, ${student.first_name}</td>
+            <td>${student.age || "—"}</td>
+            <td>${student.sex || "—"}</td>
+            <td>${student.track_strand || "—"}</td>
+            <td>${student.last_sy || "—"}</td>
+            <td>${student.last_grade || "—"}</td>
+            <td>${student.last_school || "—"}</td>
+          </tr>
+        `;
+        table.innerHTML += row;
+      });
+    }
+
+    function renderChartsForFilters() {
+      const year = document.getElementById("reportYear").value;
+      const grade = document.getElementById("reportGrade").value;
+
+      let filtered = allData;
+      if (year) filtered = filtered.filter(s => s.last_sy === year);
+      if (grade) filtered = filtered.filter(s => s.last_grade === grade);
+
+      renderCharts(filtered);
+    }
+
+    function renderCharts(data) {
+      if (barChart) barChart.destroy();
+      if (pieChart) pieChart.destroy();
+
+      const maleCount = data.filter(s => s.sex === "Male").length;
+      const femaleCount = data.filter(s => s.sex === "Female").length;
+
+      const trackCounts = {};
+      data.forEach(student => {
+        const track = student.track_strand || "Unspecified";
+        trackCounts[track] = (trackCounts[track] || 0) + 1;
+      });
+
+      const trackLabels = Object.keys(trackCounts);
+      const trackValues = Object.values(trackCounts);
+
+      // Bar Chart
+      barChart = new Chart(document.getElementById("barChart"), {
+        type: "bar",
+        data: {
+          labels: ["Male", "Female"],
+          datasets: [{
+            label: "Enrolled Students",
+            data: [maleCount, femaleCount],
+            backgroundColor: ["#36A2EB", "#FF6384"]
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      // Pie Chart
+      pieChart = new Chart(document.getElementById("pieChart"), {
+        type: "pie",
+        data: {
+          labels: trackLabels,
+          datasets: [{
+            data: trackValues,
+            backgroundColor: [
+              "#FF6384","#36A2EB","#FFCE56",
+              "#4BC0C0","#9966FF","#FF9F40","#66BB6A"
+            ]
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: "bottom",
+              labels: {
+                generateLabels: function (chart) {
+                  const dataset = chart.data.datasets[0].data;
+                  const total = dataset.reduce((a, b) => a + b, 0);
+                  return chart.data.labels.map((label, i) => {
+                    const value = dataset[i];
+                    const percentage = total ? ((value / total) * 100).toFixed(1) + "%" : "0%";
+                    return {
+                      text: `${label}: ${value} (${percentage})`,
+                      fillStyle: chart.data.datasets[0].backgroundColor[i]
+                    };
+                  });
+                }
+              }
+            },
+            datalabels: {
+              formatter: (value, context) => {
+                const dataset = context.chart.data.datasets[0].data;
+                const total = dataset.reduce((a, b) => a + b, 0);
+                return total ? ((value / total) * 100).toFixed(1) + "%" : "0%";
+              },
+              color: "#fff",
+              font: { weight: "bold" }
+            }
+          }
+        },
+        plugins: [ChartDataLabels]
+      });
+    }
+
+    function openModal() {
+      document.getElementById("reportModal").style.display = "block";
+      renderChartsForFilters();
+    }
+    function closeModal() {
+      document.getElementById("reportModal").style.display = "none";
+    }
+
+    loadData();
+
+    async function logout() {
+      await supabaseClient.auth.signOut();
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

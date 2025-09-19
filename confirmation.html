@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enrollment - Step 4 Confirmation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      color: #000;
+    }
+    main {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 25px;
+      border: 1px solid #000;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .header p {
+      margin: 2px 0;
+      font-size: 0.9em;
+    }
+    .header h2 {
+      margin: 8px 0;
+      font-size: 1.2em;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 20px;
+      font-size: 0.85em;
+    }
+    td, th {
+      border: 1px solid #000;
+      padding: 6px;
+      vertical-align: top;
+    }
+    .section-title {
+      background: #eee;
+      font-weight: 600;
+      text-align: left;
+      font-size: 0.9em;
+    }
+    .signature-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      font-size: 0.85em;
+    }
+    .signature-box {
+      text-align: center;
+      flex: 1;
+      margin: 0 20px;
+    }
+    .signature-line {
+      border-top: 1px solid #000;
+      margin-top: 40px;
+      padding-top: 5px;
+    }
+    .btn {
+      display: block;
+      background: #ff7b00;
+      color: #fff;
+      padding: 12px 25px;
+      border-radius: 6px;
+      font-size: 1em;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      margin: 10px;
+      transition: all 0.3s ease;
+    }
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      max-width: 800px;
+      margin: 20px auto;
+    }
+    .btn:hover {
+      background: #e86a00;
+    }
+  </style>
+</head>
+<body>
+  <main id="confirmation-form">
+    <div class="header">
+      <p>Republic of the Philippines</p>
+      <p><strong>Department of Education</strong></p>
+      <h2>Basic Education Enrollment Form (BEEF)</h2>
+    </div>
+
+    <!-- I. Learner Information -->
+    <table>
+      <tr><th colspan="4" class="section-title">I. LEARNER INFORMATION</th></tr>
+      <tr>
+        <td>Last Name<br><span id="last_name"></span></td>
+        <td>First Name<br><span id="first_name"></span></td>
+        <td>Middle Name<br><span id="middle_name"></span></td>
+        <td>Extension<br><span id="ext_name"></span></td>
+      </tr>
+      <tr>
+        <td>Date of Birth<br><span id="birthdate"></span></td>
+        <td>Sex<br><span id="sex"></span></td>
+        <td>Age<br><span id="age"></span></td>
+        <td>LRN<br><span id="lrn"></span></td>
+      </tr>
+      <tr>
+        <td colspan="2">Mother Tongue<br><span id="mother_tongue"></span></td>
+        <td colspan="2">IP Group / 4Ps ID<br><span id="ip_status"></span> / <span id="fourps_id"></span></td>
+      </tr>
+      <tr>
+        <td colspan="4">Current Address<br><span id="current_address"></span></td>
+      </tr>
+      <tr>
+        <td colspan="4">Permanent Address<br><span id="perm_address"></span></td>
+      </tr>
+    </table>
+
+    <!-- II. Parent / Guardian -->
+    <table>
+      <tr><th colspan="3" class="section-title">II. PARENT / GUARDIAN INFORMATION</th></tr>
+      <tr>
+        <td>Father's Name<br><span id="father"></span></td>
+        <td>Mother's Name<br><span id="mother"></span></td>
+        <td>Guardian<br><span id="guardian"></span></td>
+      </tr>
+    </table>
+
+    <!-- III. Academic Background -->
+    <table>
+      <tr><th colspan="4" class="section-title">III. ACADEMIC BACKGROUND</th></tr>
+      <tr>
+        <td>Last Grade Level<br><span id="last_grade"></span></td>
+        <td>School Year<br><span id="last_sy"></span></td>
+        <td colspan="2">School Name<br><span id="last_school"></span></td>
+      </tr>
+      <tr>
+        <td>School ID<br><span id="school_id"></span></td>
+        <td>Grade Level<br><span id="gradelevel"></span></td>
+        <td colspan="2">Track / Strand<br><span id="track_strand"></span></td>
+      </tr>
+      <tr>
+        <td colspan="4">Preferred Learning Modalities<br><span id="modalities"></span></td>
+      </tr>
+    </table>
+
+    <!-- Signatures -->
+    <div class="signature-row">
+      <div class="signature-box">
+        <div class="signature-line">Learner's Signature</div>
+      </div>
+      <div class="signature-box">
+        <div class="signature-line">Parent/Guardian's Signature</div>
+      </div>
+    </div>
+  </main>
+
+  <div class="btn-group">
+    <button type="button" class="btn" onclick="goHome()">🏠 Home</button>
+    <button type="button" class="btn" onclick="goBack()">⬅️ Previous</button>
+    <button class="btn" onclick="submitAndDownload()">✅ Submit & Download PDF</button>
+  </div>
+
+  <script>
+    // Load stored session data
+    document.addEventListener("DOMContentLoaded", () => {
+      const fields = [
+        "last_name","first_name","middle_name","ext_name","birthdate","sex","age","lrn",
+        "mother_tongue","ip_status","fourps_id","current_address","perm_address",
+        "father","mother","guardian",
+        "last_grade","last_sy","last_school","school_id","gradelevel","track_strand","modalities"
+      ];
+      fields.forEach(id => {
+        document.getElementById(id).innerText = sessionStorage.getItem(id) || "—";
+      });
+    });
+
+    // Supabase connection
+    const SUPABASE_URL = "https://ccwzchkkyyxrvfoqiiuq.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjd3pjaGtreXl4cnZmb3FpaXVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyNTE0NTYsImV4cCI6MjA3MzgyNzQ1Nn0.oNbjo1D8OVIuwrvKm9HRsIhXAV89dfRZRyGYmL6oHzs";
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function saveToSupabase() {
+      const data = {
+        last_name: sessionStorage.getItem("last_name"),
+        first_name: sessionStorage.getItem("first_name"),
+        middle_name: sessionStorage.getItem("middle_name"),
+        ext_name: sessionStorage.getItem("ext_name"),
+        birthdate: sessionStorage.getItem("birthdate"),
+        sex: sessionStorage.getItem("sex"),
+        age: sessionStorage.getItem("age"),
+        lrn: sessionStorage.getItem("lrn"),
+        mother_tongue: sessionStorage.getItem("mother_tongue"),
+        ip_status: sessionStorage.getItem("ip_status"),
+        fourps_id: sessionStorage.getItem("fourps_id"),
+        current_address: sessionStorage.getItem("current_address"),
+        perm_address: sessionStorage.getItem("perm_address"),
+        father: sessionStorage.getItem("father"),
+        mother: sessionStorage.getItem("mother"),
+        guardian: sessionStorage.getItem("guardian"),
+        last_grade: sessionStorage.getItem("last_grade"),
+        last_sy: sessionStorage.getItem("last_sy"),
+        last_school: sessionStorage.getItem("last_school"),
+        school_id: sessionStorage.getItem("school_id"),
+        gradelevel: sessionStorage.getItem("gradelevel"),
+        track_strand: sessionStorage.getItem("track_strand"),
+        modalities: sessionStorage.getItem("modalities")
+      };
+
+      const { error } = await sb.from("enrollments").insert([data]);
+      if (error) {
+        alert("❌ Error saving to database: " + error.message);
+      } else {
+        console.log("✔️ Data saved:", data);
+      }
+    }
+
+    // Generate PDF
+    async function downloadPDF() {
+      const element = document.getElementById("confirmation-form");
+      const canvas = await html2canvas(element, { scale: 2 });
+      const imgData = canvas.toDataURL("image/png");
+
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF("p", "mm", "a4");
+
+      const pageWidth = 210;   // A4 width in mm
+      const pageHeight = 297;  // A4 height in mm
+
+      pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight);
+
+      pdf.save("Enrollment_Form.pdf");
+    }
+
+    // Submit: Save + PDF
+    async function submitAndDownload() {
+      await saveToSupabase();
+      await downloadPDF();
+      alert("✔️ Enrollment completed and PDF downloaded!");
+    }
+
+    function goBack() {
+      window.location.href = "step3.html";
+    }
+
+    function goHome() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

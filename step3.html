@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enrollment - Step 3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {font-family:'Poppins',sans-serif;background:#f9f9f9;margin:0;padding:0;color:#333;}
+    header {background:#FCF259;padding:20px;text-align:center;font-size:1.4em;font-weight:600;}
+    form {max-width:900px;margin:30px auto;padding:25px;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
+    h2 {margin-bottom:20px;text-align:center;color:#2c3e50;}
+    fieldset {border:1px solid #ddd;border-radius:8px;margin-bottom:25px;padding:20px;}
+    legend {font-weight:600;color:#2c3e50;padding:0 10px;}
+    .form-row {display:grid;grid-template-columns:1fr 1fr;gap:25px;margin-bottom:20px;}
+    label {font-weight:500;display:block;margin-bottom:6px;}
+    input,select {width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:1em;}
+    .btn {display:block;background:#ff7b00;color:#fff;padding:12px 25px;border-radius:6px;font-size:1.1em;cursor:pointer;border:none;margin:20px auto 0;}
+    .btn:hover {background:#e86a00;}
+  </style>
+</head>
+<body>
+  <header>Enrollment - Step 3</header>
+
+  <form id="step3Form">
+    <h2>Academic Background</h2>
+
+    <fieldset>
+      <legend>Previous Schooling</legend>
+      <div class="form-row"><div><label>Last Grade Level</label><input type="text" name="last_grade"></div><div><label>School Year</label><input type="text" name="last_sy"></div></div>
+      <div class="form-row"><div><label>School Name</label><input type="text" name="last_school"></div><div><label>School ID</label><input type="text" name="school_id"></div></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Enrollment Preferences</legend>
+      <div class="form-row"><div><label>Grade Level</label><select name="gradelevel"><option>11</option><option>12</option></select></div><div><label>Track/Strand</label><input type="text" name="track_strand"></div></div>
+      <div class="form-row"><div class="form-row-full"><label>Preferred Learning Modalities</label><input type="text" name="modalities"></div></div>
+    </fieldset>
+
+    <div style="display:flex;justify-content:space-between;">
+        <button type="button" class="btn" onclick="goBack()">⬅️ Previous</button>
+        <button type="button" class="btn" onclick="saveStep3()">Go to Confirmation ➡️</button>
+      </div>
+  </form>
+
+  <script>
+    function saveStep3() {
+      const f = document.forms['step3Form'];
+      sessionStorage.setItem("last_grade", f.last_grade.value);
+      sessionStorage.setItem("last_sy", f.last_sy.value);
+      sessionStorage.setItem("last_school", f.last_school.value);
+      sessionStorage.setItem("school_id", f.school_id.value);
+      sessionStorage.setItem("gradelevel", f.gradelevel.value);
+      sessionStorage.setItem("track_strand", f.track_strand.value);
+      sessionStorage.setItem("modalities", f.modalities.value);
+      window.location.href = "confirmation.html";
+    }
+    function goBack() {
+  window.location.href = "step2.html";
+}
+  </script>
+</body>
+</html>
