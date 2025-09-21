@@ -355,7 +355,9 @@
       if (search) {
         filtered = filtered.filter(s => 
           (s.lrn && s.lrn.toLowerCase().includes(search)) ||
-          (`${s.last_name || ""}, ${s.first_name || ""}`.toLowerCase().includes(search))
+          (s.first_name && s.first_name.toLowerCase().includes(search)) ||
+          (s.last_name && s.last_name.toLowerCase().includes(search)) ||
+          (s.track_strand && s.track_strand.toLowerCase().includes(search))
         );
       }
 
@@ -519,4 +521,5 @@
   </script>
 </body>
 </html>
+
 
