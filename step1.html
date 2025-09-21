@@ -10,7 +10,7 @@
     header {background:#FCF259;padding:20px;text-align:center;font-size:1.4em;font-weight:600;}
     form {max-width:1000px;margin:30px auto;padding:25px;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
     h2 {margin-bottom:20px;font-size:1.5em;text-align:center;color:#2c3e50;}
-    fieldset {border:1px solid #ddd;border-radius:8px;margin-bottom:25px;padding:20px;}
+    fieldset {border:1px solid #ddd;border-radius:8px;margin-bottom:25px;padding:20px;position:relative;}
     legend {font-weight:600;color:#2c3e50;padding:0 10px;}
     .form-grid {display:grid;grid-template-columns:1fr 1fr;gap:15px 25px;margin-top:15px;}
     .form-grid-full {grid-column:1 / span 2;}
@@ -19,6 +19,24 @@
     .radio-group label{margin-right:15px;}
     .btn {display:block;background:#ff7b00;color:#fff;padding:12px 25px;border-radius:6px;font-size:1.1em;font-weight:500;cursor:pointer;border:none;margin:20px auto 0;}
     .btn:hover {background:#e86a00;}
+    /* Checkbox neat inline style */
+    .legend-inline {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      width:100%;
+    }
+    .legend-inline label {
+      font-weight:500;
+      font-size:0.9em;
+      margin-left:5px;
+    }
+    .legend-inline .checkbox-wrapper {
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:0.85em;
+    }
   </style>
 </head>
 <body>
@@ -51,26 +69,35 @@
       </div>
     </fieldset>
 
-    <!-- Address -->
+    <!-- Current Address -->
     <fieldset>
       <legend>Current Address</legend>
       <div class="form-grid">
-        <div><label>House No.</label><input type="text" name="house_no"></div>
-        <div><label>Street</label><input type="text" name="street"></div>
-        <div><label>Barangay</label><input type="text" name="barangay"></div>
-        <div><label>Municipality/City</label><input type="text" name="city"></div>
-        <div><label>Province</label><input type="text" name="province"></div>
+        <div><label>House No.</label><input type="text" name="house_no" id="house_no"></div>
+        <div><label>Street</label><input type="text" name="street" id="street"></div>
+        <div><label>Barangay</label><input type="text" name="barangay" id="barangay"></div>
+        <div><label>Municipality/City</label><input type="text" name="city" id="city"></div>
+        <div><label>Province</label><input type="text" name="province" id="province"></div>
       </div>
     </fieldset>
 
+    <!-- Permanent Address -->
     <fieldset>
-      <legend>Permanent Address</legend>
+      <legend>
+        <div class="legend-inline">
+          <span>Permanent Address</span>
+        </div>
+        <div class="checkbox-wrapper">
+          <input type="checkbox" id="sameAsCurrent">
+          <label for="sameAsCurrent">Same as Current</label>
+        </div>
+      </legend>
       <div class="form-grid">
-        <div><label>House No.</label><input type="text" name="perm_house_no"></div>
-        <div><label>Street</label><input type="text" name="perm_street"></div>
-        <div><label>Barangay</label><input type="text" name="perm_barangay"></div>
-        <div><label>Municipality/City</label><input type="text" name="perm_city"></div>
-        <div><label>Province</label><input type="text" name="perm_province"></div>
+        <div><label>House No.</label><input type="text" name="perm_house_no" id="perm_house_no"></div>
+        <div><label>Street</label><input type="text" name="perm_street" id="perm_street"></div>
+        <div><label>Barangay</label><input type="text" name="perm_barangay" id="perm_barangay"></div>
+        <div><label>Municipality/City</label><input type="text" name="perm_city" id="perm_city"></div>
+        <div><label>Province</label><input type="text" name="perm_province" id="perm_province"></div>
       </div>
     </fieldset>
 
@@ -81,6 +108,24 @@
   </form>
 
   <script>
+    // Copy address function
+    const sameAsCurrent = document.getElementById("sameAsCurrent");
+    sameAsCurrent.addEventListener("change", function() {
+      const fields = ["house_no", "street", "barangay", "city", "province"];
+      fields.forEach(field => {
+        const currentVal = document.getElementById(field).value;
+        const permInput = document.getElementById("perm_" + field);
+
+        if (this.checked) {
+          permInput.value = currentVal;
+          permInput.setAttribute("readonly", true);
+        } else {
+          permInput.value = "";
+          permInput.removeAttribute("readonly");
+        }
+      });
+    });
+
     function saveStep1() {
       const f = document.forms['step1Form'];
       sessionStorage.setItem("last_name", f.last_name.value);
@@ -98,6 +143,7 @@
       sessionStorage.setItem("perm_address", `${f.perm_house_no.value} ${f.perm_street.value}, ${f.perm_barangay.value}, ${f.perm_city.value}, ${f.perm_province.value}`);
       window.location.href = "step2.html";
     }
+
     function goBack() {
       window.location.href = "index.html"; // Landing page before Step 1
     }
