@@ -193,6 +193,23 @@
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjd3pjaGtreXl4cnZmb3FpaXVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyNTE0NTYsImV4cCI6MjA3MzgyNzQ1Nn0.oNbjo1D8OVIuwrvKm9HRsIhXAV89dfRZRyGYmL6oHzs";
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+    // ✅ Check duplicate enrollment by LRN
+    async function isDuplicateEnrollment(lrn) {
+      if (!lrn) return false;
+      const { data, error } = await sb
+        .from("enrollments")
+        .select("id")
+        .eq("lrn", lrn)
+        .limit(1);
+
+      if (error) {
+        alert("⚠️ Error checking duplicates: " + error.message);
+        return true;
+      }
+
+      return data.length > 0;
+    }
+
     async function saveToSupabase() {
       const data = {
         last_name: sessionStorage.getItem("last_name"),
@@ -217,15 +234,33 @@
         school_id: sessionStorage.getItem("school_id"),
         gradelevel: sessionStorage.getItem("gradelevel"),
         track_strand: sessionStorage.getItem("track_strand"),
-        modalities: sessionStorage.getItem("modalities")
+        modalities: sessionStorage.getItem("modalities"),
+        created_at: new Date().toISOString()
       };
+
+      // Check for duplicate
+      if (await isDuplicateEnrollment(data.lrn)) {
+        alert("❌ This student is already enrolled!");
+        return false;
+      }
 
       const { error } = await sb.from("enrollments").insert([data]);
       if (error) {
         alert("❌ Error saving to database: " + error.message);
+        return false;
       } else {
         console.log("✔️ Data saved:", data);
+        return true;
       }
+    }
+
+    // Submit: Save + PDF
+    async function submitAndDownload() {
+      const success = await saveToSupabase();
+      if (!success) return;
+
+      await downloadPDF();
+      alert("✔️ Enrollment completed and PDF downloaded!");
     }
 
     // Generate PDF
@@ -237,19 +272,11 @@
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF("p", "mm", "a4");
 
-      const pageWidth = 210;   // A4 width in mm
-      const pageHeight = 297;  // A4 height in mm
+      const pageWidth = 210;
+      const pageHeight = 297;
 
       pdf.addImage(imgData, "PNG", 0, 0, pageWidth, pageHeight);
-
       pdf.save("Enrollment_Form.pdf");
-    }
-
-    // Submit: Save + PDF
-    async function submitAndDownload() {
-      await saveToSupabase();
-      await downloadPDF();
-      alert("✔️ Enrollment completed and PDF downloaded!");
     }
 
     function goBack() {
