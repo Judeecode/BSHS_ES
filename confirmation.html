@@ -30,6 +30,19 @@
     .header {
       text-align: center;
       margin-bottom: 20px;
+      position: relative;
+    }
+    .header-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 15px;
+    }
+    .header-logos img {
+      height: 80px;
+      width: auto;
+      object-fit: contain;
     }
     .header p {
       margin: 2px 0;
@@ -150,6 +163,12 @@
         padding: 15px 10px;
         border-width: 1px;
       }
+      .header-logos {
+        gap: 15px;
+      }
+      .header-logos img {
+        height: 50px;
+      }
       .header h2 {
         font-size: 0.9em;
       }
@@ -184,6 +203,10 @@
 <body>
   <main id="confirmation-form">
     <div class="header">
+      <div class="header-logos">
+        <img src="deped1.png" alt="DepEd Logo 1">
+        <img src="deped2.png" alt="DepEd Logo 2">
+      </div>
       <p>Republic of the Philippines</p>
       <p><strong>Department of Education</strong></p>
       <h2>Basic Education Enrollment Form (BEEF)</h2>
@@ -333,7 +356,7 @@
 
       const { error } = await sb.from("enrollments").insert([data]);
       if (error) {
-        alert("❌ Error saving to database: " + error.message);
+        alert("❌ The form is empty!");
         return false;
       } else {
         console.log("✔️ Data saved:", data);
