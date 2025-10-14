@@ -640,6 +640,306 @@
         font-size: 2em;
       }
     }
+
+    /* AI Chatbot Styles */
+    .chatbot-container {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 9999;
+    }
+
+    .chatbot-button {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff7b00, #ff5722);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(255, 123, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chatbot-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.4s, height 0.4s;
+    }
+
+    .chatbot-button:hover::before {
+      width: 100%;
+      height: 100%;
+    }
+
+    .chatbot-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 35px rgba(255, 123, 0, 0.7);
+    }
+
+    .chatbot-button.active {
+      background: linear-gradient(135deg, #e86a00, #e04e1a);
+    }
+
+    .chatbot-window {
+      position: absolute;
+      bottom: 85px;
+      right: 0;
+      width: 380px;
+      height: 550px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 15px 60px rgba(0, 0, 0, 0.25);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      animation: slideUp 0.3s ease;
+    }
+
+    .chatbot-window.active {
+      display: flex;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .chatbot-header {
+      background: linear-gradient(135deg, #ff7b00, #ff5722);
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .chatbot-header .avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+    }
+
+    .chatbot-header .info h3 {
+      margin: 0;
+      font-size: 1.1em;
+      font-weight: 700;
+    }
+
+    .chatbot-header .info p {
+      margin: 0;
+      font-size: 0.85em;
+      opacity: 0.9;
+    }
+
+    .chatbot-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .chatbot-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .chatbot-messages::-webkit-scrollbar-track {
+      background: #e9ecef;
+    }
+
+    .chatbot-messages::-webkit-scrollbar-thumb {
+      background: #ff7b00;
+      border-radius: 10px;
+    }
+
+    .message {
+      display: flex;
+      gap: 10px;
+      animation: fadeInUp 0.3s ease;
+    }
+
+    .message.user {
+      flex-direction: row-reverse;
+    }
+
+    .message .avatar {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff7b00, #ff5722);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+      flex-shrink: 0;
+    }
+
+    .message.user .avatar {
+      background: linear-gradient(135deg, #4a90e2, #357abd);
+    }
+
+    .message .bubble {
+      max-width: 70%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      font-size: 0.95em;
+      line-height: 1.5;
+      word-wrap: break-word;
+    }
+
+    .message.user .bubble {
+      background: linear-gradient(135deg, #4a90e2, #357abd);
+      color: #fff;
+    }
+
+    .chatbot-input-area {
+      padding: 15px;
+      background: #fff;
+      border-top: 1px solid #e9ecef;
+      display: flex;
+      gap: 10px;
+    }
+
+    .chatbot-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 2px solid #e9ecef;
+      border-radius: 25px;
+      font-size: 0.95em;
+      font-family: 'Poppins', sans-serif;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .chatbot-input:focus {
+      border-color: #ff7b00;
+    }
+
+    .chatbot-send {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff7b00, #ff5722);
+      border: none;
+      color: #fff;
+      font-size: 1.2em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .chatbot-send:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 15px rgba(255, 123, 0, 0.5);
+    }
+
+    .chatbot-send:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .quick-reply {
+      padding: 8px 16px;
+      background: #fff;
+      border: 2px solid #ff7b00;
+      border-radius: 20px;
+      font-size: 0.85em;
+      color: #ff7b00;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .quick-reply:hover {
+      background: #ff7b00;
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 5px;
+      padding: 12px 16px;
+      background: #fff;
+      border-radius: 18px;
+      width: fit-content;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .typing-indicator span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff7b00;
+      animation: typing 1.4s infinite;
+    }
+
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.5;
+      }
+      30% {
+        transform: translateY(-10px);
+        opacity: 1;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .chatbot-window {
+        width: calc(100vw - 40px);
+        height: 500px;
+      }
+
+      .chatbot-container {
+        bottom: 20px;
+        right: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -762,6 +1062,41 @@
     </div>
   </footer>
 
+  <!-- AI CHATBOT -->
+  <div class="chatbot-container">
+    <button class="chatbot-button" id="chatbotToggle">
+      🤖
+    </button>
+    <div class="chatbot-window" id="chatbotWindow">
+      <div class="chatbot-header">
+        <div class="avatar">🤖</div>
+        <div class="info">
+          <h3>BSHS Assistant</h3>
+          <p>Online • Ready to help</p>
+        </div>
+      </div>
+      <div class="chatbot-messages" id="chatbotMessages">
+        <div class="message">
+          <div class="avatar">🤖</div>
+          <div>
+            <div class="bubble">
+              Hello! I'm the BSHS virtual assistant. How can I help you today?
+            </div>
+            <div class="quick-replies">
+              <button class="quick-reply" onclick="sendQuickReply('What programs do you offer?')">Programs</button>
+              <button class="quick-reply" onclick="sendQuickReply('How do I enroll?')">Enrollment</button>
+              <button class="quick-reply" onclick="sendQuickReply('What are your contact details?')">Contact</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chatbot-input-area">
+        <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your message...">
+        <button class="chatbot-send" id="chatbotSend">➤</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Scroll animations
     const observerOptions = {
@@ -794,6 +1129,173 @@
         }
       });
     });
+
+    // Chatbot functionality
+    const chatbotToggle = document.getElementById('chatbotToggle');
+    const chatbotWindow = document.getElementById('chatbotWindow');
+    const chatbotMessages = document.getElementById('chatbotMessages');
+    const chatbotInput = document.getElementById('chatbotInput');
+    const chatbotSend = document.getElementById('chatbotSend');
+
+    // Toggle chatbot window
+    chatbotToggle.addEventListener('click', () => {
+      chatbotWindow.classList.toggle('active');
+      chatbotToggle.classList.toggle('active');
+      if (chatbotWindow.classList.contains('active')) {
+        chatbotInput.focus();
+      }
+    });
+
+    // Knowledge base for the chatbot
+    const knowledgeBase = {
+      'programs': {
+        keywords: ['program', 'course', 'track', 'strand', 'offer', 'available', 'study'],
+        response: 'We offer two main tracks:\n\n📚 <strong>Academic Track</strong>: ABM (Accountancy, Business & Management) and HUMSS (Humanities & Social Sciences)\n\n🔧 <strong>Technical-Vocational Track</strong>: EIM (Electrical Installation & Maintenance), CSS (Computer Systems Servicing), and Home Economics'
+      },
+      'enrollment': {
+        keywords: ['enroll', 'admission', 'apply', 'register', 'join', 'requirements'],
+        response: 'To enroll at BSHS, click the "Enroll Now" button on our homepage. You\'ll need:\n\n• Form 138 (Report Card)\n• Birth Certificate\n• Good Moral Certificate\n• 2x2 ID Photos\n\nFor more details, please visit our enrollment page or contact our registrar.'
+      },
+      'contact': {
+        keywords: ['contact', 'phone', 'email', 'address', 'location', 'reach', 'call'],
+        response: 'You can reach us at:\n\n📍 <strong>Address:</strong> Balangkayan, Eastern Samar\n📞 <strong>Phone:</strong> Contact our main office\n📧 <strong>Email:</strong> Available on our contact page\n\nFeel free to visit us during office hours!'
+      },
+      'mission': {
+        keywords: ['mission', 'vision', 'goal', 'objective', 'purpose'],
+        response: '<strong>Our Vision:</strong> We dream of Filipinos who passionately love their country and whose values and competencies enable them to realize their full potential.\n\n<strong>Our Mission:</strong> To protect and promote the right of every Filipino to quality, equitable, culture-based and complete basic education.'
+      },
+      'schedule': {
+        keywords: ['schedule', 'time', 'hours', 'when', 'open', 'class'],
+        response: 'Our school operates on a regular schedule:\n\n⏰ <strong>Class Hours:</strong> Monday to Friday\n📅 <strong>School Year:</strong> June to March\n\nFor specific class schedules, please contact your program coordinator after enrollment.'
+      },
+      'facilities': {
+        keywords: ['facility', 'facilities', 'building', 'laboratory', 'library', 'campus'],
+        response: 'BSHS features modern facilities including:\n\n• Computer laboratories\n• Science laboratories\n• Library and learning resource center\n• Technical-vocational workshops\n• Sports facilities\n\nWe continuously upgrade our facilities to provide the best learning environment!'
+      }
+    };
+
+    // Function to find best response
+    function getBotResponse(userMessage) {
+      const message = userMessage.toLowerCase();
+      
+      // Check for greetings
+      if (message.match(/\b(hi|hello|hey|good morning|good afternoon|good evening)\b/)) {
+        return 'Hello! Welcome to Balangkayan Senior High School. How can I assist you today? 😊';
+      }
+
+      // Check for thanks
+      if (message.match(/\b(thank|thanks|thank you|ty)\b/)) {
+        return 'You\'re welcome! If you have any other questions, feel free to ask. Happy to help! 😊';
+      }
+
+      // Check for goodbye
+      if (message.match(/\b(bye|goodbye|see you|later)\b/)) {
+        return 'Goodbye! Have a great day! Feel free to come back if you have more questions. 👋';
+      }
+
+      // Search knowledge base
+      for (const [key, value] of Object.entries(knowledgeBase)) {
+        for (const keyword of value.keywords) {
+          if (message.includes(keyword)) {
+            return value.response;
+          }
+        }
+      }
+
+      // Default response
+      return 'I\'m here to help! You can ask me about:\n\n• Our programs and tracks\n• Enrollment process\n• Contact information\n• Mission and vision\n• School facilities\n\nWhat would you like to know?';
+    }
+
+    // Function to add message to chat
+    function addMessage(text, isUser = false) {
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${isUser ? 'user' : ''}`;
+      
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.textContent = isUser ? '👤' : '🤖';
+      
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.innerHTML = text;
+      
+      messageDiv.appendChild(avatar);
+      messageDiv.appendChild(bubble);
+      
+      chatbotMessages.appendChild(messageDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    // Function to show typing indicator
+    function showTypingIndicator() {
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'message';
+      typingDiv.id = 'typingIndicator';
+      
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.textContent = '🤖';
+      
+      const indicator = document.createElement('div');
+      indicator.className = 'typing-indicator';
+      indicator.innerHTML = '<span></span><span></span><span></span>';
+      
+      typingDiv.appendChild(avatar);
+      typingDiv.appendChild(indicator);
+      chatbotMessages.appendChild(typingDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    }
+
+    // Function to remove typing indicator
+    function removeTypingIndicator() {
+      const indicator = document.getElementById('typingIndicator');
+      if (indicator) {
+        indicator.remove();
+      }
+    }
+
+    // Function to send message
+    function sendMessage() {
+      const message = chatbotInput.value.trim();
+      if (!message) return;
+
+      // Add user message
+      addMessage(message, true);
+      chatbotInput.value = '';
+
+      // Show typing indicator
+      showTypingIndicator();
+
+      // Simulate bot thinking time
+      setTimeout(() => {
+        removeTypingIndicator();
+        const response = getBotResponse(message);
+        addMessage(response);
+      }, 800 + Math.random() * 700);
+    }
+
+    // Function to send quick reply
+    function sendQuickReply(message) {
+      addMessage(message, true);
+      showTypingIndicator();
+      
+      setTimeout(() => {
+        removeTypingIndicator();
+        const response = getBotResponse(message);
+        addMessage(response);
+      }, 800 + Math.random() * 700);
+    }
+
+    // Event listeners
+    chatbotSend.addEventListener('click', sendMessage);
+    chatbotInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        sendMessage();
+      }
+    });
+
+    // Make sendQuickReply available globally
+    window.sendQuickReply = sendQuickReply;
   </script>
 </body>
 </html>
