@@ -18,6 +18,8 @@
       background: #ffffff;
       color: #333;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
     a {
       text-decoration: none;
@@ -39,6 +41,9 @@
       --shadow: 0 2px 10px rgba(0,0,0,0.1);
       --shadow-hover: 0 4px 20px rgba(0,0,0,0.15);
       --border: #e1e8ed;
+      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     }
 
     /* ---------- ANIMATIONS ---------- */
@@ -50,6 +55,24 @@
       to {
         opacity: 1;
         transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
       }
     }
 
@@ -67,7 +90,8 @@
 
     /* ---------- HEADER ---------- */
     header {
-      background: var(--primary);
+      background: rgba(252, 242, 89, 0.98);
+      backdrop-filter: blur(10px);
       padding: 20px 40px;
       display: flex;
       justify-content: space-between;
@@ -75,93 +99,176 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: var(--shadow);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.3);
     }
     .logo {
-      font-size: 1.6em;
-      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    .logo-text {
+      font-size: 1.4em;
+      font-weight: 700;
       color: var(--text-dark);
+      letter-spacing: -0.5px;
+      line-height: 1.2;
     }
     nav ul {
       display: flex;
-      gap: 30px;
+      gap: 10px;
     }
     nav a {
       font-weight: 500;
       color: var(--text-dark);
-      padding: 8px 16px;
-      border-radius: 6px;
+      padding: 10px 20px;
+      border-radius: 8px;
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    nav a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
     }
     nav a:hover {
       color: var(--accent);
-      background: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+    nav a:hover::before {
+      width: 80%;
     }
 
     /* ---------- HERO SECTION ---------- */
     .hero {
-      background: linear-gradient(135deg, rgba(155, 226, 74, 0.8), rgba(113, 219, 52, 0.8)),
+      background: linear-gradient(135deg, rgba(155, 226, 74, 0.9), rgba(113, 219, 52, 0.85)),
                   url('https://images.unsplash.com/photo-1596495577886-d920f1fb7238?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80') 
                   no-repeat center center/cover;
-      height: 80vh;
+      min-height: 85vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
       color: #fff;
-      padding: 40px;
+      padding: 60px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+      animation: float 6s ease-in-out infinite;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
     }
     .hero h1 {
       font-size: 5em;
-      font-weight: 600;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 4px rgba(255, 255, 255, 0);
+      font-weight: 700;
+      margin-bottom: 25px;
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+      letter-spacing: -1px;
+      line-height: 1.1;
     }
     .hero p {
       color: #fff;
-      font-size: 1.2em;
-      font-weight: 600;
-      margin-bottom: 30px;
-      max-width: 600px;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-      line-height: 1.6;
+      font-size: 1.3em;
+      font-weight: 500;
+      margin-bottom: 40px;
+      max-width: 700px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      line-height: 1.7;
+      margin-left: auto;
+      margin-right: auto;
     }
     .btn {
-      background: var(--button);
+      background: linear-gradient(135deg, var(--button), var(--button-hover));
       color: #fff;
-      padding: 12px 30px;
-      border-radius: 6px;
+      padding: 16px 40px;
+      border-radius: 50px;
       font-size: 1.1em;
-      font-weight: 500;
+      font-weight: 600;
       cursor: pointer;
       border: none;
-      box-shadow: var(--shadow);
+      box-shadow: 0 8px 25px rgba(255, 123, 0, 0.4);
       transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.5s ease;
+    }
+    .btn:hover::before {
+      left: 100%;
     }
     .btn:hover {
-      background: var(--button-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-hover);
+      background: linear-gradient(135deg, var(--button-hover), #d65a00);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 12px 35px rgba(255, 123, 0, 0.5);
     }
 
     /* ---------- SECTIONS ---------- */
     section {
-      padding: 60px 40px;
+      padding: 80px 40px;
       text-align: center;
     }
     section h2 {
-      font-size: 2.2em;
-      font-weight: 600;
-      margin-bottom: 20px;
+      font-size: 2.8em;
+      font-weight: 700;
+      margin-bottom: 15px;
       color: var(--text-dark);
+      letter-spacing: -0.5px;
+      position: relative;
+      display: inline-block;
+    }
+    section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--secondary));
+      border-radius: 2px;
     }
     section p {
-      max-width: 700px;
-      margin: 0 auto 25px;
-      font-size: 1.1em;
+      max-width: 800px;
+      margin: 30px auto 25px;
+      font-size: 1.15em;
       color: var(--text-light);
-      line-height: 1.7;
+      line-height: 1.8;
     }
 
     /* ---------- DARK SECTIONS ---------- */
@@ -180,9 +287,9 @@
     .programs-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 25px;
-      margin-top: 40px;
-      max-width: 900px;
+      gap: 30px;
+      margin-top: 50px;
+      max-width: 1100px;
       margin-left: auto;
       margin-right: auto;
     }
@@ -195,41 +302,106 @@
       grid-column: 2;
     }
     .program-card {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 25px;
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.12);
+      padding: 35px 25px;
+      border-radius: 16px;
       color: #fff;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 2px solid rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+    .program-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--secondary));
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    .program-card:hover::before {
+      transform: scaleX(1);
+    }
+    .program-card .icon {
+      font-size: 2.5em;
+      margin-bottom: 15px;
+      display: block;
+    }
+    .program-card .title {
+      font-size: 1.2em;
+      font-weight: 600;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    .program-card .description {
+      font-size: 0.95em;
+      opacity: 0.9;
+      line-height: 1.5;
     }
     .program-card:hover {
-      transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      transform: translateY(-8px) scale(1.02);
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+      border-color: rgba(255, 255, 255, 0.4);
     }
 
     /* ---------- TESTIMONIALS ---------- */
     .testimonials {
-      background: #f8f9fa;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      position: relative;
+    }
+    .testimonials-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 50px auto 0;
     }
     .testimonial {
       background: #fff;
-      padding: 25px;
-      margin: 15px auto;
-      max-width: 600px;
-      border-radius: 8px;
-      box-shadow: var(--shadow);
+      padding: 35px 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
       font-style: italic;
-      font-size: 1.1em;
+      font-size: 1.05em;
       color: var(--text-dark);
-      border-left: 4px solid var(--accent);
-      transition: all 0.3s ease;
+      border-left: 5px solid var(--accent);
+      transition: all 0.4s ease;
+      position: relative;
+    }
+    .testimonial::before {
+      content: '"';
+      font-size: 4em;
+      position: absolute;
+      top: 10px;
+      left: 20px;
+      color: var(--accent);
+      opacity: 0.2;
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+    .testimonial .quote {
+      position: relative;
+      z-index: 1;
+      margin-bottom: 15px;
+    }
+    .testimonial .author {
+      font-style: normal;
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 0.95em;
+      margin-top: 15px;
+      display: block;
     }
     .testimonial:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-hover);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      border-left-width: 8px;
     }
 
     /* ---------- CONTACT ---------- */
@@ -282,45 +454,97 @@
 
     /* ---------- FOOTER ---------- */
     footer {
-      background: #6B8E23;
-      padding: 30px 20px;
+      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+      padding: 50px 40px 30px;
       text-align: center;
       color: #fff;
+      position: relative;
+      overflow: hidden;
+    }
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+    }
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
     }
     footer p {
-      font-size: 0.9em;
-      margin-bottom: 15px;
-      opacity: 0.8;
+      font-size: 0.95em;
+      margin-bottom: 20px;
+      opacity: 0.9;
     }
     .social-icons {
-      margin: 15px 0;
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
     }
     .social-icons a {
-      display: inline-block;
-      margin: 0 10px;
-      font-size: 1.3em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 45px;
+      height: 45px;
+      font-size: 1.4em;
       color: #fff;
-      transition: all 0.3s ease;
-      padding: 8px;
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 50%;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.2);
     }
     .social-icons a:hover {
-      color: var(--accent);
-      transform: translateY(-2px);
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: translateY(-5px) rotate(5deg);
+      box-shadow: 0 8px 20px rgba(74, 144, 226, 0.4);
     }
 
     /* ---------- RESPONSIVE DESIGN ---------- */
+    @media (max-width: 1024px) {
+      .programs-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+      }
+      .program-card:nth-child(4),
+      .program-card:nth-child(5) {
+        grid-column: auto;
+      }
+    }
+
     @media (max-width: 768px) {
       header {
         padding: 15px 20px;
         flex-direction: column;
         gap: 15px;
       }
+      .logo img {
+        width: 45px;
+        height: 45px;
+      }
+      .logo-text {
+        font-size: 1.2em;
+      }
       nav ul {
-        gap: 20px;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      nav a {
+        padding: 8px 15px;
+        font-size: 0.9em;
+      }
+      .hero {
+        min-height: 70vh;
+        padding: 40px 20px;
       }
       .hero h1 {
-        font-size: 2.5em;
+        font-size: 2.8em;
       }
       .hero p {
         font-size: 1.1em;
@@ -329,51 +553,111 @@
         padding: 60px 20px;
       }
       section h2 {
-        font-size: 2em;
+        font-size: 2.2em;
+      }
+      section p {
+        font-size: 1.05em;
       }
       .programs-grid {
         grid-template-columns: 1fr;
         gap: 20px;
         max-width: none;
       }
-      
       .program-card:nth-child(4),
       .program-card:nth-child(5) {
         grid-column: auto;
       }
       .program-card {
-        padding: 25px 20px;
+        padding: 30px 20px;
+      }
+      .testimonials-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
       }
       .testimonial {
-        padding: 25px 20px;
-        margin: 15px 10px;
+        padding: 30px 25px;
+        margin: 0;
       }
-      form {
-        gap: 15px;
+      .social-icons {
+        gap: 12px;
       }
-      input, textarea {
-        padding: 12px 15px;
+      .social-icons a {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2em;
       }
     }
 
     @media (max-width: 480px) {
+      .logo img {
+        width: 40px;
+        height: 40px;
+      }
+      .logo-text {
+        font-size: 1em;
+      }
+      nav ul {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+      }
+      nav a {
+        padding: 10px 15px;
+        width: 100%;
+        text-align: center;
+      }
+      .hero {
+        min-height: 60vh;
+        padding: 30px 15px;
+      }
       .hero h1 {
         font-size: 2em;
         color: #fff;
+        margin-bottom: 20px;
       }
       .hero p {
         font-size: 1em;
+        margin-bottom: 30px;
       }
       .btn {
-        padding: 12px 25px;
+        padding: 14px 30px;
         font-size: 1em;
+      }
+      section {
+        padding: 50px 15px;
       }
       section h2 {
         font-size: 1.8em;
       }
-      nav ul {
-        flex-direction: column;
-        gap: 10px;
+      section h2::after {
+        width: 40px;
+        height: 3px;
+      }
+      section p {
+        font-size: 1em;
+      }
+      .program-card {
+        padding: 25px 15px;
+      }
+      .program-card .icon {
+        font-size: 2em;
+      }
+      .program-card .title {
+        font-size: 1.1em;
+      }
+      .testimonial {
+        padding: 25px 20px;
+      }
+      .testimonial::before {
+        font-size: 3em;
+      }
+      footer {
+        padding: 40px 20px 25px;
+      }
+      .social-icons a {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1em;
       }
     }
   </style>
@@ -381,7 +665,10 @@
 <body>
   <!-- HEADER -->
   <header>
-    <div class="logo">Balangkayan SHS - Enrollment System</div>
+    <div class="logo">
+      <img src="bshs logo.jfif" alt="BSHS Logo">
+      <span class="logo-text">Balangkayan Senior High School - Stand Alone</span>
+    </div>
     <nav>
       <ul>
         <li><a href="#hero">Home</a></li>
@@ -394,9 +681,11 @@
 
   <!-- HERO -->
   <section class="hero" id="hero">
-    <h1>Building Bright Futures</h1>
-    <p>At Balangkayan Senior High School - Stand Alone, we empower learners with knowledge, skills, and values to thrive in life.</p>
-    <button class="btn" onclick="window.location.href='step1.html'">Enroll Now</button>
+    <div class="hero-content">
+      <h1>Building Bright Futures</h1>
+      <p>At Balangkayan Senior High School - Stand Alone, we empower learners with knowledge, skills, and values to thrive in life.</p>
+      <button class="btn" onclick="window.location.href='step1.html'">Enroll Now</button>
+    </div>
   </section>
 
   <!-- ABOUT -->                                                    
@@ -411,30 +700,61 @@
   <!-- PROGRAMS -->
   <section id="programs" class="animate-on-scroll">
     <h2>Our Programs</h2>
+    <p>Choose from our diverse range of academic and technical-vocational tracks designed to prepare you for success.</p>
     <div class="programs-grid">
-      <div class="program-card animate-on-scroll">Academic Track - HUMSS</div>
-      <div class="program-card animate-on-scroll">Academic Track - ABM</div>
-      <div class="program-card animate-on-scroll">Technical-Vocational Track - Cookery</div>
-      <div class="program-card animate-on-scroll">Technical-Vocational Track - EIM</div>
-      <div class="program-card animate-on-scroll">Technical-Vocational Track - CSS</div>
+      <div class="program-card animate-on-scroll">
+        <span class="icon">📚</span>
+        <div class="title">Academic Track - HUMSS</div>
+        <div class="description">Humanities and Social Sciences for future leaders and communicators</div>
+      </div>
+      <div class="program-card animate-on-scroll">
+        <span class="icon">💼</span>
+        <div class="title">Academic Track - ABM</div>
+        <div class="description">Accountancy, Business and Management for aspiring entrepreneurs</div>
+      </div>
+      <div class="program-card animate-on-scroll">
+        <span class="icon">🍳</span>
+        <div class="title">TVL - Cookery</div>
+        <div class="description">Master culinary arts and food service management</div>
+      </div>
+      <div class="program-card animate-on-scroll">
+        <span class="icon">⚡</span>
+        <div class="title">TVL - EIM</div>
+        <div class="description">Electrical Installation and Maintenance expertise</div>
+      </div>
+      <div class="program-card animate-on-scroll">
+        <span class="icon">💻</span>
+        <div class="title">TVL - CSS</div>
+        <div class="description">Computer Systems Servicing and technology skills</div>
+      </div>
     </div>
-    <br>
   </section>
 
   <!-- TESTIMONIALS -->
   <section class="testimonials animate-on-scroll">
     <h2>What People Say</h2>
-    <div class="testimonial animate-on-scroll">"This school has truly transformed my child's confidence and future!" – Parent</div>
-    <div class="testimonial animate-on-scroll">"The teachers are supportive, and the programs prepare us well for college." – Student</div>
+    <p>Hear from our community about their experiences at Balangkayan SHS</p>
+    <div class="testimonials-container">
+      <div class="testimonial animate-on-scroll">
+        <div class="quote">This school has truly transformed my child's confidence and future! The dedicated teachers and comprehensive programs have made all the difference.</div>
+        <span class="author">— Parent</span>
+      </div>
+      <div class="testimonial animate-on-scroll">
+        <div class="quote">The teachers are supportive, and the programs prepare us well for college. I feel ready to take on any challenge that comes my way.</div>
+        <span class="author">— Student</span>
+      </div>
+    </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    <p>&copy; 2025 Balangkayan Senior High School - Stand Alone. All rights reserved.</p>
-    <div class="social-icons">
-      <a href="#">ⓕ</a>
-      <a href="#">📧</a>
-      <a href="#">💬</a>
+    <div class="footer-content">
+      <p>&copy; 2025 Balangkayan Senior High School - Stand Alone. All rights reserved.</p>
+      <div class="social-icons">
+        <a href="#" title="Facebook">ⓕ</a>
+        <a href="#" title="Email">📧</a>
+        <a href="#" title="Contact">💬</a>
+      </div>
     </div>
   </footer>
 
