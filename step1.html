@@ -6,19 +6,105 @@
   <title>Enrollment - Step 1</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    body {font-family:'Poppins',sans-serif;background:#f9f9f9;margin:0;padding:0;color:#333;}
-    header {background:#FCF259;padding:20px;text-align:center;font-size:1.4em;font-weight:600;}
-    form {max-width:1000px;margin:30px auto;padding:25px;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}
-    h2 {margin-bottom:20px;font-size:1.5em;text-align:center;color:#2c3e50;}
-    fieldset {border:1px solid #ddd;border-radius:8px;margin-bottom:25px;padding:20px;position:relative;}
-    legend {font-weight:600;color:#2c3e50;padding:0 10px;}
-    .form-grid {display:grid;grid-template-columns:1fr 1fr;gap:15px 25px;margin-top:15px;}
-    .form-grid-full {grid-column:1 / span 2;}
-    label {font-weight:500;display:block;margin-bottom:6px;font-size:0.9em;}
-    input,select {width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:1em;}
-    .radio-group label{margin-right:15px;}
-    .btn {display:block;background:#ff7b00;color:#fff;padding:12px 25px;border-radius:6px;font-size:1.1em;font-weight:500;cursor:pointer;border:none;margin:20px auto 0;}
-    .btn:hover {background:#e86a00;}
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family:'Poppins',sans-serif;
+      background:#f9f9f9;
+      margin:0;
+      padding:0;
+      color:#333;
+      -webkit-font-smoothing: antialiased;
+    }
+    header {
+      background:#FCF259;
+      padding:20px;
+      text-align:center;
+      font-size:1.4em;
+      font-weight:600;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    form {
+      max-width:1000px;
+      margin:30px auto;
+      padding:25px;
+      background:#fff;
+      border-radius:10px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-bottom:20px;
+      font-size:1.5em;
+      text-align:center;
+      color:#2c3e50;
+    }
+    fieldset {
+      border:1px solid #ddd;
+      border-radius:8px;
+      margin-bottom:25px;
+      padding:20px;
+      position:relative;
+    }
+    legend {
+      font-weight:600;
+      color:#2c3e50;
+      padding:0 10px;
+    }
+    .form-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:15px 25px;
+      margin-top:15px;
+    }
+    .form-grid-full {
+      grid-column:1 / span 2;
+    }
+    label {
+      font-weight:500;
+      display:block;
+      margin-bottom:6px;
+      font-size:0.9em;
+    }
+    input,select {
+      width:100%;
+      padding:10px;
+      border:1px solid #ccc;
+      border-radius:6px;
+      font-size:1em;
+      font-family: 'Poppins', sans-serif;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #ff7b00;
+      box-shadow: 0 0 0 2px rgba(255, 123, 0, 0.1);
+    }
+    .radio-group label {
+      margin-right:15px;
+    }
+    .btn {
+      display:inline-block;
+      background:#ff7b00;
+      color:#fff;
+      padding:12px 25px;
+      border-radius:6px;
+      font-size:1.1em;
+      font-weight:500;
+      cursor:pointer;
+      border:none;
+      transition: all 0.3s ease;
+    }
+    .btn:hover {
+      background:#e86a00;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 123, 0, 0.3);
+    }
+    .btn-container {
+      display:flex;
+      justify-content:space-between;
+      gap: 15px;
+      margin-top: 20px;
+    }
     /* Checkbox neat inline style */
     .legend-inline {
       display:flex;
@@ -36,6 +122,73 @@
       align-items:center;
       gap:6px;
       font-size:0.85em;
+    }
+    .checkbox-wrapper {
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-top: 10px;
+    }
+    .checkbox-wrapper input[type="checkbox"] {
+      width: auto;
+      cursor: pointer;
+    }
+    .checkbox-wrapper label {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        font-size: 1.2em;
+        padding: 15px;
+      }
+      form {
+        margin: 20px 15px;
+        padding: 20px 15px;
+      }
+      h2 {
+        font-size: 1.3em;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      .form-grid-full {
+        grid-column: 1;
+      }
+      fieldset {
+        padding: 15px;
+      }
+      .btn-container {
+        flex-direction: column;
+      }
+      .btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        font-size: 1.1em;
+        padding: 12px;
+      }
+      form {
+        margin: 15px 10px;
+        padding: 15px 12px;
+      }
+      h2 {
+        font-size: 1.2em;
+      }
+      input, select {
+        font-size: 16px; /* Prevents zoom on iOS */
+      }
+      .btn {
+        padding: 12px 20px;
+        font-size: 1em;
+      }
     }
   </style>
 </head>
@@ -101,7 +254,7 @@
       </div>
     </fieldset>
 
-    <div style="display:flex;justify-content:space-between;">
+    <div class="btn-container">
       <button type="button" class="btn" onclick="goBack()">⬅️ Previous</button>
       <button type="button" class="btn" onclick="saveStep1()">Next Step ➡️</button>
     </div>
