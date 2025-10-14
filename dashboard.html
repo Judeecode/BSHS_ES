@@ -610,7 +610,7 @@
             <td>${student.sex || "—"}</td>
             <td>${student.track_strand || "—"}</td>
             <td>${student.last_sy || "—"}</td>
-            <td>${student.last_grade || "—"}</td>
+            <td>${student.gradelevel || "—"}</td>
             <td>${student.last_school || "—"}</td>
             <td>
               <button onclick="openEditModal(${student.id})" style="background:#2196F3;color:#fff;padding:4px 8px;border:none;border-radius:4px;cursor:pointer;">✏️ Edit</button>
@@ -628,7 +628,7 @@
 
       let filtered = allData;
       if (year) filtered = filtered.filter(s => s.last_sy === year);
-      if (grade) filtered = filtered.filter(s => s.last_grade === grade);
+      if (grade) filtered = filtered.filter(s => s.gradelevel === grade);
 
       renderCharts(filtered);
     }
@@ -791,7 +791,7 @@
       document.getElementById("edit_sex").value = student.sex || "";
       document.getElementById("edit_track_strand").value = student.track_strand || "";
       document.getElementById("edit_last_sy").value = student.last_sy || "";
-      document.getElementById("edit_last_grade").value = student.last_grade || "";
+      document.getElementById("edit_last_grade").value = student.gradelevel || "";
       document.getElementById("edit_last_school").value = student.last_school || "";
       document.getElementById("editModal").style.display = "flex";
     }
@@ -808,7 +808,7 @@
         sex: document.getElementById("edit_sex").value,
         track_strand: document.getElementById("edit_track_strand").value,
         last_sy: document.getElementById("edit_last_sy").value,
-        last_grade: document.getElementById("edit_last_grade").value,
+        gradelevel: document.getElementById("edit_last_grade").value,
         last_school: document.getElementById("edit_last_school").value
       };
       const { error } = await supabaseClient.from("enrollments").update(updatedData).eq("id", id);
