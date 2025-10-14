@@ -9,12 +9,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Poppins', sans-serif;
       background: #f9f9f9;
       margin: 0;
       padding: 0;
       color: #000;
+      -webkit-font-smoothing: antialiased;
     }
     main {
       max-width: 800px;
@@ -42,6 +46,13 @@
       width: 100%;
       margin-bottom: 20px;
       font-size: 0.85em;
+      overflow-x: auto;
+      display: block;
+    }
+    @media (min-width: 769px) {
+      table {
+        display: table;
+      }
     }
     td, th {
       border: 1px solid #000;
@@ -71,7 +82,7 @@
       padding-top: 5px;
     }
     .btn {
-      display: block;
+      display: inline-block;
       background: #ff7b00;
       color: #fff;
       padding: 12px 25px;
@@ -86,11 +97,87 @@
     .btn-group {
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
       max-width: 800px;
       margin: 20px auto;
     }
     .btn:hover {
       background: #e86a00;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 123, 0, 0.3);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      main {
+        margin: 15px;
+        padding: 20px 15px;
+      }
+      .header h2 {
+        font-size: 1em;
+      }
+      .header p {
+        font-size: 0.8em;
+      }
+      table {
+        font-size: 0.75em;
+      }
+      td, th {
+        padding: 4px;
+      }
+      .signature-row {
+        flex-direction: column;
+        gap: 30px;
+      }
+      .signature-box {
+        margin: 0;
+      }
+      .btn-group {
+        flex-direction: column;
+        margin: 15px;
+      }
+      .btn {
+        width: 100%;
+        margin: 5px 0;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      main {
+        margin: 10px;
+        padding: 15px 10px;
+        border-width: 1px;
+      }
+      .header h2 {
+        font-size: 0.9em;
+      }
+      .header p {
+        font-size: 0.7em;
+      }
+      table {
+        font-size: 0.7em;
+      }
+      td, th {
+        padding: 3px;
+      }
+      .signature-row {
+        font-size: 0.75em;
+      }
+      .signature-line {
+        margin-top: 30px;
+      }
+    }
+
+    @media print {
+      .btn-group {
+        display: none;
+      }
+      main {
+        margin: 0;
+        border: none;
+      }
     }
   </style>
 </head>
