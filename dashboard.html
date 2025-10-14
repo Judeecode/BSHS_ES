@@ -9,11 +9,15 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Poppins', sans-serif;
       background: #f4f6f9;
       margin: 0;
       padding: 20px;
+      -webkit-font-smoothing: antialiased;
     }
     header {
       display: flex;
@@ -52,21 +56,30 @@
       font-family: inherit;
       margin-left: 8px;
     }
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 30px;
+    }
     table {
       border-collapse: collapse;
       width: 100%;
+      min-width: 800px;
       background: #fff;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin-bottom: 30px;
     }
     th, td {
       border: 1px solid #ccc;
       padding: 8px;
       text-align: left;
       font-size: 0.9em;
+      white-space: nowrap;
     }
     th {
       background: #f0f0f0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
     tbody tr:nth-child(even) {
       background: #fafafa;
@@ -87,6 +100,7 @@
       background: rgba(0, 0, 0, 0.6);
       justify-content: center;
       align-items: center;
+      padding: 10px;
     }
     .modal-content {
       background: #fff;
@@ -96,48 +110,82 @@
       width: 90%;
       max-width: 900px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      max-height: 90vh;
+      overflow-y: auto;
     }
     .modal-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .modal-header h2 {
+      margin: 0;
+      flex: 1;
     }
     .close {
       font-size: 1.5em;
       font-weight: bold;
       color: #333;
       cursor: pointer;
+      padding: 5px 10px;
+      line-height: 1;
+    }
+    .close:hover {
+      color: #ff7b00;
     }
     .filter-box {
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-bottom: 20px;
+      padding: 10px;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+    .filter-box label {
+      font-weight: 500;
+      margin: 0;
     }
     .filter-box select {
       padding: 8px 12px;
       border-radius: 6px;
       border: 1px solid #ccc;
       font-family: inherit;
-      margin: 0 10px;
+      min-width: 150px;
+    }
+    .filter-box select:focus {
+      outline: none;
+      border-color: #ff7b00;
+      box-shadow: 0 0 0 2px rgba(255, 123, 0, 0.1);
     }
     .charts {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
-      flex-wrap: wrap;
+      margin-top: 20px;
     }
     .chart-box {
-      flex: 1 1 300px;
-      max-width: 400px;
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      min-height: 300px;
+    }
+    .chart-box h3 {
+      margin: 0 0 15px 0;
+      font-size: 1.1em;
+      color: #2c3e50;
+      text-align: center;
     }
     canvas {
       width: 100% !important;
-      height: 250px !important;
-      background: #fff;
-      padding: 10px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      height: auto !important;
+      max-height: 300px;
     }
     /* Edit Modal Form */
     #editModal form {
@@ -156,8 +204,188 @@
       font-family: inherit;
       width: 100%;
     }
+    #editModal input:focus, #editModal select:focus {
+      outline: none;
+      border-color: #ff7b00;
+      box-shadow: 0 0 0 2px rgba(255, 123, 0, 0.1);
+    }
     #editModal button {
       margin-top: 10px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      body {
+        padding: 15px;
+      }
+      .charts {
+        flex-direction: column;
+      }
+      .chart-box {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+      header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      .stats {
+        font-size: 1em;
+      }
+      .stats select {
+        display: block;
+        width: 100%;
+        margin: 10px 0;
+      }
+      #searchInput {
+        width: 100% !important;
+        margin-bottom: 10px;
+      }
+      table {
+        min-width: 600px;
+      }
+      th, td {
+        padding: 6px 4px;
+        font-size: 0.8em;
+      }
+      .modal {
+        padding: 5px;
+      }
+      .modal-content {
+        width: 98%;
+        margin: 2% auto;
+        padding: 15px 10px;
+        max-height: 95vh;
+        border-radius: 8px;
+      }
+      .modal-header {
+        margin-bottom: 10px;
+      }
+      .modal-header h2 {
+        font-size: 1.3em;
+      }
+      .close {
+        font-size: 1.8em;
+      }
+      #editModal form {
+        grid-template-columns: 1fr;
+      }
+      .filter-box {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 10px;
+      }
+      .filter-box label {
+        font-size: 0.9em;
+      }
+      .filter-box select {
+        width: 100%;
+        min-width: auto;
+      }
+      .charts {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      .chart-box {
+        padding: 10px;
+        min-height: 250px;
+      }
+      .chart-box h3 {
+        font-size: 1em;
+        margin-bottom: 10px;
+      }
+      canvas {
+        max-height: 250px !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 8px;
+      }
+      h1 {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+      }
+      .stats {
+        font-size: 0.9em;
+      }
+      .btn {
+        padding: 8px 15px;
+        font-size: 0.85em;
+      }
+      table {
+        min-width: 500px;
+      }
+      th, td {
+        padding: 4px 3px;
+        font-size: 0.75em;
+      }
+      .modal {
+        padding: 0;
+      }
+      .modal-content {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 10px;
+        border-radius: 0;
+        max-height: 100vh;
+      }
+      .modal-header {
+        position: sticky;
+        top: 0;
+        background: #fff;
+        z-index: 10;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+      .modal-header h2 {
+        font-size: 1.1em;
+      }
+      .close {
+        font-size: 2em;
+      }
+      .filter-box {
+        padding: 8px;
+      }
+      .filter-box label {
+        font-size: 0.85em;
+      }
+      .filter-box select {
+        padding: 6px 10px;
+        font-size: 14px;
+      }
+      .charts {
+        gap: 12px;
+      }
+      .chart-box {
+        padding: 8px;
+        min-height: 220px;
+      }
+      .chart-box h3 {
+        font-size: 0.95em;
+        margin-bottom: 8px;
+      }
+      canvas {
+        max-height: 200px !important;
+      }
+      #editModal input, #editModal select {
+        font-size: 16px; /* Prevents zoom on iOS */
+      }
     }
   </style>
 </head>
@@ -188,22 +416,24 @@
   </div>
 
   <!-- Student Table -->
-  <table>
-    <thead>
-      <tr>
-        <th>LRN</th>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Sex</th>
-        <th>Track/Strand</th>
-        <th>School Year</th>
-        <th>Grade Level</th>
-        <th>Last School</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody id="student-table"></tbody>
-  </table>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>LRN</th>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Sex</th>
+          <th>Track/Strand</th>
+          <th>School Year</th>
+          <th>Grade Level</th>
+          <th>Last School</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="student-table"></tbody>
+    </table>
+  </div>
 
   <!-- Modal for Charts -->
   <div id="reportModal" class="modal">
@@ -226,9 +456,11 @@
       </div>
       <div class="charts">
         <div class="chart-box">
+          <h3>Students by Gender</h3>
           <canvas id="barChart"></canvas>
         </div>
         <div class="chart-box">
+          <h3>Students by Track/Strand</h3>
           <canvas id="pieChart"></canvas>
         </div>
       </div>
@@ -421,23 +653,74 @@
         type: "bar",
         data: {
           labels: ["Male", "Female"],
-          datasets: [{ label: "Enrolled Students", data: [maleCount, femaleCount], backgroundColor: ["#36A2EB", "#FF6384"] }]
+          datasets: [{ 
+            label: "Enrolled Students", 
+            data: [maleCount, femaleCount], 
+            backgroundColor: ["#36A2EB", "#FF6384"],
+            borderRadius: 8
+          }]
         },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        options: { 
+          responsive: true, 
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 1,
+                font: {
+                  size: window.innerWidth < 480 ? 10 : 12
+                }
+              }
+            },
+            x: {
+              ticks: {
+                font: {
+                  size: window.innerWidth < 480 ? 10 : 12
+                }
+              }
+            }
+          },
+          plugins: { 
+            legend: { 
+              display: true,
+              position: 'top',
+              labels: {
+                font: {
+                  size: window.innerWidth < 480 ? 11 : 13
+                },
+                padding: window.innerWidth < 480 ? 8 : 10
+              }
+            },
+            tooltip: {
+              titleFont: {
+                size: window.innerWidth < 480 ? 12 : 14
+              },
+              bodyFont: {
+                size: window.innerWidth < 480 ? 11 : 13
+              }
+            }
+          }
+        }
       });
 
       pieChart = new Chart(document.getElementById("pieChart"), {
         type: "pie",
         data: {
           labels: trackLabels,
-          datasets: [{ data: trackValues, backgroundColor: ["#FF6384","#36A2EB","#FFCE56","#4BC0C0","#9966FF","#FF9F40","#66BB6A"] }]
+          datasets: [{ 
+            data: trackValues, 
+            backgroundColor: ["#FF6384","#36A2EB","#FFCE56","#4BC0C0","#9966FF","#FF9F40","#66BB6A"],
+            borderWidth: 2,
+            borderColor: "#fff"
+          }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              position: "bottom",
+              position: window.innerWidth < 768 ? "bottom" : "right",
               labels: {
                 generateLabels: function (chart) {
                   const dataset = chart.data.datasets[0].data;
@@ -445,19 +728,47 @@
                   return chart.data.labels.map((label, i) => {
                     const value = dataset[i];
                     const percentage = total ? ((value / total) * 100).toFixed(1) + "%" : "0%";
-                    return { text: `${label}: ${value} (${percentage})`, fillStyle: chart.data.datasets[0].backgroundColor[i] };
+                    // Truncate long labels on mobile
+                    const displayLabel = window.innerWidth < 480 && label.length > 15 
+                      ? label.substring(0, 15) + '...' 
+                      : label;
+                    return { 
+                      text: `${displayLabel}: ${value} (${percentage})`, 
+                      fillStyle: chart.data.datasets[0].backgroundColor[i] 
+                    };
                   });
-                }
+                },
+                font: {
+                  size: window.innerWidth < 480 ? 9 : (window.innerWidth < 768 ? 10 : 12)
+                },
+                padding: window.innerWidth < 480 ? 6 : 8,
+                boxWidth: window.innerWidth < 480 ? 12 : 15
+              }
+            },
+            tooltip: {
+              titleFont: {
+                size: window.innerWidth < 480 ? 12 : 14
+              },
+              bodyFont: {
+                size: window.innerWidth < 480 ? 11 : 13
               }
             },
             datalabels: {
               formatter: (value, context) => {
                 const dataset = context.chart.data.datasets[0].data;
                 const total = dataset.reduce((a, b) => a + b, 0);
-                return total ? ((value / total) * 100).toFixed(1) + "%" : "0%";
+                const percentage = total ? ((value / total) * 100).toFixed(1) : "0";
+                // Only show percentage if > 5% on mobile
+                if (window.innerWidth < 480 && parseFloat(percentage) < 5) {
+                  return '';
+                }
+                return percentage + "%";
               },
               color: "#fff",
-              font: { weight: "bold" }
+              font: { 
+                weight: "bold",
+                size: window.innerWidth < 480 ? 10 : 12
+              }
             }
           }
         },
@@ -521,5 +832,3 @@
   </script>
 </body>
 </html>
-
-
