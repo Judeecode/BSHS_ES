@@ -1026,6 +1026,361 @@
         padding: 30px 20px;
       }
     }
+
+    /* Star Rating Widget Styles */
+    .rating-widget-button {
+      position: fixed;
+      bottom: 110px;
+      right: 30px;
+      z-index: 9998;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2em;
+      transition: all 0.3s ease;
+    }
+
+    .rating-widget-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 35px rgba(255, 215, 0, 0.7);
+    }
+
+    .rating-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .rating-modal.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .rating-modal-content {
+      background: #fff;
+      padding: 50px 40px;
+      border-radius: 30px;
+      max-width: 550px;
+      width: 90%;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: slideUp 0.4s ease;
+    }
+
+    .rating-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 2em;
+      cursor: pointer;
+      color: var(--text-light);
+      transition: all 0.3s ease;
+      background: none;
+      border: none;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    .rating-modal-close:hover {
+      color: var(--button);
+      background: rgba(255, 123, 0, 0.1);
+      transform: rotate(90deg);
+    }
+
+    .rating-modal h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2em;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .rating-modal p {
+      text-align: center;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      font-size: 1.05em;
+    }
+
+    .star-rating {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 30px;
+      font-size: 3em;
+    }
+
+    .star {
+      cursor: pointer;
+      color: #ddd;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .star:hover,
+    .star.active {
+      color: #FFD700;
+      transform: scale(1.2);
+    }
+
+    .star.active {
+      animation: starPulse 0.3s ease;
+    }
+
+    @keyframes starPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+
+    .rating-form-group {
+      margin-bottom: 25px;
+    }
+
+    .rating-form-group label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      font-size: 1.05em;
+    }
+
+    .rating-form-group input,
+    .rating-form-group textarea {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e9ecef;
+      border-radius: 15px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1em;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .rating-form-group input:focus,
+    .rating-form-group textarea:focus {
+      border-color: #FFD700;
+      box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+    }
+
+    .rating-form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .rating-submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.2em;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .rating-submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(255, 215, 0, 0.6);
+    }
+
+    .rating-submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Reviews Display Section */
+    .reviews-section {
+      background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+    }
+
+    .reviews-stats {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+    }
+
+    .reviews-stats-item {
+      text-align: center;
+      padding: 30px 40px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      border: 2px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .reviews-stats-item .number {
+      font-size: 3em;
+      font-weight: 900;
+      color: #FFD700;
+      font-family: 'Space Grotesk', sans-serif;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .reviews-stats-item .label {
+      color: var(--text-light);
+      font-size: 1.1em;
+    }
+
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 30px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .review-card {
+      background: #fff;
+      padding: 35px 30px;
+      border-radius: 25px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      transition: all 0.4s ease;
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .review-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, #FFD700, #FFA500);
+    }
+
+    .review-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+      border-color: rgba(255, 215, 0, 0.3);
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .review-author {
+      flex: 1;
+    }
+
+    .review-author .name {
+      font-weight: 700;
+      color: var(--text-dark);
+      font-size: 1.15em;
+      margin-bottom: 5px;
+    }
+
+    .review-author .date {
+      color: var(--text-light);
+      font-size: 0.9em;
+    }
+
+    .review-stars {
+      display: flex;
+      gap: 3px;
+      font-size: 1.3em;
+    }
+
+    .review-stars .star {
+      color: #FFD700;
+      filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.3));
+    }
+
+    .review-stars .star.empty {
+      color: #ddd;
+    }
+
+    .review-comment {
+      color: var(--text-light);
+      line-height: 1.8;
+      font-size: 1.05em;
+      font-style: italic;
+    }
+
+    .no-reviews {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--text-light);
+    }
+
+    .no-reviews .icon {
+      font-size: 5em;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .no-reviews p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 768px) {
+      .rating-widget-button {
+        bottom: 100px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+        font-size: 1.7em;
+      }
+
+      .rating-modal-content {
+        padding: 40px 25px;
+      }
+
+      .star-rating {
+        font-size: 2.5em;
+        gap: 5px;
+      }
+
+      .reviews-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .reviews-stats {
+        gap: 20px;
+      }
+
+      .reviews-stats-item {
+        padding: 20px 30px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1137,6 +1492,31 @@
     </div>
   </section>
 
+  <!-- STUDENT REVIEWS -->
+  <section id="reviews" class="reviews-section animate-on-scroll">
+    <h2>Student Reviews</h2>
+    <p>See what our students say about their experience at BSHS.</p>
+    
+    <div class="reviews-stats" id="reviewsStats">
+      <div class="reviews-stats-item">
+        <span class="number" id="avgRating">0.0</span>
+        <span class="label">Average Rating</span>
+      </div>
+      <div class="reviews-stats-item">
+        <span class="number" id="totalReviews">0</span>
+        <span class="label">Total Reviews</span>
+      </div>
+    </div>
+    
+    <div class="reviews-grid" id="reviewsGrid">
+      <div class="no-reviews">
+        <div class="icon">⭐</div>
+        <p>No reviews yet. Be the first to share your experience!</p>
+        <button class="btn" onclick="openRatingModal()">Write a Review</button>
+      </div>
+    </div>
+  </section>
+
   <!-- LOCATION MAP -->
   <section id="location" class="animate-on-scroll">
     <h2>Find Us</h2>
@@ -1175,6 +1555,44 @@
       <a href="#" aria-label="Email">✉️</a>
     </div>
   </footer>
+
+  <!-- STAR RATING WIDGET -->
+  <button class="rating-widget-button" id="ratingWidgetBtn" title="Rate Your Experience">
+    ⭐
+  </button>
+
+  <!-- RATING MODAL -->
+  <div class="rating-modal" id="ratingModal">
+    <div class="rating-modal-content">
+      <button class="rating-modal-close" id="closeRatingModal">×</button>
+      <h3>Rate Your Experience</h3>
+      <p>Share your thoughts about Balangkayan Senior High School</p>
+      
+      <form id="ratingForm">
+        <div class="star-rating" id="starRating">
+          <span class="star" data-rating="1">★</span>
+          <span class="star" data-rating="2">★</span>
+          <span class="star" data-rating="3">★</span>
+          <span class="star" data-rating="4">★</span>
+          <span class="star" data-rating="5">★</span>
+        </div>
+        
+        <div class="rating-form-group">
+          <label for="reviewerName">Your Name *</label>
+          <input type="text" id="reviewerName" placeholder="Enter your name" required>
+        </div>
+        
+        <div class="rating-form-group">
+          <label for="reviewComment">Your Review *</label>
+          <textarea id="reviewComment" placeholder="Share your experience with us..." required></textarea>
+        </div>
+        
+        <button type="submit" class="rating-submit-btn" id="submitReview">
+          Submit Review
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- AI CHATBOT -->
   <div class="chatbot-container">
@@ -1496,6 +1914,212 @@
 
     // Initialize map when page loads
     window.addEventListener('load', initMap);
+
+    // ===== STAR RATING SYSTEM =====
+    
+    // Get elements
+    const ratingWidgetBtn = document.getElementById('ratingWidgetBtn');
+    const ratingModal = document.getElementById('ratingModal');
+    const closeRatingModal = document.getElementById('closeRatingModal');
+    const ratingForm = document.getElementById('ratingForm');
+    const starRating = document.getElementById('starRating');
+    const stars = starRating.querySelectorAll('.star');
+    const reviewerName = document.getElementById('reviewerName');
+    const reviewComment = document.getElementById('reviewComment');
+    const reviewsGrid = document.getElementById('reviewsGrid');
+    const avgRatingEl = document.getElementById('avgRating');
+    const totalReviewsEl = document.getElementById('totalReviews');
+    
+    let selectedRating = 0;
+    
+    // Load reviews from localStorage
+    function loadReviews() {
+      const reviews = JSON.parse(localStorage.getItem('bshsReviews')) || [];
+      return reviews;
+    }
+    
+    // Save reviews to localStorage
+    function saveReviews(reviews) {
+      localStorage.setItem('bshsReviews', JSON.stringify(reviews));
+    }
+    
+    // Open rating modal
+    function openRatingModal() {
+      ratingModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    // Close rating modal
+    function closeRatingModalFunc() {
+      ratingModal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+      resetForm();
+    }
+    
+    // Reset form
+    function resetForm() {
+      ratingForm.reset();
+      selectedRating = 0;
+      stars.forEach(star => star.classList.remove('active'));
+    }
+    
+    // Star rating interaction
+    stars.forEach(star => {
+      star.addEventListener('click', () => {
+        selectedRating = parseInt(star.getAttribute('data-rating'));
+        updateStars(selectedRating);
+      });
+      
+      star.addEventListener('mouseenter', () => {
+        const rating = parseInt(star.getAttribute('data-rating'));
+        updateStars(rating);
+      });
+    });
+    
+    starRating.addEventListener('mouseleave', () => {
+      updateStars(selectedRating);
+    });
+    
+    // Update star display
+    function updateStars(rating) {
+      stars.forEach(star => {
+        const starRating = parseInt(star.getAttribute('data-rating'));
+        if (starRating <= rating) {
+          star.classList.add('active');
+        } else {
+          star.classList.remove('active');
+        }
+      });
+    }
+    
+    // Format date
+    function formatDate(date) {
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return new Date(date).toLocaleDateString('en-US', options);
+    }
+    
+    // Create review card HTML
+    function createReviewCard(review) {
+      const starsHTML = Array(5).fill(0).map((_, i) => {
+        const starClass = i < review.rating ? 'star' : 'star empty';
+        return `<span class="${starClass}">★</span>`;
+      }).join('');
+      
+      return `
+        <div class="review-card">
+          <div class="review-header">
+            <div class="review-author">
+              <div class="name">${escapeHtml(review.name)}</div>
+              <div class="date">${formatDate(review.date)}</div>
+            </div>
+            <div class="review-stars">
+              ${starsHTML}
+            </div>
+          </div>
+          <div class="review-comment">
+            "${escapeHtml(review.comment)}"
+          </div>
+        </div>
+      `;
+    }
+    
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    // Display reviews
+    function displayReviews() {
+      const reviews = loadReviews();
+      
+      if (reviews.length === 0) {
+        reviewsGrid.innerHTML = `
+          <div class="no-reviews">
+            <div class="icon">⭐</div>
+            <p>No reviews yet. Be the first to share your experience!</p>
+            <button class="btn" onclick="openRatingModal()">Write a Review</button>
+          </div>
+        `;
+      } else {
+        // Sort reviews by date (newest first)
+        reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        reviewsGrid.innerHTML = reviews.map(review => createReviewCard(review)).join('');
+      }
+      
+      updateStats(reviews);
+    }
+    
+    // Update statistics
+    function updateStats(reviews) {
+      if (reviews.length === 0) {
+        avgRatingEl.textContent = '0.0';
+        totalReviewsEl.textContent = '0';
+      } else {
+        const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+        const avgRating = (totalRating / reviews.length).toFixed(1);
+        avgRatingEl.textContent = avgRating;
+        totalReviewsEl.textContent = reviews.length;
+      }
+    }
+    
+    // Submit review
+    ratingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      if (selectedRating === 0) {
+        alert('Please select a star rating!');
+        return;
+      }
+      
+      const newReview = {
+        id: Date.now(),
+        name: reviewerName.value.trim(),
+        rating: selectedRating,
+        comment: reviewComment.value.trim(),
+        date: new Date().toISOString()
+      };
+      
+      const reviews = loadReviews();
+      reviews.push(newReview);
+      saveReviews(reviews);
+      
+      // Show success message
+      alert('Thank you for your review! 🌟');
+      
+      // Close modal and refresh display
+      closeRatingModalFunc();
+      displayReviews();
+      
+      // Scroll to reviews section
+      setTimeout(() => {
+        const reviewsSection = document.getElementById('reviews');
+        if (reviewsSection) {
+          reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 300);
+    });
+    
+    // Event listeners
+    ratingWidgetBtn.addEventListener('click', openRatingModal);
+    closeRatingModal.addEventListener('click', closeRatingModalFunc);
+    
+    // Close modal when clicking outside
+    ratingModal.addEventListener('click', (e) => {
+      if (e.target === ratingModal) {
+        closeRatingModalFunc();
+      }
+    });
+    
+    // Make openRatingModal available globally
+    window.openRatingModal = openRatingModal;
+    
+    // Initialize reviews display on page load
+    window.addEventListener('load', () => {
+      displayReviews();
+    });
   </script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </body>
