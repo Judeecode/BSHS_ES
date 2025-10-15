@@ -1025,6 +1025,85 @@
       background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
     }
 
+    /* Add Review Form */
+    .add-review-form {
+      max-width: 700px;
+      margin: 0 auto 60px;
+      background: #fff;
+      padding: 40px;
+      border-radius: 25px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+      border: 2px solid rgba(255, 215, 0, 0.2);
+    }
+
+    .add-review-form h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8em;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+      font-size: 1.05em;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e9ecef;
+      border-radius: 15px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1em;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      border-color: #FFD700;
+      box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .star-rating-input {
+      display: flex;
+      gap: 10px;
+      font-size: 2.5em;
+    }
+
+    .star-input {
+      cursor: pointer;
+      color: #ddd;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .star-input:hover,
+    .star-input.active {
+      color: #FFD700;
+      transform: scale(1.1);
+    }
+
+    .submit-review-btn {
+      width: 100%;
+      margin-top: 10px;
+    }
+
     .reviews-stats {
       display: flex;
       justify-content: center;
@@ -1293,12 +1372,40 @@
         <span class="label">Total Reviews</span>
       </div>
     </div>
+
+    <!-- Add Review Form -->
+    <div class="add-review-form" id="addReviewForm">
+      <h3>Share Your Experience</h3>
+      <form id="reviewForm">
+        <div class="form-group">
+          <label for="reviewName">Your Name *</label>
+          <input type="text" id="reviewName" placeholder="Enter your name" required>
+        </div>
+        
+        <div class="form-group">
+          <label>Rating *</label>
+          <div class="star-rating-input" id="starRatingInput">
+            <span class="star-input" data-rating="1">★</span>
+            <span class="star-input" data-rating="2">★</span>
+            <span class="star-input" data-rating="3">★</span>
+            <span class="star-input" data-rating="4">★</span>
+            <span class="star-input" data-rating="5">★</span>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="reviewText">Your Review *</label>
+          <textarea id="reviewText" placeholder="Share your thoughts about BSHS..." required></textarea>
+        </div>
+        
+        <button type="submit" class="btn submit-review-btn">Submit Review</button>
+      </form>
+    </div>
     
     <div class="reviews-grid" id="reviewsGrid">
       <div class="no-reviews">
         <div class="icon">⭐</div>
-        <p>No reviews yet. Be the first to share your experience!</p>
-        <button class="btn" onclick="openRatingModal()">Write a Review</button>
+        <p>No reviews yet.</p>
       </div>
     </div>
   </section>
@@ -1663,22 +1770,47 @@
     // Initialize map when page loads
     window.addEventListener('load', initMap);
 
-    // ===== STAR RATING SYSTEM =====
+    // ===== REVIEWS SYSTEM =====
     
     // Get elements
-    const ratingWidgetBtn = document.getElementById('ratingWidgetBtn');
-    const ratingModal = document.getElementById('ratingModal');
-    const closeRatingModal = document.getElementById('closeRatingModal');
-    const ratingForm = document.getElementById('ratingForm');
-    const starRating = document.getElementById('starRating');
-    const stars = starRating.querySelectorAll('.star');
-    const reviewerName = document.getElementById('reviewerName');
-    const reviewComment = document.getElementById('reviewComment');
     const reviewsGrid = document.getElementById('reviewsGrid');
     const avgRatingEl = document.getElementById('avgRating');
     const totalReviewsEl = document.getElementById('totalReviews');
+    const reviewForm = document.getElementById('reviewForm');
+    const reviewName = document.getElementById('reviewName');
+    const reviewText = document.getElementById('reviewText');
+    const starRatingInput = document.getElementById('starRatingInput');
+    const starInputs = starRatingInput.querySelectorAll('.star-input');
     
     let selectedRating = 0;
+    
+    // Star rating interaction
+    starInputs.forEach(star => {
+      star.addEventListener('click', () => {
+        selectedRating = parseInt(star.getAttribute('data-rating'));
+        updateStarInput(selectedRating);
+      });
+      
+      star.addEventListener('mouseenter', () => {
+        const rating = parseInt(star.getAttribute('data-rating'));
+        updateStarInput(rating);
+      });
+    });
+    
+    starRatingInput.addEventListener('mouseleave', () => {
+      updateStarInput(selectedRating);
+    });
+    
+    function updateStarInput(rating) {
+      starInputs.forEach(star => {
+        const starRating = parseInt(star.getAttribute('data-rating'));
+        if (starRating <= rating) {
+          star.classList.add('active');
+        } else {
+          star.classList.remove('active');
+        }
+      });
+    }
     
     // Load reviews from localStorage
     function loadReviews() {
@@ -1689,55 +1821,6 @@
     // Save reviews to localStorage
     function saveReviews(reviews) {
       localStorage.setItem('bshsReviews', JSON.stringify(reviews));
-    }
-    
-    // Open rating modal
-    function openRatingModal() {
-      ratingModal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-    }
-    
-    // Close rating modal
-    function closeRatingModalFunc() {
-      ratingModal.classList.remove('active');
-      document.body.style.overflow = 'auto';
-      resetForm();
-    }
-    
-    // Reset form
-    function resetForm() {
-      ratingForm.reset();
-      selectedRating = 0;
-      stars.forEach(star => star.classList.remove('active'));
-    }
-    
-    // Star rating interaction
-    stars.forEach(star => {
-      star.addEventListener('click', () => {
-        selectedRating = parseInt(star.getAttribute('data-rating'));
-        updateStars(selectedRating);
-      });
-      
-      star.addEventListener('mouseenter', () => {
-        const rating = parseInt(star.getAttribute('data-rating'));
-        updateStars(rating);
-      });
-    });
-    
-    starRating.addEventListener('mouseleave', () => {
-      updateStars(selectedRating);
-    });
-    
-    // Update star display
-    function updateStars(rating) {
-      stars.forEach(star => {
-        const starRating = parseInt(star.getAttribute('data-rating'));
-        if (starRating <= rating) {
-          star.classList.add('active');
-        } else {
-          star.classList.remove('active');
-        }
-      });
     }
     
     // Format date
@@ -1786,8 +1869,7 @@
         reviewsGrid.innerHTML = `
           <div class="no-reviews">
             <div class="icon">⭐</div>
-            <p>No reviews yet. Be the first to share your experience!</p>
-            <button class="btn" onclick="openRatingModal()">Write a Review</button>
+            <p>No reviews yet.</p>
           </div>
         `;
       } else {
@@ -1813,8 +1895,8 @@
       }
     }
     
-    // Submit review
-    ratingForm.addEventListener('submit', (e) => {
+    // Handle form submission
+    reviewForm.addEventListener('submit', (e) => {
       e.preventDefault();
       
       if (selectedRating === 0) {
@@ -1824,9 +1906,9 @@
       
       const newReview = {
         id: Date.now(),
-        name: reviewerName.value.trim(),
+        name: reviewName.value.trim(),
         rating: selectedRating,
-        comment: reviewComment.value.trim(),
+        comment: reviewText.value.trim(),
         date: new Date().toISOString()
       };
       
@@ -1837,32 +1919,19 @@
       // Show success message
       alert('Thank you for your review! 🌟');
       
-      // Close modal and refresh display
-      closeRatingModalFunc();
+      // Reset form
+      reviewForm.reset();
+      selectedRating = 0;
+      updateStarInput(0);
+      
+      // Refresh display
       displayReviews();
       
-      // Scroll to reviews section
+      // Scroll to reviews grid
       setTimeout(() => {
-        const reviewsSection = document.getElementById('reviews');
-        if (reviewsSection) {
-          reviewsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        reviewsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 300);
     });
-    
-    // Event listeners
-    ratingWidgetBtn.addEventListener('click', openRatingModal);
-    closeRatingModal.addEventListener('click', closeRatingModalFunc);
-    
-    // Close modal when clicking outside
-    ratingModal.addEventListener('click', (e) => {
-      if (e.target === ratingModal) {
-        closeRatingModalFunc();
-      }
-    });
-    
-    // Make openRatingModal available globally
-    window.openRatingModal = openRatingModal;
     
     // Initialize reviews display on page load
     window.addEventListener('load', () => {
