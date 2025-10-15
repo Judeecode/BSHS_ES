@@ -184,25 +184,16 @@
     .hero::before {
       content: '';
       position: absolute;
-      top: -20%;
-      right: -10%;
-      width: 700px;
-      height: 700px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
-      border-radius: 50%;
-      animation: float 10s ease-in-out infinite;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: -25%;
-      left: -8%;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
-      border-radius: 50%;
-      animation: float 12s ease-in-out infinite reverse;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('bshs.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      opacity: 0.55;
+      z-index: 0;
     }
 
     .hero-content {
@@ -246,13 +237,13 @@
     }
 
     .hero-visual-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: none;
       padding: 60px 50px;
       border-radius: 35px;
       box-shadow: 0 25px 70px rgba(0, 0, 0, 0.2);
       text-align: center;
-      border: 3px solid rgba(255, 255, 255, 0.6);
+      border: 3px solid rgba(255, 255, 255, 0.3);
       transform: rotate(-3deg);
       transition: transform 0.4s ease;
     }
@@ -277,9 +268,11 @@
     }
 
     .hero-visual-card p {
-      color: var(--text-light);
+      color: var(--text-dark);
       font-size: 1.15em;
       margin: 0;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
     }
 
     /* Button */
