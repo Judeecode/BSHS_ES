@@ -1342,12 +1342,93 @@
       font-size: 1.1em;
     }
 
-    .reviews-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 30px;
-      max-width: 1300px;
+    /* Reviews Carousel */
+    .reviews-carousel-container {
+      position: relative;
+      max-width: 1100px;
       margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 0 20px;
+    }
+
+    .reviews-carousel-wrapper {
+      overflow: hidden;
+      width: 100%;
+      padding: 20px 0;
+    }
+
+    .reviews-grid {
+      display: flex;
+      gap: 0;
+      transition: transform 0.5s ease;
+      width: 100%;
+      align-items: stretch;
+    }
+
+    .reviews-grid > * {
+      min-width: 100%;
+      max-width: 100%;
+      flex-shrink: 0;
+      box-sizing: border-box;
+    }
+
+    .carousel-btn {
+      background: linear-gradient(135deg, #ff7b00, #ff5722);
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 2em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(255, 123, 0, 0.4);
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    .carousel-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(255, 123, 0, 0.6);
+    }
+
+    .carousel-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: scale(1);
+    }
+
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 30px;
+    }
+
+    .carousel-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ddd;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .carousel-dot.active {
+      background: #ff7b00;
+      width: 30px;
+      border-radius: 6px;
+    }
+
+    .carousel-dot:hover {
+      background: #ff7b00;
+      opacity: 0.7;
     }
 
     .review-card {
@@ -1359,6 +1440,10 @@
       border: 2px solid transparent;
       position: relative;
       overflow: hidden;
+      margin: 0 auto;
+      max-width: 600px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .review-card::before {
@@ -1426,6 +1511,10 @@
       text-align: center;
       padding: 80px 20px;
       color: var(--text-light);
+      margin: 0 auto;
+      max-width: 600px;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .no-reviews .icon {
@@ -1440,8 +1529,14 @@
     }
 
     @media (max-width: 768px) {
-      .reviews-grid {
-        grid-template-columns: 1fr;
+      .carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5em;
+      }
+
+      .reviews-carousel-container {
+        gap: 10px;
       }
 
       .reviews-stats {
@@ -1450,6 +1545,16 @@
 
       .reviews-stats-item {
         padding: 20px 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .carousel-btn {
+        display: none;
+      }
+
+      .reviews-carousel-container {
+        gap: 0;
       }
     }
   </style>
@@ -1613,12 +1718,19 @@
       </form>
     </div>
     
-    <div class="reviews-grid" id="reviewsGrid">
-      <div class="no-reviews">
-        <div class="icon">⭐</div>
-        <p>No reviews yet.</p>
+    <div class="reviews-carousel-container">
+      <button class="carousel-btn carousel-prev" id="reviewsPrev" aria-label="Previous reviews">‹</button>
+      <div class="reviews-carousel-wrapper">
+        <div class="reviews-grid" id="reviewsGrid">
+          <div class="no-reviews">
+            <div class="icon">⭐</div>
+            <p>No reviews yet.</p>
+          </div>
+        </div>
       </div>
+      <button class="carousel-btn carousel-next" id="reviewsNext" aria-label="Next reviews">›</button>
     </div>
+    <div class="carousel-dots" id="carouselDots"></div>
   </section>
 
   <!-- LOCATION MAP -->
@@ -2097,6 +2209,10 @@
       return div.innerHTML;
     }
     
+    // Carousel state
+    let currentSlide = 0;
+    let totalSlides = 0;
+
     // Display reviews
     function displayReviews() {
       const reviews = loadReviews();
@@ -2108,14 +2224,105 @@
             <p>No reviews yet.</p>
           </div>
         `;
+        totalSlides = 1;
+        updateCarouselControls();
       } else {
         // Sort reviews by date (newest first)
         reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
         
         reviewsGrid.innerHTML = reviews.map(review => createReviewCard(review)).join('');
+        totalSlides = reviews.length;
+        currentSlide = 0;
+        updateCarouselControls();
+        updateCarouselPosition();
       }
       
       updateStats(reviews);
+    }
+
+    // Update carousel position
+    function updateCarouselPosition() {
+      const offset = -currentSlide * 100;
+      reviewsGrid.style.transform = `translateX(${offset}%)`;
+    }
+
+    // Update carousel controls
+    function updateCarouselControls() {
+      const prevBtn = document.getElementById('reviewsPrev');
+      const nextBtn = document.getElementById('reviewsNext');
+      const dotsContainer = document.getElementById('carouselDots');
+      
+      // Update buttons
+      if (prevBtn) prevBtn.disabled = currentSlide === 0;
+      if (nextBtn) nextBtn.disabled = currentSlide === totalSlides - 1;
+      
+      // Update dots
+      if (dotsContainer && totalSlides > 1) {
+        dotsContainer.innerHTML = Array(totalSlides).fill(0).map((_, i) => 
+          `<button class="carousel-dot ${i === currentSlide ? 'active' : ''}" data-slide="${i}"></button>`
+        ).join('');
+        
+        // Add click handlers to dots
+        dotsContainer.querySelectorAll('.carousel-dot').forEach(dot => {
+          dot.addEventListener('click', () => {
+            currentSlide = parseInt(dot.getAttribute('data-slide'));
+            updateCarouselPosition();
+            updateCarouselControls();
+          });
+        });
+      } else if (dotsContainer) {
+        dotsContainer.innerHTML = '';
+      }
+    }
+
+    // Carousel navigation
+    const prevBtn = document.getElementById('reviewsPrev');
+    const nextBtn = document.getElementById('reviewsNext');
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        if (currentSlide > 0) {
+          currentSlide--;
+          updateCarouselPosition();
+          updateCarouselControls();
+        }
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        if (currentSlide < totalSlides - 1) {
+          currentSlide++;
+          updateCarouselPosition();
+          updateCarouselControls();
+        }
+      });
+    }
+
+    // Touch/swipe support for mobile
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    reviewsGrid.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+
+    reviewsGrid.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      if (touchEndX < touchStartX - 50 && currentSlide < totalSlides - 1) {
+        currentSlide++;
+        updateCarouselPosition();
+        updateCarouselControls();
+      }
+      if (touchEndX > touchStartX + 50 && currentSlide > 0) {
+        currentSlide--;
+        updateCarouselPosition();
+        updateCarouselControls();
+      }
     }
     
     // Update statistics
