@@ -168,6 +168,207 @@
       color: var(--button);
     }
 
+    /* Theme Toggle Button */
+    .theme-toggle {
+      background: linear-gradient(135deg, #ff7b00, #ff5722);
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 123, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .theme-toggle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.4s, height 0.4s;
+    }
+
+    .theme-toggle:hover::before {
+      width: 100%;
+      height: 100%;
+    }
+
+    .theme-toggle:hover {
+      transform: scale(1.1) rotate(15deg);
+      box-shadow: 0 6px 20px rgba(255, 123, 0, 0.5);
+    }
+
+    .theme-icon {
+      position: relative;
+      z-index: 1;
+      transition: transform 0.3s ease;
+    }
+
+    /* Dark Mode Styles */
+    body.dark-mode {
+      background: #1a1a2e;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode header {
+      background: rgba(26, 26, 46, 0.98);
+      border-bottom: 1px solid rgba(252, 242, 89, 0.3);
+    }
+
+    body.dark-mode .logo-text,
+    body.dark-mode nav a {
+      color: #e0e0e0;
+    }
+
+    body.dark-mode nav a:hover {
+      color: var(--primary);
+    }
+
+    body.dark-mode .hero {
+      background: linear-gradient(135deg, #2d2d44 0%, #1a1a2e 50%, #16213e 100%);
+    }
+
+    body.dark-mode .hero::before {
+      opacity: 0.3;
+    }
+
+    body.dark-mode .hero h1,
+    body.dark-mode .hero-visual-card h3 {
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .hero p,
+    body.dark-mode .hero-visual-card p {
+      color: #b0b0b0;
+    }
+
+    body.dark-mode section {
+      background: #1a1a2e;
+    }
+
+    body.dark-mode section h2 {
+      color: #e0e0e0;
+    }
+
+    body.dark-mode section > p {
+      color: #b0b0b0;
+    }
+
+    body.dark-mode .program-card,
+    body.dark-mode .testimonial,
+    body.dark-mode .hero-visual-card,
+    body.dark-mode .add-review-form,
+    body.dark-mode .review-card,
+    body.dark-mode .reviews-stats-item,
+    body.dark-mode .map-widget {
+      background: #2d2d44;
+      border-color: rgba(252, 242, 89, 0.2);
+    }
+
+    body.dark-mode .program-card .title,
+    body.dark-mode .testimonial .author,
+    body.dark-mode .add-review-form h3,
+    body.dark-mode .form-group label,
+    body.dark-mode .review-author .name,
+    body.dark-mode .map-widget h3 {
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .program-card .description,
+    body.dark-mode .testimonial p,
+    body.dark-mode .review-comment,
+    body.dark-mode .review-author .date,
+    body.dark-mode .map-widget p,
+    body.dark-mode .map-info-item span,
+    body.dark-mode .no-reviews p {
+      color: #b0b0b0;
+    }
+
+    body.dark-mode .form-group input,
+    body.dark-mode .form-group textarea {
+      background: #1a1a2e;
+      border-color: #3d3d5c;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .form-group input::placeholder,
+    body.dark-mode .form-group textarea::placeholder {
+      color: #6c6c8c;
+    }
+
+    body.dark-mode .form-group input:focus,
+    body.dark-mode .form-group textarea:focus {
+      border-color: #FFD700;
+      background: #2d2d44;
+    }
+
+    body.dark-mode .reviews-section {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    body.dark-mode .chatbot-window {
+      background: #2d2d44;
+    }
+
+    body.dark-mode .chatbot-messages {
+      background: #1a1a2e;
+    }
+
+    body.dark-mode .message .bubble {
+      background: #3d3d5c;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .chatbot-input {
+      background: #1a1a2e;
+      border-color: #3d3d5c;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .chatbot-input::placeholder {
+      color: #6c6c8c;
+    }
+
+    body.dark-mode .map-info-item {
+      background: rgba(255, 123, 0, 0.1);
+    }
+
+    body.dark-mode .map-info-item strong {
+      color: #e0e0e0;
+    }
+
+    body.dark-mode #pledge {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+    }
+
+    body.dark-mode #pledge > div > div {
+      background: #2d2d44 !important;
+      border-left-color: var(--primary) !important;
+    }
+
+    body.dark-mode #pledge p {
+      color: #b0b0b0 !important;
+    }
+
+    body.dark-mode #pledge p[style*="font-weight: 600"] {
+      color: #e0e0e0 !important;
+    }
+
+    body.dark-mode #pledge li {
+      color: #b0b0b0 !important;
+    }
+
     /* Hero Section */
     .hero {
       background: linear-gradient(135deg, #FCF259 0%, #ffd93d 50%, #ff7b00 100%);
@@ -1261,6 +1462,11 @@
         <li><a href="#about">About</a></li>
         <li><a href="#programs">Programs</a></li>
         <li><a href="login.html">Dashboard</a></li>
+        <li>
+          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="theme-icon">🌙</span>
+          </button>
+        </li>
       </ul>
     </nav>
   </header>
@@ -1485,6 +1691,31 @@
   </div>
 
   <script>
+    // ===== THEME SWITCHER =====
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.querySelector('.theme-icon');
+    const body = document.body;
+
+    // Check for saved theme preference or default to light mode
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    if (currentTheme === 'dark') {
+      body.classList.add('dark-mode');
+      themeIcon.textContent = '☀️';
+    }
+
+    // Toggle theme
+    themeToggle.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+      
+      if (body.classList.contains('dark-mode')) {
+        themeIcon.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeIcon.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
     // Scroll animations
     const observerOptions = {
       threshold: 0.1,
