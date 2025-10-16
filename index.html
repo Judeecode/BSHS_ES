@@ -1507,6 +1507,43 @@
       font-style: italic;
     }
 
+    .review-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+      justify-content: flex-end;
+    }
+
+    .review-actions button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9em;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .edit-review-btn {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .edit-review-btn:hover {
+      background: #45a049;
+      transform: translateY(-2px);
+    }
+
+    .delete-review-btn {
+      background: #f44336;
+      color: white;
+    }
+
+    .delete-review-btn:hover {
+      background: #da190b;
+      transform: translateY(-2px);
+    }
+
     .no-reviews {
       text-align: center;
       padding: 80px 20px;
@@ -2178,14 +2215,14 @@
     }
     
     // Create review card HTML
-    function createReviewCard(review) {
+    function createReviewCard(review, index) {
       const starsHTML = Array(5).fill(0).map((_, i) => {
         const starClass = i < review.rating ? 'star' : 'star empty';
         return `<span class="${starClass}">★</span>`;
       }).join('');
       
       return `
-        <div class="review-card">
+        <div class="review-card" data-review-index="${index}">
           <div class="review-header">
             <div class="review-author">
               <div class="name">${escapeHtml(review.name)}</div>
@@ -2197,6 +2234,10 @@
           </div>
           <div class="review-comment">
             "${escapeHtml(review.comment)}"
+          </div>
+          <div class="review-actions">
+            <button class="edit-review-btn" onclick="editReview(${index})">Edit</button>
+            <button class="delete-review-btn" onclick="deleteReview(${index})">Delete</button>
           </div>
         </div>
       `;
@@ -2230,7 +2271,7 @@
         // Sort reviews by date (newest first)
         reviews.sort((a, b) => new Date(b.date) - new Date(a.date));
         
-        reviewsGrid.innerHTML = reviews.map(review => createReviewCard(review)).join('');
+        reviewsGrid.innerHTML = reviews.map((review, index) => createReviewCard(review, index)).join('');
         totalSlides = reviews.length;
         currentSlide = 0;
         updateCarouselControls();
@@ -2336,6 +2377,44 @@
         avgRatingEl.textContent = avgRating;
         totalReviewsEl.textContent = reviews.length;
       }
+    }
+    
+    // Delete review function
+    window.deleteReview = function(index) {
+      if (confirm('Are you sure you want to delete this review?')) {
+        const reviews = loadReviews();
+        reviews.splice(index, 1);
+        saveReviews(reviews);
+        displayReviews();
+        alert('Review deleted successfully!');
+      }
+    }
+    
+    // Edit review function
+    window.editReview = function(index) {
+      const reviews = loadReviews();
+      const review = reviews[index];
+      
+      if (!review) {
+        alert('Review not found!');
+        return;
+      }
+      
+      // Populate form with existing review data
+      reviewName.value = review.name;
+      reviewText.value = review.comment;
+      selectedRating = review.rating;
+      updateStarInput(selectedRating);
+      
+      // Scroll to form
+      document.getElementById('addReviewForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Delete the old review
+      reviews.splice(index, 1);
+      saveReviews(reviews);
+      displayReviews();
+      
+      alert('Edit your review and submit again!');
     }
     
     // Handle form submission
