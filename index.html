@@ -1524,16 +1524,6 @@
       transition: all 0.3s ease;
     }
 
-    .edit-review-btn {
-      background: #4CAF50;
-      color: white;
-    }
-
-    .edit-review-btn:hover {
-      background: #45a049;
-      transform: translateY(-2px);
-    }
-
     .delete-review-btn {
       background: #f44336;
       color: white;
@@ -2236,7 +2226,6 @@
             "${escapeHtml(review.comment)}"
           </div>
           <div class="review-actions">
-            <button class="edit-review-btn" onclick="editReview(${index})">Edit</button>
             <button class="delete-review-btn" onclick="deleteReview(${index})">Delete</button>
           </div>
         </div>
@@ -2388,33 +2377,6 @@
         displayReviews();
         alert('Review deleted successfully!');
       }
-    }
-    
-    // Edit review function
-    window.editReview = function(index) {
-      const reviews = loadReviews();
-      const review = reviews[index];
-      
-      if (!review) {
-        alert('Review not found!');
-        return;
-      }
-      
-      // Populate form with existing review data
-      reviewName.value = review.name;
-      reviewText.value = review.comment;
-      selectedRating = review.rating;
-      updateStarInput(selectedRating);
-      
-      // Scroll to form
-      document.getElementById('addReviewForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      
-      // Delete the old review
-      reviews.splice(index, 1);
-      saveReviews(reviews);
-      displayReviews();
-      
-      alert('Edit your review and submit again!');
     }
     
     // Handle form submission
