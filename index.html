@@ -1507,6 +1507,138 @@
       font-style: italic;
     }
 
+    .review-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      justify-content: flex-end;
+    }
+
+    .review-action-btn {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 20px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .edit-btn {
+      background: linear-gradient(135deg, #4a90e2, #357abd);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+    }
+
+    .edit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+    }
+
+    .delete-btn {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    }
+
+    .delete-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(231, 76, 60, 0.5);
+    }
+
+    .save-btn {
+      background: linear-gradient(135deg, #27ae60, #229954);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+    }
+
+    .save-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(39, 174, 96, 0.5);
+    }
+
+    .cancel-btn {
+      background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+    }
+
+    .cancel-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(149, 165, 166, 0.5);
+    }
+
+    .review-card.editing .review-comment {
+      display: none;
+    }
+
+    .review-card.editing > .review-actions {
+      display: none;
+    }
+
+    .review-edit-form {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .review-card.editing .review-edit-form {
+      display: block;
+    }
+
+    .review-edit-textarea {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e9ecef;
+      border-radius: 15px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1em;
+      resize: vertical;
+      min-height: 100px;
+      transition: all 0.3s ease;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    .review-edit-textarea:focus {
+      border-color: #4a90e2;
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    }
+
+    .review-edit-stars {
+      display: flex;
+      gap: 8px;
+      font-size: 2em;
+      margin-bottom: 15px;
+    }
+
+    .review-edit-stars .star-edit {
+      cursor: pointer;
+      color: #ddd;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .review-edit-stars .star-edit:hover,
+    .review-edit-stars .star-edit.active {
+      color: #FFD700;
+      transform: scale(1.1);
+    }
+
+    body.dark-mode .review-edit-textarea {
+      background: #1a1a2e;
+      border-color: #3d3d5c;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .review-edit-textarea:focus {
+      border-color: #4a90e2;
+      background: #2d2d44;
+    }
+
     .no-reviews {
       text-align: center;
       padding: 80px 20px;
@@ -2184,8 +2316,12 @@
         return `<span class="${starClass}">★</span>`;
       }).join('');
       
+      const editStarsHTML = Array(5).fill(0).map((_, i) => {
+        return `<span class="star-edit" data-rating="${i + 1}">★</span>`;
+      }).join('');
+      
       return `
-        <div class="review-card" data-review-index="${index}">
+        <div class="review-card" data-review-index="${index}" data-review-id="${review.id}">
           <div class="review-header">
             <div class="review-author">
               <div class="name">${escapeHtml(review.name)}</div>
@@ -2197,6 +2333,32 @@
           </div>
           <div class="review-comment">
             "${escapeHtml(review.comment)}"
+          </div>
+          <div class="review-edit-form">
+            <div class="review-edit-stars">
+              ${editStarsHTML}
+            </div>
+            <textarea class="review-edit-textarea" placeholder="Edit your review...">${escapeHtml(review.comment)}</textarea>
+            <div class="review-actions">
+              <button class="review-action-btn save-btn" onclick="saveReview(${index})">
+                <span>💾</span>
+                <span>Save</span>
+              </button>
+              <button class="review-action-btn cancel-btn" onclick="cancelEdit(${index})">
+                <span>✖</span>
+                <span>Cancel</span>
+              </button>
+            </div>
+          </div>
+          <div class="review-actions">
+            <button class="review-action-btn edit-btn" onclick="editReview(${index})">
+              <span>✏️</span>
+              <span>Edit</span>
+            </button>
+            <button class="review-action-btn delete-btn" onclick="deleteReview(${index})">
+              <span>🗑️</span>
+              <span>Delete</span>
+            </button>
           </div>
         </div>
       `;
@@ -2337,6 +2499,127 @@
         totalReviewsEl.textContent = reviews.length;
       }
     }
+    
+    // Edit review function
+    let editingRating = 0;
+    
+    function editReview(index) {
+      const reviews = loadReviews();
+      const review = reviews[index];
+      const reviewCard = document.querySelector(`[data-review-index="${index}"]`);
+      
+      if (!reviewCard) return;
+      
+      // Set editing mode
+      reviewCard.classList.add('editing');
+      
+      // Initialize editing rating
+      editingRating = review.rating;
+      
+      // Set up star rating for edit
+      const editStars = reviewCard.querySelectorAll('.star-edit');
+      updateEditStars(editStars, editingRating);
+      
+      // Add event listeners to edit stars
+      editStars.forEach(star => {
+        star.addEventListener('click', function() {
+          editingRating = parseInt(this.getAttribute('data-rating'));
+          updateEditStars(editStars, editingRating);
+        });
+        
+        star.addEventListener('mouseenter', function() {
+          const rating = parseInt(this.getAttribute('data-rating'));
+          updateEditStars(editStars, rating);
+        });
+      });
+      
+      const editStarsContainer = reviewCard.querySelector('.review-edit-stars');
+      editStarsContainer.addEventListener('mouseleave', function() {
+        updateEditStars(editStars, editingRating);
+      });
+    }
+    
+    function updateEditStars(stars, rating) {
+      stars.forEach(star => {
+        const starRating = parseInt(star.getAttribute('data-rating'));
+        if (starRating <= rating) {
+          star.classList.add('active');
+        } else {
+          star.classList.remove('active');
+        }
+      });
+    }
+    
+    // Save edited review
+    function saveReview(index) {
+      const reviewCard = document.querySelector(`[data-review-index="${index}"]`);
+      if (!reviewCard) return;
+      
+      const textarea = reviewCard.querySelector('.review-edit-textarea');
+      const newComment = textarea.value.trim();
+      
+      if (!newComment) {
+        alert('Please enter a review comment!');
+        return;
+      }
+      
+      if (editingRating === 0) {
+        alert('Please select a star rating!');
+        return;
+      }
+      
+      const reviews = loadReviews();
+      reviews[index].comment = newComment;
+      reviews[index].rating = editingRating;
+      reviews[index].date = new Date().toISOString(); // Update date to show it was edited
+      
+      saveReviews(reviews);
+      
+      // Exit editing mode
+      reviewCard.classList.remove('editing');
+      editingRating = 0;
+      
+      // Show success message
+      alert('Review updated successfully! ✅');
+      
+      // Refresh display
+      displayReviews();
+    }
+    
+    // Cancel edit
+    function cancelEdit(index) {
+      const reviewCard = document.querySelector(`[data-review-index="${index}"]`);
+      if (!reviewCard) return;
+      
+      reviewCard.classList.remove('editing');
+      editingRating = 0;
+      
+      // Refresh display to reset the form
+      displayReviews();
+    }
+    
+    // Delete review function
+    function deleteReview(index) {
+      if (!confirm('Are you sure you want to delete this review? This action cannot be undone.')) {
+        return;
+      }
+      
+      const reviews = loadReviews();
+      reviews.splice(index, 1);
+      saveReviews(reviews);
+      
+      // Show success message
+      alert('Review deleted successfully! 🗑️');
+      
+      // Refresh display
+      displayReviews();
+    }
+    
+    // Make functions globally available
+    window.editReview = editReview;
+    window.saveReview = saveReview;
+    window.cancelEdit = cancelEdit;
+    window.deleteReview = deleteReview;
     
     // Handle form submission
     reviewForm.addEventListener('submit', (e) => {
