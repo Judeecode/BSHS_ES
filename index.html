@@ -864,6 +864,7 @@
       transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
+      animation: chatbotPulse 2s ease-in-out infinite, chatbotBounce 3s ease-in-out infinite;
     }
 
     .chatbot-button::before {
@@ -887,10 +888,12 @@
     .chatbot-button:hover {
       transform: scale(1.1);
       box-shadow: 0 12px 35px rgba(255, 123, 0, 0.7);
+      animation: none;
     }
 
     .chatbot-button.active {
       background: linear-gradient(135deg, #e86a00, #e04e1a);
+      animation: none;
     }
 
     .chatbot-window {
@@ -920,6 +923,27 @@
       to {
         opacity: 1;
         transform: translateY(0);
+      }
+    }
+
+    @keyframes chatbotPulse {
+      0%, 100% {
+        box-shadow: 0 8px 25px rgba(255, 123, 0, 0.5);
+      }
+      50% {
+        box-shadow: 0 8px 25px rgba(255, 123, 0, 0.5), 0 0 0 15px rgba(255, 123, 0, 0.2), 0 0 0 30px rgba(255, 123, 0, 0.1);
+      }
+    }
+
+    @keyframes chatbotBounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0) scale(1);
+      }
+      40% {
+        transform: translateY(-15px) scale(1.05);
+      }
+      60% {
+        transform: translateY(-8px) scale(1.02);
       }
     }
 
