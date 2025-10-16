@@ -545,6 +545,11 @@
       position: relative;
       overflow: hidden;
       border: 2px solid transparent;
+      cursor: pointer;
+      min-height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .program-card::before {
@@ -569,16 +574,26 @@
       border-color: rgba(252, 242, 89, 0.5);
     }
 
+    .program-card.flipped {
+      background: linear-gradient(145deg, #fff5e6, #ffe6cc);
+      border-color: var(--button);
+    }
+
     .program-card .icon {
       font-size: 4em;
       margin-bottom: 30px;
       display: block;
       filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.1));
-      transition: transform 0.4s ease;
+      transition: transform 0.4s ease, opacity 0.3s ease;
     }
 
     .program-card:hover .icon {
       transform: scale(1.15) rotate(8deg);
+    }
+
+    .program-card.flipped .icon {
+      opacity: 0;
+      transform: scale(0);
     }
 
     .program-card .title {
@@ -587,12 +602,141 @@
       font-weight: 800;
       color: var(--text-dark);
       margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .program-card.flipped .title {
+      font-size: 1.8em;
+      color: var(--button);
+      margin-bottom: 30px;
     }
 
     .program-card .description {
       color: var(--text-light);
       line-height: 1.9;
       font-size: 1.05em;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .program-card.flipped .description {
+      opacity: 0;
+      transform: translateY(-20px);
+      position: absolute;
+    }
+
+    .program-card-front,
+    .program-card-back {
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .program-card-front {
+      opacity: 1;
+      transform: rotateY(0deg);
+    }
+
+    .program-card.flipped .program-card-front {
+      opacity: 0;
+      transform: rotateY(180deg);
+      position: absolute;
+    }
+
+    .program-card-back {
+      opacity: 0;
+      transform: rotateY(-180deg);
+      position: absolute;
+      width: 100%;
+    }
+
+    .program-card.flipped .program-card-back {
+      opacity: 1;
+      transform: rotateY(0deg);
+      position: relative;
+    }
+
+    .strands-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0;
+      text-align: left;
+    }
+
+    .strands-list li {
+      background: linear-gradient(135deg, #ff7b00, #ff5722);
+      color: #fff;
+      padding: 18px 25px;
+      margin-bottom: 15px;
+      border-radius: 15px;
+      font-size: 1.1em;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(255, 123, 0, 0.3);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: slideInStrand 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    .strands-list li:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .strands-list li:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .strands-list li:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    @keyframes slideInStrand {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .strands-list li:hover {
+      transform: translateX(10px);
+      box-shadow: 0 6px 20px rgba(255, 123, 0, 0.5);
+    }
+
+    .strands-list li::before {
+      content: '✓';
+      background: rgba(255, 255, 255, 0.3);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .back-button {
+      background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+      color: #fff;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+    }
+
+    .back-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(149, 165, 166, 0.5);
+      background: linear-gradient(135deg, #7f8c8d, #6c7a7b);
     }
 
     /* Testimonials */
@@ -1301,15 +1445,36 @@
     <h2>Our Programs</h2>
     <p>Choose from our diverse academic tracks designed to match your interests and career goals.</p>
     <div class="programs-grid">
-      <div class="program-card">
-        <span class="icon">📚</span>
-        <div class="title">Academic Track</div>
-        <div class="description">Prepare for college with specialized strands in ABM and HUMSS.</div>
+      <div class="program-card" onclick="toggleProgramCard(this)">
+        <div class="program-card-front">
+          <span class="icon">📚</span>
+          <div class="title">Academic Track</div>
+          <div class="description">Prepare for college with specialized strands. Click to view strands!</div>
+        </div>
+        <div class="program-card-back">
+          <div class="title">Academic Track Strands</div>
+          <ul class="strands-list">
+            <li>ABM (Accountancy, Business & Management)</li>
+            <li>HUMSS (Humanities & Social Sciences)</li>
+          </ul>
+          <button class="back-button" onclick="event.stopPropagation(); toggleProgramCard(this.closest('.program-card'))">← Back</button>
+        </div>
       </div>
-      <div class="program-card">
-        <span class="icon">🔧</span>
-        <div class="title">Technical-Vocational</div>
-        <div class="description">Gain practical skills and certifications for immediate employment opportunities, with specialized strands in EIM, CSS, and Home Economics.</div>
+      <div class="program-card" onclick="toggleProgramCard(this)">
+        <div class="program-card-front">
+          <span class="icon">🔧</span>
+          <div class="title">Technical-Vocational Track</div>
+          <div class="description">Gain practical skills and certifications. Click to view strands!</div>
+        </div>
+        <div class="program-card-back">
+          <div class="title">TVL Track Strands</div>
+          <ul class="strands-list">
+            <li>EIM (Electrical Installation & Maintenance)</li>
+            <li>CSS (Computer Systems Servicing)</li>
+            <li>Home Economics</li>
+          </ul>
+          <button class="back-button" onclick="event.stopPropagation(); toggleProgramCard(this.closest('.program-card'))">← Back</button>
+        </div>
       </div>
     </div>
   </section>
@@ -1714,6 +1879,11 @@
 
     // Initialize map when page loads
     window.addEventListener('load', initMap);
+
+    // ===== PROGRAM CARDS TOGGLE =====
+    function toggleProgramCard(card) {
+      card.classList.toggle('flipped');
+    }
   </script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </body>
