@@ -1780,7 +1780,7 @@
         <li><a href="#hero" class="transition-all duration-300 hover:text-accent">Home</a></li>
         <li><a href="#about" class="transition-all duration-300 hover:text-accent">About</a></li>
         <li><a href="#programs" class="transition-all duration-300 hover:text-accent">Programs</a></li>
-        <li><a href="login.html" class="transition-all duration-300 hover:text-accent">Admin Log in</a></li>
+        <li style="display: none;"><a href="login.html" class="transition-all duration-300 hover:text-accent">Admin Log in</a></li>
         <li>
           <button class="theme-toggle transition-all duration-300 hover:scale-110 hover:rotate-12" id="themeToggle" aria-label="Toggle theme">
             <span class="theme-icon">🌙</span>
@@ -1795,7 +1795,7 @@
     <div class="hero-content animate-slide-up">
       <h1 class="animate-fade-in">Building <span class="highlight">Bright</span> Futures</h1>
       <p class="animate-fade-in" style="animation-delay: 0.2s;">At Balangkayan Senior High School - Stand Alone, we empower learners with knowledge, skills, and values to thrive in life and make a difference in the world.</p>
-      <button class="btn transition-all duration-300 hover:scale-105 hover:shadow-2xl" onclick="window.location.href='step1.html'" style="animation-delay: 0.4s;">
+      <button class="btn transition-all duration-300 hover:scale-105 hover:shadow-2xl" onclick="window.location.href='step1.html'" style="animation-delay: 0.4s; display: none;">
         <span>Enroll Now</span>
         <span class="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span>
       </button>
@@ -1819,81 +1819,48 @@
       <div class="swiper announcementSwiper">
         <div class="swiper-wrapper">
           
-          <!-- Empty State (Remove this when you add real announcements) -->
-          <div class="swiper-slide">
+          <!-- Empty State (shown when all announcements expire) -->
+          <div class="swiper-slide" id="empty-announcement" style="display: none;">
             <div class="empty-announcements">
               <div class="empty-announcements-icon">📭</div>
-              <h3>No Announcements Yet</h3>
-              <p>Check back soon for important updates and news from BSHS!</p>
+              <h3>No Current Announcements</h3>
+              <p>All announcements have passed. Check back soon for new updates and news from BSHS!</p>
             </div>
           </div>
 
-          <!-- Sample Announcement Slides (Uncomment and edit these when ready) -->
-          <!--
-          <div class="swiper-slide">
+          <!-- Announcement Slides -->
+          <div class="swiper-slide announcement-item" data-expiry="2025-10-17T13:30:00">
             <div class="announcement-slide">
-              <div class="announcement-icon">🎓</div>
+              <div class="announcement-icon">💃</div>
               <div class="announcement-date">
                 <span>📅</span>
-                <span>October 20, 2025</span>
+                <span>Today - October 17, 2025</span>
               </div>
-              <h3 class="announcement-title">Enrollment Period Extended</h3>
+              <h3 class="announcement-title">Dance Culminating Activity 2025</h3>
               <p class="announcement-content">
-                Great news! We've extended the enrollment period until November 15, 2025. 
-                Don't miss this opportunity to join BSHS for the upcoming school year!
-              </p>
-              <span class="announcement-badge">Important</span>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="announcement-slide">
-              <div class="announcement-icon">🏆</div>
-              <div class="announcement-date">
-                <span>📅</span>
-                <span>October 18, 2025</span>
-              </div>
-              <h3 class="announcement-title">BSHS Wins Regional Competition</h3>
-              <p class="announcement-content">
-                Congratulations to our students for winning first place in the Regional 
-                Science Fair! Your hard work and dedication make us proud!
-              </p>
-              <span class="announcement-badge">Achievement</span>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="announcement-slide">
-              <div class="announcement-icon">📚</div>
-              <div class="announcement-date">
-                <span>📅</span>
-                <span>October 15, 2025</span>
-              </div>
-              <h3 class="announcement-title">New Library Hours</h3>
-              <p class="announcement-content">
-                The school library will now be open from 7:00 AM to 6:00 PM, Monday to Friday. 
-                Take advantage of extended hours for your studies!
-              </p>
-              <span class="announcement-badge">Update</span>
-            </div>
-          </div>
-
-          <div class="swiper-slide">
-            <div class="announcement-slide">
-              <div class="announcement-icon">🎉</div>
-              <div class="announcement-date">
-                <span>📅</span>
-                <span>October 10, 2025</span>
-              </div>
-              <h3 class="announcement-title">Foundation Day Celebration</h3>
-              <p class="announcement-content">
-                Join us on November 5, 2025, for our annual Foundation Day celebration! 
-                Exciting activities, performances, and competitions await!
+                Dance Culminating Activity 2025 for the subject Health Optimizing Physical Education.<br>
+                <strong>Time:</strong> 1:30 PM<br>
+                <strong>Venue:</strong> School Ground
               </p>
               <span class="announcement-badge">Event</span>
             </div>
           </div>
-          -->
+
+          <div class="swiper-slide announcement-item" data-expiry="2025-10-24T23:59:59">
+            <div class="announcement-slide">
+              <div class="announcement-icon">📝</div>
+              <div class="announcement-date">
+                <span>📅</span>
+                <span>Next Week - October 23 & 24, 2025</span>
+              </div>
+              <h3 class="announcement-title">Second Quarter Examinations</h3>
+              <p class="announcement-content">
+                The Second Quarter Examinations will be held on October 23 and 24, 2025. 
+                Please prepare well and review your lessons. Good luck to all students!
+              </p>
+              <span class="announcement-badge">Important</span>
+            </div>
+          </div>
 
         </div>
         
@@ -2727,12 +2694,58 @@
   
   <!-- Initialize Swiper -->
   <script>
+    // ===== AI ANNOUNCEMENT EXPIRY CHECKER =====
+    function checkAnnouncementExpiry() {
+      const currentDate = new Date();
+      const announcementItems = document.querySelectorAll('.announcement-item');
+      const emptyAnnouncement = document.getElementById('empty-announcement');
+      let activeAnnouncementsCount = 0;
+      
+      // Check each announcement
+      announcementItems.forEach(item => {
+        const expiryDate = new Date(item.getAttribute('data-expiry'));
+        
+        // If announcement has passed, hide it
+        if (currentDate > expiryDate) {
+          item.style.display = 'none';
+          item.classList.add('expired');
+        } else {
+          item.style.display = 'block';
+          item.classList.remove('expired');
+          activeAnnouncementsCount++;
+        }
+      });
+      
+      // If no active announcements, show empty state
+      if (activeAnnouncementsCount === 0) {
+        emptyAnnouncement.style.display = 'block';
+        console.log('All announcements have expired. Showing empty state.');
+      } else {
+        emptyAnnouncement.style.display = 'none';
+        console.log(`${activeAnnouncementsCount} active announcement(s) found.`);
+      }
+      
+      return activeAnnouncementsCount;
+    }
+    
     // ===== ANNOUNCEMENT CAROUSEL =====
-    const announcementSwiper = new Swiper('.announcementSwiper', {
-      // Swiper parameters
-      slidesPerView: 1,
-      spaceBetween: 30,
-      loop: false, // Set to true when you have multiple announcements
+    let announcementSwiper;
+    
+    function initializeAnnouncementSwiper() {
+      // Check expiry first
+      const activeCount = checkAnnouncementExpiry();
+      
+      // Destroy existing swiper if it exists
+      if (announcementSwiper) {
+        announcementSwiper.destroy(true, true);
+      }
+      
+      // Initialize swiper
+      announcementSwiper = new Swiper('.announcementSwiper', {
+        // Swiper parameters
+        slidesPerView: 1,
+        spaceBetween: 30,
+        loop: activeCount > 1, // Only loop if there are multiple active announcements
       autoplay: {
         delay: 5000,
         disableOnInteraction: false,
@@ -2784,7 +2797,18 @@
         prevSlideMessage: 'Previous announcement',
         nextSlideMessage: 'Next announcement',
       },
-    });
+      });
+    }
+    
+    // Initialize on page load
+    initializeAnnouncementSwiper();
+    
+    // Re-check and update every hour (3600000 ms = 1 hour)
+    setInterval(initializeAnnouncementSwiper, 3600000);
+    
+    // Optional: Check every minute for more frequent updates
+    // Uncomment the line below if you want announcements to disappear within a minute of expiring
+    // setInterval(initializeAnnouncementSwiper, 60000);
   </script>
   
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
