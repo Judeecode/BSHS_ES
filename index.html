@@ -2212,13 +2212,22 @@
     // ===== BOUNCING LOGO ANIMATION (HIDDEN EASTER EGG) =====
     const runningStudent = document.querySelector('.running-student');
     const headerLogo = document.querySelector('header .logo img');
-    let x = Math.random() * (window.innerWidth - 80);
-    let y = Math.random() * (window.innerHeight - 80);
+    let x = 0;
+    let y = 0;
     let speedX = 2;
     let speedY = 2;
     let isPaused = false;
     let isActive = false;
     let animationId = null;
+
+    // Function to get header logo position
+    function getHeaderLogoPosition() {
+      const rect = headerLogo.getBoundingClientRect();
+      return {
+        x: rect.left + (rect.width / 2) - 40, // Center the bouncing logo
+        y: rect.top + (rect.height / 2) - 40
+      };
+    }
 
     function bounceLogo() {
       if (isPaused || !isActive) return;
@@ -2270,11 +2279,23 @@
       // Triple click to activate
       if (clickCount === 3) {
         if (!isActive) {
+          // Get starting position from header logo
+          const startPos = getHeaderLogoPosition();
+          x = startPos.x;
+          y = startPos.y;
+          
+          // Set initial position
+          runningStudent.style.left = x + 'px';
+          runningStudent.style.top = y + 'px';
+          
           // Activate bouncing logo
           isActive = true;
           runningStudent.classList.add('active');
-          x = Math.random() * (window.innerWidth - 80);
-          y = Math.random() * (window.innerHeight - 80);
+          
+          // Random initial direction
+          speedX = Math.random() > 0.5 ? 2 : -2;
+          speedY = Math.random() > 0.5 ? 2 : -2;
+          
           bounceLogo();
 
           // Show activation message
