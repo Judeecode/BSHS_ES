@@ -1520,6 +1520,15 @@
       padding: 5px;
       box-shadow: 0 4px 15px rgba(252, 242, 89, 0.5);
       will-change: transform, left, top;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0);
+    }
+
+    .running-student.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
     }
 
     .running-student img {
@@ -2200,16 +2209,19 @@
       });
     })();
 
-    // ===== BOUNCING LOGO ANIMATION =====
+    // ===== BOUNCING LOGO ANIMATION (HIDDEN EASTER EGG) =====
     const runningStudent = document.querySelector('.running-student');
+    const headerLogo = document.querySelector('header .logo img');
     let x = Math.random() * (window.innerWidth - 80);
     let y = Math.random() * (window.innerHeight - 80);
     let speedX = 2;
     let speedY = 2;
     let isPaused = false;
+    let isActive = false;
+    let animationId = null;
 
     function bounceLogo() {
-      if (isPaused) return;
+      if (isPaused || !isActive) return;
 
       // Update position
       x += speedX;
@@ -2229,7 +2241,7 @@
       runningStudent.style.left = x + 'px';
       runningStudent.style.top = y + 'px';
 
-      requestAnimationFrame(bounceLogo);
+      animationId = requestAnimationFrame(bounceLogo);
     }
 
     function changeColor() {
@@ -2244,8 +2256,85 @@
       runningStudent.style.boxShadow = `0 4px 20px ${randomColor}`;
     }
 
-    // Start animation
-    bounceLogo();
+    // Easter Egg: Click header logo to activate bouncing animation
+    let clickCount = 0;
+    let clickTimer = null;
+
+    headerLogo.addEventListener('click', (e) => {
+      e.preventDefault();
+      clickCount++;
+
+      // Clear previous timer
+      if (clickTimer) clearTimeout(clickTimer);
+
+      // Triple click to activate
+      if (clickCount === 3) {
+        if (!isActive) {
+          // Activate bouncing logo
+          isActive = true;
+          runningStudent.classList.add('active');
+          x = Math.random() * (window.innerWidth - 80);
+          y = Math.random() * (window.innerHeight - 80);
+          bounceLogo();
+
+          // Show activation message
+          const msgEl = document.createElement('div');
+          msgEl.textContent = '🎉 Easter Egg Activated! BSHS Logo is on the move!';
+          msgEl.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--primary);
+            color: var(--text-dark);
+            padding: 20px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.3em;
+            z-index: 10001;
+            animation: fadeOut 3s ease forwards;
+            box-shadow: 0 8px 30px rgba(252, 242, 89, 0.8);
+            border: 3px solid var(--button);
+            text-align: center;
+          `;
+          document.body.appendChild(msgEl);
+          setTimeout(() => msgEl.remove(), 3000);
+        } else {
+          // Deactivate bouncing logo
+          isActive = false;
+          runningStudent.classList.remove('active');
+          if (animationId) cancelAnimationFrame(animationId);
+
+          // Show deactivation message
+          const msgEl = document.createElement('div');
+          msgEl.textContent = '👋 Easter Egg Deactivated!';
+          msgEl.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--primary);
+            color: var(--text-dark);
+            padding: 20px 40px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.3em;
+            z-index: 10001;
+            animation: fadeOut 2s ease forwards;
+            box-shadow: 0 8px 30px rgba(252, 242, 89, 0.8);
+            border: 3px solid var(--button);
+          `;
+          document.body.appendChild(msgEl);
+          setTimeout(() => msgEl.remove(), 2000);
+        }
+        clickCount = 0;
+      }
+
+      // Reset click count after 1 second
+      clickTimer = setTimeout(() => {
+        clickCount = 0;
+      }, 1000);
+    });
 
     // Pause on hover
     runningStudent.addEventListener('mouseenter', () => {
