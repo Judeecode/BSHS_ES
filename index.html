@@ -3,10 +3,158 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Balangkayan Senior High School - Stand Alone</title>
+  
+  <!-- Primary Meta Tags -->
+  <title>Balangkayan Senior High School (BSHS) - Stand Alone | Eastern Samar</title>
+  <meta name="title" content="Balangkayan Senior High School (BSHS) - Stand Alone | Eastern Samar">
+  <meta name="description" content="Official website of Balangkayan Senior High School - Stand Alone (BSHS) in Eastern Samar. Offering Academic Track (ABM, HUMSS) and Technical-Vocational Track (EIM, CSS, Home Economics). Enroll now for quality education.">
+  <meta name="keywords" content="Balangkayan Senior High School, BSHS, Balangkayan, Eastern Samar, senior high school, SHS, ABM, HUMSS, EIM, CSS, Home Economics, enrollment, education, Philippines, stand alone">
+  <meta name="author" content="Balangkayan Senior High School - Stand Alone">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://bshs-es.vercel.app/">
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bshs-es.vercel.app/">
+  <meta property="og:title" content="Balangkayan Senior High School (BSHS) - Stand Alone | Eastern Samar">
+  <meta property="og:description" content="Official website of Balangkayan Senior High School - Stand Alone. Quality education with Academic and Technical-Vocational tracks. Enroll now!">
+  <meta property="og:image" content="https://bshs-es.vercel.app/bshs%20logo.jfif">
+  <meta property="og:site_name" content="Balangkayan Senior High School">
+  <meta property="og:locale" content="en_PH">
+  
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://bshs-es.vercel.app/">
+  <meta property="twitter:title" content="Balangkayan Senior High School (BSHS) - Stand Alone">
+  <meta property="twitter:description" content="Official website of Balangkayan Senior High School - Stand Alone. Quality education in Eastern Samar.">
+  <meta property="twitter:image" content="https://bshs-es.vercel.app/bshs%20logo.jfif">
+  
+  <!-- Geo Tags -->
+  <meta name="geo.region" content="PH-EAS">
+  <meta name="geo.placename" content="Balangkayan, Eastern Samar">
+  <meta name="geo.position" content="11.477476;125.506518">
+  <meta name="ICBM" content="11.477476, 125.506518">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="bshs logo.jfif">
+  <link rel="apple-touch-icon" href="bshs logo.jfif">
+  
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FCF259',
+            secondary: '#B4E50D',
+            accent: '#ff7b00',
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.8s ease-in-out',
+            'slide-up': 'slideUp 0.6s ease-out',
+            'slide-down': 'slideDown 0.6s ease-out',
+            'bounce-slow': 'bounce 3s infinite',
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            slideUp: {
+              '0%': { transform: 'translateY(30px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            },
+            slideDown: {
+              '0%': { transform: 'translateY(-30px)', opacity: '0' },
+              '100%': { transform: 'translateY(0)', opacity: '1' },
+            },
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- JSON-LD Structured Data for Google -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Balangkayan Senior High School - Stand Alone",
+    "alternateName": "BSHS",
+    "url": "https://bshs-es.vercel.app/",
+    "logo": "https://bshs-es.vercel.app/bshs%20logo.jfif",
+    "description": "Balangkayan Senior High School - Stand Alone (BSHS) is committed to providing quality education that prepares students for college, careers, and life in Eastern Samar, Philippines.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Balangkayan",
+      "addressLocality": "Balangkayan",
+      "addressRegion": "Eastern Samar",
+      "addressCountry": "PH"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "11.477476",
+      "longitude": "125.506518"
+    },
+    "telephone": "Contact via website",
+    "email": "Contact via website",
+    "sameAs": [
+      "https://bshs-es.vercel.app/"
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Academic Programs",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Course",
+            "name": "Academic Track - ABM (Accountancy, Business & Management)",
+            "description": "Prepare for college with specialized business and management education"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Course",
+            "name": "Academic Track - HUMSS (Humanities & Social Sciences)",
+            "description": "Prepare for college with humanities and social sciences education"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Course",
+            "name": "Technical-Vocational Track - EIM (Electrical Installation & Maintenance)",
+            "description": "Gain practical electrical skills and certifications"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Course",
+            "name": "Technical-Vocational Track - CSS (Computer Systems Servicing)",
+            "description": "Gain practical computer servicing skills and certifications"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Course",
+            "name": "Technical-Vocational Track - Home Economics",
+            "description": "Gain practical home economics skills and certifications"
+          }
+        }
+      ]
+    }
+  }
+  </script>
+  
   <style>
     * {
       margin: 0;
@@ -1362,19 +1510,19 @@
 </head>
 <body>
   <!-- HEADER -->
-  <header>
-    <div class="logo">
-      <img src="bshs logo.jfif" alt="BSHS Logo">
+  <header class="animate-slide-down">
+    <div class="logo transition-all duration-300 hover:scale-105">
+      <img src="bshs logo.jfif" alt="BSHS Logo" class="transition-transform duration-300 hover:rotate-6">
       <span class="logo-text">Balangkayan Senior High School - Stand Alone</span>
     </div>
     <nav>
       <ul>
-        <li><a href="#hero">Home</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#programs">Programs</a></li>
-        <li><a href="login.html">Dashboard</a></li>
+        <li><a href="#hero" class="transition-all duration-300 hover:text-accent">Home</a></li>
+        <li><a href="#about" class="transition-all duration-300 hover:text-accent">About</a></li>
+        <li><a href="#programs" class="transition-all duration-300 hover:text-accent">Programs</a></li>
+        <li><a href="login.html" class="transition-all duration-300 hover:text-accent">Dashboard</a></li>
         <li>
-          <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <button class="theme-toggle transition-all duration-300 hover:scale-110 hover:rotate-12" id="themeToggle" aria-label="Toggle theme">
             <span class="theme-icon">🌙</span>
           </button>
         </li>
@@ -1384,35 +1532,35 @@
 
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="hero-content">
-      <h1>Building <span class="highlight">Bright</span> Futures</h1>
-      <p>At Balangkayan Senior High School - Stand Alone, we empower learners with knowledge, skills, and values to thrive in life and make a difference in the world.</p>
-      <button class="btn" onclick="window.location.href='step1.html'">
+    <div class="hero-content animate-slide-up">
+      <h1 class="animate-fade-in">Building <span class="highlight">Bright</span> Futures</h1>
+      <p class="animate-fade-in" style="animation-delay: 0.2s;">At Balangkayan Senior High School - Stand Alone, we empower learners with knowledge, skills, and values to thrive in life and make a difference in the world.</p>
+      <button class="btn transition-all duration-300 hover:scale-105 hover:shadow-2xl" onclick="window.location.href='step1.html'" style="animation-delay: 0.4s;">
         <span>Enroll Now</span>
-        <span>→</span>
+        <span class="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span>
       </button>
     </div>
-    <div class="hero-visual">
-      <div class="hero-visual-card">
-        <span class="icon">🎓</span>
-        <h3>Start Your Journey</h3>
-        <p>Join our community of excellence</p>
+    <div class="hero-visual animate-slide-up" style="animation-delay: 0.3s;">
+      <div class="hero-visual-card transition-all duration-500 hover:rotate-0 hover:scale-105">
+        <span class="icon animate-bounce-slow">🎓</span>
+        <h3 class="transition-colors duration-300">Start Your Journey</h3>
+        <p class="transition-opacity duration-300">Join our community of excellence</p>
       </div>
     </div>
   </section>
 
   <!-- ABOUT -->
-  <section id="about" class="animate-on-scroll">
-    <h2>About Us</h2>
-    <p>Balangkayan Senior High School - Stand Alone is committed to providing quality education that prepares students for college, careers, and life. We offer a supportive learning environment where every student can discover their potential and achieve their dreams.</p>
+  <section id="about" class="animate-on-scroll transition-all duration-700">
+    <h2 class="transition-all duration-500 hover:scale-105">About Us</h2>
+    <p class="transition-opacity duration-500 hover:opacity-90">Balangkayan Senior High School - Stand Alone is committed to providing quality education that prepares students for college, careers, and life. We offer a supportive learning environment where every student can discover their potential and achieve their dreams.</p>
   </section>
 
   <!-- PERFORMANCE PLEDGE -->
-  <section id="pledge" class="animate-on-scroll" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 100px 60px;">
-    <h2>Performance Pledge</h2>
-    <p style="font-style: italic; color: var(--text-dark); font-weight: 600; margin-bottom: 50px;">We, the teaching and non-teaching staff of BALANGKAYAN SENIOR HIGH SCHOOL - STAND ALONE, pledge to:</p>
+  <section id="pledge" class="animate-on-scroll transition-all duration-700" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 100px 60px;">
+    <h2 class="transition-all duration-500 hover:scale-105">Performance Pledge</h2>
+    <p class="transition-opacity duration-500" style="font-style: italic; color: var(--text-dark); font-weight: 600; margin-bottom: 50px;">We, the teaching and non-teaching staff of BALANGKAYAN SENIOR HIGH SCHOOL - STAND ALONE, pledge to:</p>
     <div style="max-width: 1000px; margin: 0 auto;">
-      <div style="background: #fff; padding: 50px 45px; border-radius: 25px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12); border-left: 6px solid var(--primary);">
+      <div class="transition-all duration-500 hover:shadow-2xl" style="background: #fff; padding: 50px 45px; border-radius: 25px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12); border-left: 6px solid var(--primary);">
         <ul style="list-style: none; padding: 0; margin: 0;">
           <li style="padding: 18px 0; border-bottom: 1px solid #e9ecef; font-size: 1.05em; color: var(--text-dark); line-height: 1.8;">
             <strong style="color: var(--button); font-size: 2.05em; margin-right: 15px;">S</strong>erve you promptly, efficiently and with utmost courtesy;
@@ -1445,11 +1593,11 @@
     <h2>Our Programs</h2>
     <p>Choose from our diverse academic tracks designed to match your interests and career goals.</p>
     <div class="programs-grid">
-      <div class="program-card" onclick="toggleProgramCard(this)">
+      <div class="program-card transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer" onclick="toggleProgramCard(this)">
         <div class="program-card-front">
-          <span class="icon">📚</span>
-          <div class="title">Academic Track</div>
-          <div class="description">Prepare for college with specialized strands. Click to view strands!</div>
+          <span class="icon transition-transform duration-300 hover:scale-110">📚</span>
+          <div class="title transition-colors duration-300">Academic Track</div>
+          <div class="description transition-opacity duration-300">Prepare for college with specialized strands. Click to view strands!</div>
         </div>
         <div class="program-card-back">
           <div class="title">Academic Track Strands</div>
@@ -1460,11 +1608,11 @@
           <button class="back-button" onclick="event.stopPropagation(); toggleProgramCard(this.closest('.program-card'))">← Back</button>
         </div>
       </div>
-      <div class="program-card" onclick="toggleProgramCard(this)">
+      <div class="program-card transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer" onclick="toggleProgramCard(this)">
         <div class="program-card-front">
-          <span class="icon">🔧</span>
-          <div class="title">Technical-Vocational Track</div>
-          <div class="description">Gain practical skills and certifications. Click to view strands!</div>
+          <span class="icon transition-transform duration-300 hover:scale-110">🔧</span>
+          <div class="title transition-colors duration-300">Technical-Vocational Track</div>
+          <div class="description transition-opacity duration-300">Gain practical skills and certifications. Click to view strands!</div>
         </div>
         <div class="program-card-back">
           <div class="title">TVL Track Strands</div>
@@ -1480,41 +1628,41 @@
   </section>
 
   <!-- TESTIMONIALS -->
-  <section class="animate-on-scroll">
-    <h2>Mission and Vision</h2>
-    <p>Our commitment to excellence in education and our aspirations for every student's success.</p>
+  <section class="animate-on-scroll transition-all duration-700">
+    <h2 class="transition-all duration-500 hover:scale-105">Mission and Vision</h2>
+    <p class="transition-opacity duration-500">Our commitment to excellence in education and our aspirations for every student's success.</p>
     <div class="testimonials-container">
-      <div class="testimonial">
-        <p>We dream of Filipinos who passionately love their country and whose values and competencies enable them to realize their full potential and contribute meaningfully to building the nation.</p>
-        <div class="author">— BSHS Vision </div>
+      <div class="testimonial transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+        <p class="transition-opacity duration-300">We dream of Filipinos who passionately love their country and whose values and competencies enable them to realize their full potential and contribute meaningfully to building the nation.</p>
+        <div class="author transition-colors duration-300">— BSHS Vision </div>
       </div>
-      <div class="testimonial">
-        <p>To protect and promote the right of every Filipino to quality, equitable, culture-based and complete basic education.</p>
-        <div class="author">— BSHS Mission</div>
+      <div class="testimonial transition-all duration-500 hover:scale-105 hover:shadow-2xl">
+        <p class="transition-opacity duration-300">To protect and promote the right of every Filipino to quality, equitable, culture-based and complete basic education.</p>
+        <div class="author transition-colors duration-300">— BSHS Mission</div>
       </div>
     </div>
   </section>
 
   <!-- LOCATION MAP -->
-  <section id="location" class="animate-on-scroll">
-    <h2>Find Us</h2>
-    <p>Visit our campus and discover the BSHS learning environment.</p>
-    <div class="map-widget">
-      <h3>📍 School Location</h3>
+  <section id="location" class="animate-on-scroll transition-all duration-700">
+    <h2 class="transition-all duration-500 hover:scale-105">Find Us</h2>
+    <p class="transition-opacity duration-500">Visit our campus and discover the BSHS learning environment.</p>
+    <div class="map-widget transition-all duration-500 hover:shadow-2xl">
+      <h3 class="animate-pulse-slow">📍 School Location</h3>
       <p>Balangkayan Senior High School - Stand Alone, Balangkayan, Eastern Samar</p>
-      <div id="schoolMap"></div>
+      <div id="schoolMap" class="transition-all duration-300"></div>
       <div class="map-info">
-        <div class="map-info-item">
+        <div class="map-info-item transition-all duration-300 hover:scale-105 hover:bg-orange-50">
           <span class="icon">📍</span>
           <strong>Address</strong>
           <span>Balangkayan, Eastern Samar</span>
         </div>
-        <div class="map-info-item">
+        <div class="map-info-item transition-all duration-300 hover:scale-105 hover:bg-orange-50">
           <span class="icon">🗺️</span>
           <strong>Coordinates</strong>
           <span>11.477476, 125.506518</span>
         </div>
-        <div class="map-info-item">
+        <div class="map-info-item transition-all duration-300 hover:scale-105 hover:bg-orange-50">
           <span class="icon">🚌</span>
           <strong>Accessibility</strong>
           <span>Accessible via public transport</span>
@@ -1524,19 +1672,19 @@
   </section>
 
   <!-- FOOTER -->
-  <footer>
-    <p>&copy; 2025 Balangkayan Senior High School - Stand Alone. All Rights Reserved.</p>
+  <footer class="animate-fade-in">
+    <p class="transition-opacity duration-500 hover:opacity-80">&copy; 2025 Balangkayan Senior High School - Stand Alone. All Rights Reserved.</p>
     <div class="social-icons">
-      <a href="#" aria-label="Facebook">📘</a>
-      <a href="#" aria-label="Twitter">🐦</a>
-      <a href="#" aria-label="Instagram">📷</a>
-      <a href="#" aria-label="Email">✉️</a>
+      <a href="#" aria-label="Facebook" class="transition-all duration-300 hover:scale-125 hover:-translate-y-2">📘</a>
+      <a href="#" aria-label="Twitter" class="transition-all duration-300 hover:scale-125 hover:-translate-y-2">🐦</a>
+      <a href="#" aria-label="Instagram" class="transition-all duration-300 hover:scale-125 hover:-translate-y-2">📷</a>
+      <a href="#" aria-label="Email" class="transition-all duration-300 hover:scale-125 hover:-translate-y-2">✉️</a>
     </div>
   </footer>
 
   <!-- AI CHATBOT -->
   <div class="chatbot-container">
-    <button class="chatbot-button" id="chatbotToggle">
+    <button class="chatbot-button transition-all duration-300 hover:scale-110 animate-bounce-slow" id="chatbotToggle">
       🤖
     </button>
     <div class="chatbot-window" id="chatbotWindow">
@@ -1555,16 +1703,16 @@
               Hello! I'm the BSHS virtual assistant. How can I help you today?
             </div>
             <div class="quick-replies">
-              <button class="quick-reply" onclick="sendQuickReply('What programs do you offer?')">Programs</button>
-              <button class="quick-reply" onclick="sendQuickReply('How do I enroll?')">Enrollment</button>
-              <button class="quick-reply" onclick="sendQuickReply('What are your contact details?')">Contact</button>
+              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="sendQuickReply('What programs do you offer?')">Programs</button>
+              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="sendQuickReply('How do I enroll?')">Enrollment</button>
+              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="sendQuickReply('What are your contact details?')">Contact</button>
             </div>
           </div>
         </div>
       </div>
       <div class="chatbot-input-area">
-        <input type="text" class="chatbot-input" id="chatbotInput" placeholder="Type your message...">
-        <button class="chatbot-send" id="chatbotSend">➤</button>
+        <input type="text" class="chatbot-input transition-all duration-300 focus:scale-105" id="chatbotInput" placeholder="Type your message...">
+        <button class="chatbot-send transition-all duration-300 hover:scale-110 hover:rotate-12" id="chatbotSend">➤</button>
       </div>
     </div>
   </div>
@@ -1884,6 +2032,119 @@
     function toggleProgramCard(card) {
       card.classList.toggle('flipped');
     }
+
+    // ===== FIREWORKS CLICK EFFECT =====
+    (function() {
+      // Create canvas
+      const canvas = document.createElement('canvas');
+      canvas.style.position = 'fixed';
+      canvas.style.top = '0';
+      canvas.style.left = '0';
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      canvas.style.pointerEvents = 'none';
+      canvas.style.zIndex = '9998';
+      document.body.appendChild(canvas);
+      
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+      
+      // Particle class
+      class Particle {
+        constructor(x, y, color) {
+          this.x = x;
+          this.y = y;
+          this.color = color;
+          this.velocity = {
+            x: (Math.random() - 0.5) * 8,
+            y: (Math.random() - 0.5) * 8
+          };
+          this.radius = Math.random() * 3 + 2;
+          this.alpha = 1;
+          this.decay = Math.random() * 0.015 + 0.015;
+          this.gravity = 0.15;
+        }
+        
+        draw() {
+          ctx.save();
+          ctx.globalAlpha = this.alpha;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fillStyle = this.color;
+          ctx.fill();
+          ctx.closePath();
+          ctx.restore();
+        }
+        
+        update() {
+          this.velocity.y += this.gravity;
+          this.x += this.velocity.x;
+          this.y += this.velocity.y;
+          this.alpha -= this.decay;
+          this.draw();
+        }
+      }
+      
+      // Firework class
+      class Firework {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          this.particles = [];
+          this.colors = [
+            '#ff7b00', '#FCF259', '#ff5722', '#B4E50D', '#4a90e2',
+            '#ff1744', '#00e676', '#ffea00', '#ff6f00', '#e91e63'
+          ];
+          
+          const particleCount = Math.random() * 30 + 50;
+          for (let i = 0; i < particleCount; i++) {
+            const color = this.colors[Math.floor(Math.random() * this.colors.length)];
+            this.particles.push(new Particle(x, y, color));
+          }
+        }
+        
+        update() {
+          for (let i = this.particles.length - 1; i >= 0; i--) {
+            this.particles[i].update();
+            if (this.particles[i].alpha <= 0) {
+              this.particles.splice(i, 1);
+            }
+          }
+        }
+        
+        isDead() {
+          return this.particles.length === 0;
+        }
+      }
+      
+      let fireworks = [];
+      
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        for (let i = fireworks.length - 1; i >= 0; i--) {
+          fireworks[i].update();
+          if (fireworks[i].isDead()) {
+            fireworks.splice(i, 1);
+          }
+        }
+      }
+      
+      animate();
+      
+      // Click event
+      document.addEventListener('click', (e) => {
+        fireworks.push(new Firework(e.clientX, e.clientY));
+      });
+    })();
   </script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </body>
