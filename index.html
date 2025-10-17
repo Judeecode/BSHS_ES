@@ -42,6 +42,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -1565,6 +1569,199 @@
       }
     }
 
+    /* Announcement Carousel Styles */
+    .announcements-section {
+      padding: 80px 60px;
+      background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .announcements-section h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3em;
+      font-weight: 800;
+      color: var(--text-dark);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .announcements-section > p {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 1.2em;
+      margin-bottom: 50px;
+    }
+
+    .announcement-carousel {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .swiper {
+      width: 100%;
+      padding: 20px 0 60px 0;
+    }
+
+    .announcement-slide {
+      background: white;
+      border-radius: 25px;
+      padding: 50px 40px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      min-height: 350px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      border: 3px solid var(--primary);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .announcement-slide::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--button));
+    }
+
+    .announcement-slide:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 50px rgba(252, 242, 89, 0.3);
+    }
+
+    .announcement-icon {
+      font-size: 4em;
+      margin-bottom: 25px;
+      animation: bounce 2s infinite;
+    }
+
+    .announcement-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2em;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+    }
+
+    .announcement-date {
+      color: var(--button);
+      font-weight: 600;
+      font-size: 1em;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .announcement-content {
+      color: var(--text-light);
+      font-size: 1.1em;
+      line-height: 1.8;
+      margin-bottom: 25px;
+    }
+
+    .announcement-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: var(--text-dark);
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9em;
+      margin-top: 10px;
+    }
+
+    /* Swiper Navigation Buttons */
+    .swiper-button-next,
+    .swiper-button-prev {
+      background: var(--primary);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      color: var(--text-dark) !important;
+      font-weight: 900;
+      transition: all 0.3s ease;
+    }
+
+    .swiper-button-next:hover,
+    .swiper-button-prev:hover {
+      background: var(--button);
+      color: white !important;
+      transform: scale(1.1);
+    }
+
+    .swiper-button-next::after,
+    .swiper-button-prev::after {
+      font-size: 20px;
+      font-weight: 900;
+    }
+
+    /* Swiper Pagination */
+    .swiper-pagination-bullet {
+      width: 12px;
+      height: 12px;
+      background: var(--text-light);
+      opacity: 0.5;
+      transition: all 0.3s ease;
+    }
+
+    .swiper-pagination-bullet-active {
+      background: var(--button);
+      opacity: 1;
+      width: 30px;
+      border-radius: 6px;
+    }
+
+    /* Empty State */
+    .empty-announcements {
+      text-align: center;
+      padding: 80px 40px;
+      background: white;
+      border-radius: 25px;
+      border: 3px dashed var(--primary);
+    }
+
+    .empty-announcements-icon {
+      font-size: 5em;
+      margin-bottom: 20px;
+      opacity: 0.5;
+    }
+
+    .empty-announcements h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2em;
+      color: var(--text-dark);
+      margin-bottom: 15px;
+    }
+
+    .empty-announcements p {
+      color: var(--text-light);
+      font-size: 1.1em;
+    }
+
+    @media (max-width: 768px) {
+      .announcements-section {
+        padding: 60px 20px;
+      }
+
+      .announcement-slide {
+        padding: 40px 25px;
+        min-height: 300px;
+      }
+
+      .announcements-section h2 {
+        font-size: 2em;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1608,6 +1805,104 @@
         <span class="icon animate-bounce-slow">🎓</span>
         <h3 class="transition-colors duration-300">Start Your Journey</h3>
         <p class="transition-opacity duration-300">Join our community of excellence</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANNOUNCEMENTS CAROUSEL -->
+  <section class="announcements-section animate-on-scroll transition-all duration-700" id="announcements">
+    <h2 class="transition-all duration-500 hover:scale-105">📢 Latest Announcements</h2>
+    <p>Stay updated with the latest news and events from BSHS</p>
+    
+    <div class="announcement-carousel">
+      <!-- Swiper Container -->
+      <div class="swiper announcementSwiper">
+        <div class="swiper-wrapper">
+          
+          <!-- Empty State (Remove this when you add real announcements) -->
+          <div class="swiper-slide">
+            <div class="empty-announcements">
+              <div class="empty-announcements-icon">📭</div>
+              <h3>No Announcements Yet</h3>
+              <p>Check back soon for important updates and news from BSHS!</p>
+            </div>
+          </div>
+
+          <!-- Sample Announcement Slides (Uncomment and edit these when ready) -->
+          <!--
+          <div class="swiper-slide">
+            <div class="announcement-slide">
+              <div class="announcement-icon">🎓</div>
+              <div class="announcement-date">
+                <span>📅</span>
+                <span>October 20, 2025</span>
+              </div>
+              <h3 class="announcement-title">Enrollment Period Extended</h3>
+              <p class="announcement-content">
+                Great news! We've extended the enrollment period until November 15, 2025. 
+                Don't miss this opportunity to join BSHS for the upcoming school year!
+              </p>
+              <span class="announcement-badge">Important</span>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="announcement-slide">
+              <div class="announcement-icon">🏆</div>
+              <div class="announcement-date">
+                <span>📅</span>
+                <span>October 18, 2025</span>
+              </div>
+              <h3 class="announcement-title">BSHS Wins Regional Competition</h3>
+              <p class="announcement-content">
+                Congratulations to our students for winning first place in the Regional 
+                Science Fair! Your hard work and dedication make us proud!
+              </p>
+              <span class="announcement-badge">Achievement</span>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="announcement-slide">
+              <div class="announcement-icon">📚</div>
+              <div class="announcement-date">
+                <span>📅</span>
+                <span>October 15, 2025</span>
+              </div>
+              <h3 class="announcement-title">New Library Hours</h3>
+              <p class="announcement-content">
+                The school library will now be open from 7:00 AM to 6:00 PM, Monday to Friday. 
+                Take advantage of extended hours for your studies!
+              </p>
+              <span class="announcement-badge">Update</span>
+            </div>
+          </div>
+
+          <div class="swiper-slide">
+            <div class="announcement-slide">
+              <div class="announcement-icon">🎉</div>
+              <div class="announcement-date">
+                <span>📅</span>
+                <span>October 10, 2025</span>
+              </div>
+              <h3 class="announcement-title">Foundation Day Celebration</h3>
+              <p class="announcement-content">
+                Join us on November 5, 2025, for our annual Foundation Day celebration! 
+                Exciting activities, performances, and competitions await!
+              </p>
+              <span class="announcement-badge">Event</span>
+            </div>
+          </div>
+          -->
+
+        </div>
+        
+        <!-- Navigation Buttons -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        
+        <!-- Pagination -->
+        <div class="swiper-pagination"></div>
       </div>
     </div>
   </section>
@@ -2426,8 +2721,72 @@
       y = Math.min(y, window.innerHeight - 80);
     });
   </script>
+  
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  
+  <!-- Initialize Swiper -->
+  <script>
+    // ===== ANNOUNCEMENT CAROUSEL =====
+    const announcementSwiper = new Swiper('.announcementSwiper', {
+      // Swiper parameters
+      slidesPerView: 1,
+      spaceBetween: 30,
+      loop: false, // Set to true when you have multiple announcements
+      autoplay: {
+        delay: 5000,
+        disableOnInteraction: false,
+        pauseOnMouseEnter: true,
+      },
+      speed: 800,
+      effect: 'slide',
+      
+      // Navigation arrows
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      
+      // Pagination
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+        dynamicBullets: true,
+      },
+      
+      // Responsive breakpoints
+      breakpoints: {
+        // When window width is >= 768px
+        768: {
+          slidesPerView: 1,
+          spaceBetween: 30
+        },
+        // When window width is >= 1024px
+        1024: {
+          slidesPerView: 1,
+          spaceBetween: 40
+        }
+      },
+      
+      // Keyboard control
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true,
+      },
+      
+      // Mouse wheel control
+      mousewheel: {
+        forceToAxis: true,
+      },
+      
+      // Accessibility
+      a11y: {
+        prevSlideMessage: 'Previous announcement',
+        nextSlideMessage: 'Next announcement',
+      },
+    });
+  </script>
+  
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </body>
 </html>
-
-
