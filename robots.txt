@@ -1,0 +1,18 @@
+# robots.txt for Balangkayan Senior High School - Stand Alone
+# https://bshs-es.vercel.app/
+
+User-agent: *
+Allow: /
+Allow: /index.html
+Allow: /login.html
+Allow: /step1.html
+Allow: /step2.html
+Allow: /step3.html
+Allow: /confirmation.html
+Allow: /dashboard.html
+
+# Sitemap location
+Sitemap: https://bshs-es.vercel.app/sitemap.xml
+
+# Crawl-delay (optional, helps with server load)
+Crawl-delay: 1
