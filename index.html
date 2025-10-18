@@ -3854,9 +3854,17 @@
         // Trace rain: Clouds with 4 tiny raindrops
         createCloudsEffect(weatherBg, 5);
         createRainEffect(weatherBg, 4, true);
-      } else if (isActuallyRaining && rainfall > 0) {
-        // Rain effect - intensity based on rainfall
-        const rainDrops = rainfall >= 15 ? 150 : rainfall >= 7.5 ? 100 : 50;
+      } else if (isActuallyRaining) {
+        // Rain effect - intensity based on rainfall (or default if no data)
+        let rainDrops = 80; // Default moderate rain
+        if (rainfall >= 15) {
+          rainDrops = 150; // Heavy rain
+        } else if (rainfall >= 7.5) {
+          rainDrops = 100; // Moderate to heavy
+        } else if (rainfall > 0) {
+          rainDrops = 60; // Light rain
+        }
+        // If rainfall is 0 but weather says it's raining, use default
         createRainEffect(weatherBg, rainDrops, false);
       } else if (conditionLower.includes('sunny') || conditionLower.includes('clear')) {
         // Sunny: Sun rays
@@ -4270,96 +4278,9 @@
 
     // Function to send quick reply
     function sendQuickReply(message) {
-      addMessage(message, true);
-      showTypingIndicator();
-      
-      setTimeout(async () => {
-        removeTypingIndicator();
-        const result = getBotResponse(message);
-        const response = typeof result === 'object' ? result.response : result;
-        const action = typeof result === 'object' ? result.action : null;
-        
-        if (response === 'MAP_WIDGET') {
-          addMessage('Here\'s our school location on the map! 📍\n\n<strong>Balangkayan Senior High School</strong>\nBalangkayan, Eastern Samar\n\nCoordinates: 11.477476, 125.506518\n\nYou can also scroll down to the "Find Us" section on our homepage to see the interactive map!');
-          
-          // Scroll to map section
-          setTimeout(() => {
-            chatbotWindow.classList.remove('active');
-            chatbotToggle.classList.remove('active');
-            const mapSection = document.getElementById('location');
-            if (mapSection) {
-              mapSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-          }, 1500);
-        } else if (response === 'WEATHER_WIDGET') {
-          // Get current weather data
-          if (!currentWeatherData) {
-            await updateWeatherInfo();
-          }
-          
-          // Format weather response
-          let weatherResponse = '🌤️ <strong>Current Weather in Balangkayan, Eastern Samar</strong>\n\n';
-          
-          if (currentWeatherData) {
-            // WeatherAPI.com data structure
-            const temp = currentWeatherData.current.temp_c;
-            const precipitation = currentWeatherData.current.precip_mm || 0;
-            const humidity = currentWeatherData.current.humidity || 0;
-            const windSpeed = currentWeatherData.current.wind_kph || 0;
-            const condition = currentWeatherData.current.condition.text;
-            const conditionLower = condition.toLowerCase();
-            
-            // Check if it's actually raining (same logic as main weather function)
-            const isRaining = conditionLower.includes('rain') || 
-                              conditionLower.includes('drizzle') ||
-                              conditionLower.includes('shower') ||
-                              conditionLower.includes('sleet');
-            
-            // Rainfall intensity - only use precipitation if actually raining
-            let rainfallIntensity = (isRaining && precipitation >= 0.1) ? precipitation : 0;
-            
-            weatherResponse += `🌡️ <strong>Temperature:</strong> ${temp}°C\n`;
-            weatherResponse += `☁️ <strong>Condition:</strong> ${condition}\n`;
-            weatherResponse += `💧 <strong>Humidity:</strong> ${humidity}%\n`;
-            weatherResponse += `💨 <strong>Wind Speed:</strong> ${windSpeed.toFixed(1)} km/h\n`;
-            weatherResponse += `🌧️ <strong>Rainfall:</strong> ${rainfallIntensity.toFixed(1)} mm/h\n\n`;
-            
-            // Check rainfall warning levels
-            if (rainfallIntensity >= 30) {
-              weatherResponse += '🔴 <strong>RED RAINFALL WARNING</strong>\n\n';
-              weatherResponse += '⚠️ <strong>AUTOMATIC CLASS SUSPENSION</strong>\n';
-              weatherResponse += '• All levels suspended (Pre-school to Senior High)\n';
-              weatherResponse += '• Stay indoors and safe\n';
-              weatherResponse += '• Monitor official DepEd announcements\n\n';
-            } else if (rainfallIntensity >= 15) {
-              weatherResponse += '🟠 <strong>ORANGE RAINFALL WARNING</strong>\n\n';
-              weatherResponse += '⚠️ <strong>POSSIBLE CLASS SUSPENSION</strong>\n';
-              weatherResponse += '• Pre-school, Elementary, Junior High may be suspended\n';
-              weatherResponse += '• Senior High may continue with caution\n';
-              weatherResponse += '• Monitor announcements from DepEd\n\n';
-            } else if (rainfallIntensity >= 7.5) {
-              weatherResponse += '🟡 <strong>YELLOW RAINFALL WARNING</strong>\n\n';
-              weatherResponse += '• Classes continue as normal\n';
-              weatherResponse += '• Bring umbrellas and rain gear\n';
-              weatherResponse += '• Be prepared for weather changes\n\n';
-            } else {
-              weatherResponse += '✅ <strong>Normal Weather Conditions</strong>\n\n';
-              weatherResponse += '• No rainfall warnings\n';
-              weatherResponse += '• Classes proceed as scheduled\n\n';
-            }
-            
-            weatherResponse += '<em>Based on DepEd Order No. 022, s. 2024</em>\n\n';
-            weatherResponse += '⚠️ <strong>IMPORTANT:</strong> This is automated data. For official warnings, always check <strong>PAGASA, NDRRMC, and DepEd announcements</strong>.\n\n';
-            weatherResponse += 'Click the weather button (🌤️) in the navigation to see detailed information!';
-          } else {
-            weatherResponse += 'Unable to fetch weather data at the moment. Please try again or click the weather button in the navigation bar.';
-          }
-          
-          addMessage(weatherResponse);
-        } else {
-          addMessage(response);
-        }
-      }, 800 + Math.random() * 700);
+      // Quick replies just call sendMessage with the message
+      chatbotInput.value = message;
+      sendMessage();
     }
 
     // Event listeners
