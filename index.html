@@ -390,19 +390,20 @@
 
     nav ul {
       display: flex;
-      gap: 40px;
+      gap: 45px;
       list-style: none;
       align-items: center;
     }
 
     nav a {
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text-dark);
-      padding: 8px 0;
+      padding: 12px 0;
       transition: all 0.3s ease;
       text-decoration: none;
       position: relative;
-      font-size: 1.05em;
+      font-size: 1.15em;
+      letter-spacing: 0.3px;
     }
 
     nav a::after {
@@ -411,9 +412,10 @@
       bottom: 0;
       left: 0;
       width: 0;
-      height: 2px;
+      height: 3px;
       background: linear-gradient(90deg, var(--button), var(--primary));
       transition: width 0.3s ease;
+      border-radius: 2px;
     }
 
     nav a:hover::after {
@@ -422,20 +424,25 @@
 
     nav a:hover {
       color: var(--button);
+      transform: translateY(-2px);
+    }
+    
+    nav a:active {
+      transform: translateY(0);
     }
 
     /* Theme Toggle Button */
     .theme-toggle {
       background: linear-gradient(135deg, #ffd700, #ff8c00);
       border: none;
-      width: 50px;
-      height: 50px;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5em;
+      font-size: 1.6em;
       transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
       position: relative;
@@ -496,14 +503,14 @@
     .weather-toggle {
       background: linear-gradient(135deg, #60a5fa, #3b82f6, #2563eb);
       border: none;
-      width: 50px;
-      height: 50px;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5em;
+      font-size: 1.6em;
       transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
       box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
       position: relative;
