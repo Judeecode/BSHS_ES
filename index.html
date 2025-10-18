@@ -3484,6 +3484,10 @@
           `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`
         );
         
+        if (!response.ok) {
+          throw new Error(`Weather API error: ${response.status}`);
+        }
+        
         const data = await response.json();
         currentWeatherData = data;
         
@@ -3493,13 +3497,19 @@
         const humidity = data.current.humidity || 0;
         const windSpeed = data.current.wind_kph || 0;
         const condition = data.current.condition.text;
-        const isRaining = data.current.condition.text.toLowerCase().includes('rain') || 
-                          data.current.condition.text.toLowerCase().includes('drizzle') ||
-                          data.current.condition.text.toLowerCase().includes('shower');
+        const conditionLower = condition.toLowerCase();
+        
+        // Check if it's actually raining based on weather condition
+        const isRaining = conditionLower.includes('rain') || 
+                          conditionLower.includes('drizzle') ||
+                          conditionLower.includes('shower') ||
+                          conditionLower.includes('sleet');
         
         // Calculate rainfall intensity (mm/hour)
-        // WeatherAPI provides precipitation in mm, we'll use it as hourly rate
-        let rainfallIntensity = precipitation;
+        // Only use precipitation value if weather condition indicates rain
+        // Otherwise, precipitation might be residual/forecast data
+        // Also ignore very small precipitation values (< 0.1mm) as they're negligible
+        let rainfallIntensity = (isRaining && precipitation >= 0.1) ? precipitation : 0;
         
         // Update temperature
         weatherTemp.textContent = `${temp}°C`;
@@ -3588,7 +3598,8 @@
           document.body.classList.remove('banner-active');
           
           // Check if there's any rain first (even if below warning threshold)
-          if (rainfallIntensity > 0) {
+          // Only show rain info if weather condition actually indicates rain
+          if (isRaining && rainfallIntensity > 0) {
             const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
             let rainDayAdvice = '';
             
@@ -3617,18 +3628,27 @@
                 • 🌂 Bring umbrella just in case<br>
                 • 👕 Light rain gear recommended<br>
                 • 🚶 Walk carefully on wet surfaces${rainDayAdvice}`;
-            } else {
+            } else if (rainfallIntensity >= 0.5) {
               icon = '🌦️';
               statusText = `Very Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
               suspensionInfo = `<strong>🌦️ Very Light Rain (${currentDay}):</strong><br>
                 • ${isWeekend ? 'No classes - Weekend' : 'Normal class schedule'}<br>
                 • 🌂 Umbrella recommended<br>
                 • 👟 Watch your step on wet ground${rainDayAdvice}`;
+            } else {
+              // Rainfall is negligible (< 0.5mm/h), treat as cloudy
+              icon = '☁️';
+              statusText = condition;
+              suspensionInfo = `<strong>☁️ Cloudy with Trace Rain (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                • 🌂 Umbrella optional<br>
+                • 🌡️ Comfortable temperature expected<br>
+                • 👕 Regular uniform appropriate${rainDayAdvice}`;
             }
           } else {
             // No rain detected, use weather condition from API
             const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
-            const conditionLower = condition.toLowerCase();
+            // conditionLower already defined at top of function
             
             if (conditionLower.includes('thunder')) {
               icon = '⛈️';
@@ -3760,8 +3780,12 @@
         updateWeatherBackground(condition, rainfallIntensity);
         
       } catch (error) {
+        console.error('Weather fetch error:', error);
         weatherDescription.textContent = 'Unable to fetch weather data. Please try again later.';
         rainfallWarning.textContent = 'Error';
+        weatherTemp.textContent = '--°C';
+        weatherIcon.textContent = '❌';
+        weatherModalIcon.textContent = '❌';
       }
     }
 
@@ -3775,11 +3799,17 @@
       weatherBg.classList.remove('active');
       
       // Determine which effect to show
+      // Only show rain effects when weather condition actually indicates rain
+      const isActuallyRaining = conditionLower.includes('rain') || 
+                                conditionLower.includes('drizzle') || 
+                                conditionLower.includes('shower') ||
+                                conditionLower.includes('sleet');
+      
       if (conditionLower.includes('thunder') || conditionLower.includes('storm')) {
         // Thunderstorm: Rain + Lightning
         createRainEffect(weatherBg, 100);
         createLightningEffect(weatherBg);
-      } else if (conditionLower.includes('rain') || conditionLower.includes('drizzle') || conditionLower.includes('shower') || rainfall > 0) {
+      } else if (isActuallyRaining && rainfall > 0) {
         // Rain effect - intensity based on rainfall
         const rainDrops = rainfall >= 15 ? 150 : rainfall >= 7.5 ? 100 : 50;
         createRainEffect(weatherBg, rainDrops);
@@ -4094,9 +4124,16 @@
             const humidity = currentWeatherData.current.humidity || 0;
             const windSpeed = currentWeatherData.current.wind_kph || 0;
             const condition = currentWeatherData.current.condition.text;
+            const conditionLower = condition.toLowerCase();
             
-            // Rainfall intensity from WeatherAPI
-            let rainfallIntensity = precipitation;
+            // Check if it's actually raining (same logic as main weather function)
+            const isRaining = conditionLower.includes('rain') || 
+                              conditionLower.includes('drizzle') ||
+                              conditionLower.includes('shower') ||
+                              conditionLower.includes('sleet');
+            
+            // Rainfall intensity - only use precipitation if actually raining
+            let rainfallIntensity = (isRaining && precipitation >= 0.1) ? precipitation : 0;
             
             weatherResponse += `🌡️ <strong>Temperature:</strong> ${temp}°C\n`;
             weatherResponse += `☁️ <strong>Condition:</strong> ${condition}\n`;
@@ -4181,9 +4218,16 @@
             const humidity = currentWeatherData.current.humidity || 0;
             const windSpeed = currentWeatherData.current.wind_kph || 0;
             const condition = currentWeatherData.current.condition.text;
+            const conditionLower = condition.toLowerCase();
             
-            // Rainfall intensity from WeatherAPI
-            let rainfallIntensity = precipitation;
+            // Check if it's actually raining (same logic as main weather function)
+            const isRaining = conditionLower.includes('rain') || 
+                              conditionLower.includes('drizzle') ||
+                              conditionLower.includes('shower') ||
+                              conditionLower.includes('sleet');
+            
+            // Rainfall intensity - only use precipitation if actually raining
+            let rainfallIntensity = (isRaining && precipitation >= 0.1) ? precipitation : 0;
             
             weatherResponse += `🌡️ <strong>Temperature:</strong> ${temp}°C\n`;
             weatherResponse += `☁️ <strong>Condition:</strong> ${condition}\n`;
@@ -4700,6 +4744,7 @@
           isSunny: isSunny
         };
       } catch (error) {
+        console.error('Weather condition fetch error:', error);
         // Default to sunny if API fails
         return { isRainy: false, isSunny: true };
       }
