@@ -255,6 +255,18 @@
       z-index: 1000;
       box-shadow: 0 2px 30px rgba(0,0,0,0.05);
       border-bottom: 1px solid rgba(252, 242, 89, 0.2);
+      transition: all 0.3s ease;
+    }
+    
+    header.scrolled {
+      padding: 15px 60px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.12);
+      background: rgba(255, 255, 255, 0.95);
+    }
+    
+    header.scrolled .logo img {
+      width: 50px;
+      height: 50px;
     }
     
     /* Mobile Menu Toggle */
@@ -285,14 +297,16 @@
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.5);
-      z-index: 1001;
+      z-index: 1000;
       opacity: 0;
       transition: opacity 0.4s ease;
+      pointer-events: none;
     }
     
     .mobile-menu-overlay.active {
       display: block;
       opacity: 1;
+      pointer-events: auto;
     }
     
     .mobile-menu-toggle:hover {
@@ -675,6 +689,11 @@
     body.dark-mode header {
       background: rgba(26, 26, 46, 0.98);
       border-bottom: 1px solid rgba(252, 242, 89, 0.3);
+    }
+    
+    body.dark-mode header.scrolled {
+      background: rgba(26, 26, 46, 0.95);
+      box-shadow: 0 4px 40px rgba(0,0,0,0.3);
     }
 
     body.dark-mode .logo-text,
@@ -1453,6 +1472,15 @@
         padding: 15px 20px;
       }
       
+      header.scrolled {
+        padding: 12px 20px;
+      }
+      
+      header.scrolled .logo img {
+        width: 38px;
+        height: 38px;
+      }
+      
       .logo {
         gap: 10px;
       }
@@ -1482,13 +1510,22 @@
         backdrop-filter: blur(20px);
         box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
         transition: right 0.4s ease;
-        z-index: 1002;
+        z-index: 1005;
         padding: 80px 30px 30px 30px;
         overflow-y: auto;
+        pointer-events: none;
       }
       
       nav.active {
         right: 0;
+        pointer-events: auto;
+      }
+      
+      nav ul,
+      nav ul li,
+      nav ul li a,
+      nav ul li button {
+        pointer-events: auto;
       }
       
       nav ul {
@@ -1504,7 +1541,12 @@
       
       nav ul li:last-child {
         border-bottom: none;
-        margin-top: 20px;
+      }
+      
+      nav ul li:nth-last-child(2),
+      nav ul li:nth-last-child(1) {
+        border-bottom: none;
+        padding: 10px 0;
       }
       
       nav a {
@@ -1512,11 +1554,26 @@
         padding: 18px 0;
         display: block;
         width: 100%;
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
+      }
+      
+      nav ul li {
+        position: relative;
+        z-index: 1;
       }
       
       .theme-toggle,
       .weather-toggle {
         margin: 0;
+        width: 100%;
+        height: 50px;
+        border-radius: 12px;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
       }
       
       .hero {
@@ -2897,6 +2954,22 @@
         themeIcon.textContent = '🌙';
         localStorage.setItem('theme', 'light');
       }
+    });
+
+    // Header scroll effect
+    const header = document.querySelector('header');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      
+      if (currentScroll > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+      
+      lastScroll = currentScroll;
     });
 
     // Mobile menu toggle
