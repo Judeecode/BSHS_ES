@@ -269,103 +269,119 @@
       height: 50px;
     }
     
-    /* Mobile Menu Toggle */
-    .mobile-menu-toggle {
+    /* Hamburger Menu Button */
+    .hamburger {
       display: none;
-      background: linear-gradient(135deg, var(--button), #ff5722);
-      border: none;
-      width: 45px;
-      height: 45px;
-      border-radius: 12px;
-      cursor: pointer;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(255, 123, 0, 0.3);
+      justify-content: space-around;
+      width: 30px;
+      height: 24px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 1001;
       position: relative;
-      z-index: 1003;
     }
     
-    /* Mobile Menu Overlay */
-    .mobile-menu-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 1000;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-      pointer-events: none;
-    }
-    
-    .mobile-menu-overlay.active {
-      display: block;
-      opacity: 1;
-      pointer-events: auto;
-    }
-    
-    .mobile-menu-toggle:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(255, 123, 0, 0.5);
-    }
-    
-    .mobile-menu-toggle span {
-      width: 24px;
+    .hamburger span {
+      width: 30px;
       height: 3px;
-      background: white;
-      border-radius: 2px;
+      background: var(--text-dark);
+      border-radius: 10px;
       transition: all 0.3s ease;
+      transform-origin: center;
     }
     
-    .mobile-menu-toggle.active span:nth-child(1) {
-      transform: rotate(45deg) translate(7px, 7px);
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(10.5px) rotate(45deg);
     }
     
-    .mobile-menu-toggle.active span:nth-child(2) {
+    .hamburger.active span:nth-child(2) {
       opacity: 0;
+      transform: translateX(-20px);
     }
     
-    .mobile-menu-toggle.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -7px);
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-10.5px) rotate(-45deg);
+    }
+    
+    body.dark-mode .hamburger span {
+      background: #e0e0e0;
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 15px;
-      transition: transform 0.3s ease;
-    }
-
-    .logo:hover {
-      transform: scale(1.03);
-    }
-
-    .logo img {
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--primary);
-      box-shadow: 0 4px 20px rgba(252, 242, 89, 0.4);
+      gap: 18px;
       transition: all 0.3s ease;
     }
 
+    .logo:hover {
+      transform: scale(1.02);
+    }
+
+    .logo img {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      box-shadow: 0 4px 20px rgba(252, 242, 89, 0.5), 0 0 0 0 rgba(252, 242, 89, 0.4);
+      transition: all 0.4s ease;
+      animation: logo-pulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes logo-pulse {
+      0%, 100% {
+        box-shadow: 0 4px 20px rgba(252, 242, 89, 0.5), 0 0 0 0 rgba(252, 242, 89, 0.4);
+      }
+      50% {
+        box-shadow: 0 6px 30px rgba(252, 242, 89, 0.6), 0 0 0 8px rgba(252, 242, 89, 0.1);
+      }
+    }
+
     .logo:hover img {
-      box-shadow: 0 6px 30px rgba(252, 242, 89, 0.6);
-      transform: rotate(5deg);
+      box-shadow: 0 8px 35px rgba(252, 242, 89, 0.7);
+      transform: rotate(5deg) scale(1.05);
     }
 
     .logo-text {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.3em;
-      font-weight: 700;
+      font-size: 1.5em;
+      font-weight: 800;
       color: var(--text-dark);
       letter-spacing: -0.5px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, var(--text-dark), #2d3748);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    
+    .logo-text::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--button));
+      transition: width 0.4s ease;
+      border-radius: 2px;
+    }
+    
+    .logo:hover .logo-text::after {
+      width: 100%;
+    }
+    
+    body.dark-mode .logo-text {
+      background: linear-gradient(135deg, #e0e0e0, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     nav ul {
@@ -406,20 +422,21 @@
 
     /* Theme Toggle Button */
     .theme-toggle {
-      background: linear-gradient(135deg, #ff7b00, #ff5722);
+      background: linear-gradient(135deg, #ffd700, #ff8c00);
       border: none;
-      width: 45px;
-      height: 45px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.5em;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(255, 123, 0, 0.3);
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
       position: relative;
       overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.3);
     }
 
     .theme-toggle::before {
@@ -430,43 +447,64 @@
       width: 0;
       height: 0;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
       transform: translate(-50%, -50%);
-      transition: width 0.4s, height 0.4s;
+      transition: width 0.6s ease, height 0.6s ease;
     }
 
     .theme-toggle:hover::before {
-      width: 100%;
-      height: 100%;
+      width: 120%;
+      height: 120%;
     }
 
     .theme-toggle:hover {
-      transform: scale(1.1) rotate(15deg);
-      box-shadow: 0 6px 20px rgba(255, 123, 0, 0.5);
+      transform: scale(1.15) rotate(180deg);
+      box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.95);
     }
 
     .theme-icon {
       position: relative;
       z-index: 1;
-      transition: transform 0.3s ease;
+      transition: transform 0.4s ease;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-3px); }
+    }
+    
+    body.dark-mode .theme-toggle {
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    }
+    
+    body.dark-mode .theme-toggle:hover {
+      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6);
     }
     
     /* Weather Toggle Button */
     .weather-toggle {
-      background: linear-gradient(135deg, #4a90e2, #357abd);
+      background: linear-gradient(135deg, #60a5fa, #3b82f6, #2563eb);
       border: none;
-      width: 45px;
-      height: 45px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.5em;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
       position: relative;
       overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.3);
     }
     
     .weather-toggle::before {
@@ -477,40 +515,62 @@
       width: 0;
       height: 0;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
       transform: translate(-50%, -50%);
-      transition: width 0.4s, height 0.4s;
+      transition: width 0.6s ease, height 0.6s ease;
     }
     
     .weather-toggle:hover::before {
-      width: 100%;
-      height: 100%;
+      width: 120%;
+      height: 120%;
     }
     
     .weather-toggle:hover {
-      transform: scale(1.1) rotate(15deg);
-      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+      transform: scale(1.15) rotate(-10deg);
+      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6);
+    }
+    
+    .weather-toggle:active {
+      transform: scale(0.95);
     }
     
     .weather-toggle.warning {
-      background: linear-gradient(135deg, #ff9800, #ff5722);
+      background: linear-gradient(135deg, #f59e0b, #f97316, #dc2626);
       animation: pulse-warning 2s ease-in-out infinite;
+      border-color: rgba(255, 255, 255, 0.5);
     }
     
     @keyframes pulse-warning {
       0%, 100% {
-        box-shadow: 0 4px 15px rgba(255, 87, 34, 0.4);
+        box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
+        transform: scale(1);
       }
       50% {
-        box-shadow: 0 6px 25px rgba(255, 87, 34, 0.8);
-        transform: scale(1.05);
+        box-shadow: 0 8px 35px rgba(239, 68, 68, 0.8), 0 0 20px rgba(239, 68, 68, 0.4);
+        transform: scale(1.08);
       }
     }
     
     .weather-icon {
       position: relative;
       z-index: 1;
-      transition: transform 0.3s ease;
+      transition: transform 0.4s ease;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      animation: bounce-subtle 2s ease-in-out infinite;
+    }
+    
+    @keyframes bounce-subtle {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(5deg); }
+    }
+    
+    body.dark-mode .weather-toggle {
+      background: linear-gradient(135deg, #3b82f6, #2563eb, #1e40af);
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
+    }
+    
+    body.dark-mode .weather-toggle:hover {
+      box-shadow: 0 8px 30px rgba(37, 99, 235, 0.7);
     }
     
     /* Weather Alert Modal */
@@ -708,10 +768,6 @@
     @media (max-width: 768px) {
       body.dark-mode nav {
         background: rgba(26, 26, 46, 0.98);
-      }
-      
-      body.dark-mode nav ul li {
-        border-bottom-color: rgba(255, 255, 255, 0.05);
       }
     }
     
@@ -1477,26 +1533,27 @@
       }
       
       header.scrolled .logo img {
-        width: 38px;
-        height: 38px;
+        width: 48px;
+        height: 48px;
       }
       
       .logo {
-        gap: 10px;
+        gap: 12px;
       }
       
       .logo img {
-        width: 40px;
-        height: 40px;
+        width: 52px;
+        height: 52px;
       }
       
       .logo-text {
-        font-size: 0.9em;
-        max-width: 180px;
-        line-height: 1.2;
+        font-size: 1.1em;
+        max-width: 200px;
+        line-height: 1.25;
+        font-weight: 800;
       }
       
-      .mobile-menu-toggle {
+      .hamburger {
         display: flex;
       }
       
@@ -1504,28 +1561,19 @@
         position: fixed;
         top: 0;
         right: -100%;
-        width: 280px;
+        width: 300px;
         height: 100vh;
         background: rgba(255, 255, 255, 0.98);
         backdrop-filter: blur(20px);
+        padding: 100px 40px 40px 40px;
+        transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index: 1000;
         box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
-        transition: right 0.4s ease;
-        z-index: 1005;
-        padding: 80px 30px 30px 30px;
         overflow-y: auto;
-        pointer-events: none;
       }
       
       nav.active {
         right: 0;
-        pointer-events: auto;
-      }
-      
-      nav ul,
-      nav ul li,
-      nav ul li a,
-      nav ul li button {
-        pointer-events: auto;
       }
       
       nav ul {
@@ -1536,44 +1584,47 @@
       
       nav ul li {
         width: 100%;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        opacity: 0;
+        transform: translateX(20px);
+        animation: slideInNav 0.4s ease forwards;
       }
       
-      nav ul li:last-child {
-        border-bottom: none;
+      nav.active ul li {
+        opacity: 1;
+        transform: translateX(0);
       }
       
-      nav ul li:nth-last-child(2),
-      nav ul li:nth-last-child(1) {
-        border-bottom: none;
-        padding: 10px 0;
+      nav.active ul li:nth-child(1) { animation-delay: 0.1s; }
+      nav.active ul li:nth-child(2) { animation-delay: 0.15s; }
+      nav.active ul li:nth-child(3) { animation-delay: 0.2s; }
+      nav.active ul li:nth-child(4) { animation-delay: 0.25s; }
+      nav.active ul li:nth-child(5) { animation-delay: 0.3s; }
+      nav.active ul li:nth-child(6) { animation-delay: 0.35s; }
+      
+      @keyframes slideInNav {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
       
       nav a {
-        font-size: 1.1em;
+        font-size: 1.2em;
         padding: 18px 0;
         display: block;
         width: 100%;
-        position: relative;
-        z-index: 1;
-        cursor: pointer;
-      }
-      
-      nav ul li {
-        position: relative;
-        z-index: 1;
+        font-weight: 600;
       }
       
       .theme-toggle,
       .weather-toggle {
-        margin: 0;
         width: 100%;
-        height: 50px;
+        height: 55px;
         border-radius: 12px;
-        justify-content: center;
-        position: relative;
-        z-index: 1;
-        cursor: pointer;
+        justify-content: flex-start;
+        padding-left: 0;
+        font-size: 1.3em;
+        margin-top: 10px;
       }
       
       .hero {
@@ -1664,9 +1715,39 @@
     }
 
     @media (max-width: 480px) {
+      header {
+        padding: 12px 15px;
+      }
+      
       .logo-text {
-        font-size: 0.75em;
-        max-width: 150px;
+        font-size: 0.95em;
+        max-width: 160px;
+        font-weight: 800;
+      }
+      
+      .logo img {
+        width: 48px;
+        height: 48px;
+      }
+      
+      header.scrolled .logo img {
+        width: 42px;
+        height: 42px;
+      }
+      
+      nav ul {
+        gap: 10px;
+      }
+      
+      nav a {
+        font-size: 0.8em;
+      }
+      
+      .theme-toggle,
+      .weather-toggle {
+        width: 35px;
+        height: 35px;
+        font-size: 1.1em;
       }
       
       .hero {
@@ -2016,18 +2097,22 @@
     }
 
     @media (max-width: 768px) {
-      .chatbot-window {
-        width: calc(100vw - 30px);
-        height: 550px;
-        bottom: 75px;
-        right: 0;
-        left: 50%;
-        transform: translateX(-50%);
-      }
-
       .chatbot-container {
-        bottom: 15px;
-        right: 15px;
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        z-index: 9999 !important;
+      }
+      
+      .chatbot-window {
+        position: fixed;
+        width: calc(100vw - 40px);
+        height: 70vh;
+        max-height: 600px;
+        bottom: 90px;
+        right: 20px;
+        left: auto;
+        transform: none;
       }
       
       .chatbot-button {
@@ -2049,14 +2134,21 @@
     }
     
     @media (max-width: 480px) {
-      .chatbot-window {
-        width: calc(100vw - 20px);
-        height: 500px;
-      }
-
       .chatbot-container {
-        bottom: 10px;
-        right: 10px;
+        position: fixed !important;
+        bottom: 15px !important;
+        right: 15px !important;
+        z-index: 9999 !important;
+      }
+      
+      .chatbot-window {
+        position: fixed;
+        width: calc(100vw - 30px);
+        height: 65vh;
+        max-height: 500px;
+        bottom: 80px;
+        right: 15px;
+        left: auto;
       }
       
       .chatbot-button {
@@ -2598,9 +2690,6 @@
   <div class="running-student" title="Click me - BSHS on the move!">
     <img src="bshs logo.jfif" alt="BSHS Logo">
   </div>
-  <!-- Mobile Menu Overlay -->
-  <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
-
   <!-- HEADER -->
   <header class="animate-slide-down">
     <div class="logo transition-all duration-300 hover:scale-105">
@@ -2608,8 +2697,7 @@
       <span class="logo-text">Balangkayan Senior High School - Stand Alone</span>
     </div>
     
-    <!-- Mobile Menu Toggle -->
-    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
       <span></span>
       <span></span>
       <span></span>
@@ -2972,45 +3060,35 @@
       lastScroll = currentScroll;
     });
 
-    // Mobile menu toggle
-    const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
     const mainNav = document.getElementById('mainNav');
-    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
     const navLinks = document.querySelectorAll('.nav-link');
 
-    function openMobileMenu() {
-      mobileMenuToggle.classList.add('active');
-      mainNav.classList.add('active');
-      mobileMenuOverlay.classList.add('active');
-      document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
-    }
-
-    function closeMobileMenu() {
-      mobileMenuToggle.classList.remove('active');
-      mainNav.classList.remove('active');
-      mobileMenuOverlay.classList.remove('active');
-      document.body.style.overflow = ''; // Restore scrolling
-    }
-
-    mobileMenuToggle.addEventListener('click', () => {
-      if (mainNav.classList.contains('active')) {
-        closeMobileMenu();
-      } else {
-        openMobileMenu();
-      }
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mainNav.classList.toggle('active');
+      document.body.style.overflow = hamburger.classList.contains('active') ? 'hidden' : '';
     });
 
     // Close menu when clicking on a link
     navLinks.forEach(link => {
       link.addEventListener('click', () => {
-        closeMobileMenu();
+        hamburger.classList.remove('active');
+        mainNav.classList.remove('active');
+        document.body.style.overflow = '';
       });
     });
 
-    // Close menu when clicking overlay
-    mobileMenuOverlay.addEventListener('click', () => {
-      closeMobileMenu();
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mainNav.contains(e.target) && !hamburger.contains(e.target) && mainNav.classList.contains('active')) {
+        hamburger.classList.remove('active');
+        mainNav.classList.remove('active');
+        document.body.style.overflow = '';
+      }
     });
+
 
     // ===== WEATHER ALERT SYSTEM =====
     const weatherToggle = document.getElementById('weatherToggle');
@@ -3768,8 +3846,8 @@
     const headerLogo = document.querySelector('header .logo img');
     let x = 0;
     let y = 0;
-    let speedX = 2;
-    let speedY = 2;
+    let speedX = 4;
+    let speedY = 3.5;
     let isPaused = false;
     let isActive = false;
     let animationId = null;
@@ -3790,15 +3868,23 @@
       x += speedX;
       y += speedY;
 
-      // Bounce off edges
+      // Bounce off edges with slight randomization
       if (x <= 0 || x >= window.innerWidth - 80) {
         speedX = -speedX;
+        // Add slight variation to prevent predictable bouncing
+        speedY += (Math.random() - 0.5) * 0.5;
         changeColor();
       }
       if (y <= 0 || y >= window.innerHeight - 80) {
         speedY = -speedY;
+        // Add slight variation to prevent predictable bouncing
+        speedX += (Math.random() - 0.5) * 0.5;
         changeColor();
       }
+
+      // Keep speeds within reasonable bounds
+      speedX = Math.max(-6, Math.min(6, speedX));
+      speedY = Math.max(-6, Math.min(6, speedY));
 
       // Apply position
       runningStudent.style.left = x + 'px';
@@ -3809,14 +3895,17 @@
 
     function changeColor() {
       const colors = [
-        'rgba(252, 242, 89, 0.7)',
-        'rgba(180, 229, 13, 0.7)',
-        'rgba(255, 123, 0, 0.7)',
-        'rgba(255, 87, 34, 0.7)',
-        'rgba(74, 144, 226, 0.7)'
+        'rgba(252, 242, 89, 0.8)',
+        'rgba(180, 229, 13, 0.8)',
+        'rgba(255, 123, 0, 0.8)',
+        'rgba(255, 87, 34, 0.8)',
+        'rgba(74, 144, 226, 0.8)',
+        'rgba(236, 72, 153, 0.8)',
+        'rgba(168, 85, 247, 0.8)',
+        'rgba(34, 197, 94, 0.8)'
       ];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      runningStudent.style.boxShadow = `0 4px 20px ${randomColor}`;
+      runningStudent.style.boxShadow = `0 6px 30px ${randomColor}, 0 0 15px ${randomColor}`;
     }
 
     // Easter Egg: Click header logo to activate bouncing animation
