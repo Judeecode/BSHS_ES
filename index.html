@@ -260,6 +260,109 @@
       display: none !important;
     }
 
+    /* Emergency Alert Banner */
+    .emergency-alert-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 10000;
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1em;
+      box-shadow: 0 4px 20px rgba(220, 38, 38, 0.5);
+      animation: slide-down-banner 0.5s ease-out, pulse-banner 2s ease-in-out infinite;
+      display: none;
+      border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .emergency-alert-banner.active {
+      display: block;
+    }
+
+    .emergency-alert-banner.orange {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      box-shadow: 0 4px 20px rgba(249, 115, 22, 0.5);
+    }
+
+    .emergency-alert-banner .banner-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .emergency-alert-banner .banner-icon {
+      font-size: 1.5em;
+      animation: shake-icon 0.5s ease-in-out infinite;
+    }
+
+    .emergency-alert-banner .banner-close {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2em;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .emergency-alert-banner .banner-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    @keyframes slide-down-banner {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse-banner {
+      0%, 100% {
+        box-shadow: 0 4px 20px rgba(220, 38, 38, 0.5);
+      }
+      50% {
+        box-shadow: 0 4px 30px rgba(220, 38, 38, 0.8);
+      }
+    }
+
+    @keyframes shake-icon {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      75% { transform: rotate(10deg); }
+    }
+
+    /* Adjust header when banner is active */
+    body.banner-active header {
+      top: 70px;
+    }
+
+    body.banner-active .hero {
+      margin-top: 70px;
+    }
+
     /* Header */
     header {
       background: rgba(255, 255, 255, 0.98);
@@ -2730,6 +2833,15 @@
   </style>
 </head>
 <body>
+  <!-- Emergency Alert Banner -->
+  <div class="emergency-alert-banner" id="emergencyBanner">
+    <div class="banner-content">
+      <span class="banner-icon" id="bannerIcon">⚠️</span>
+      <span id="bannerText">Weather Alert</span>
+    </div>
+    <button class="banner-close" id="bannerClose" aria-label="Close alert banner">×</button>
+  </div>
+
   <!-- Running Student Animation -->
   <div class="running-student" title="Click me - BSHS on the move!">
     <img src="bshs logo.jfif" alt="Balangkayan Senior High School Logo" loading="lazy">
@@ -3150,8 +3262,24 @@
     const suspensionNotice = document.getElementById('suspensionNotice');
     const suspensionText = document.getElementById('suspensionText');
     const weatherUpdateTime = document.getElementById('weatherUpdateTime');
+    const emergencyBanner = document.getElementById('emergencyBanner');
+    const bannerText = document.getElementById('bannerText');
+    const bannerIcon = document.getElementById('bannerIcon');
+    const bannerClose = document.getElementById('bannerClose');
 
     let currentWeatherData = null;
+    let bannerDismissed = false;
+
+    // Banner close button
+    bannerClose.addEventListener('click', () => {
+      emergencyBanner.classList.remove('active');
+      document.body.classList.remove('banner-active');
+      bannerDismissed = true;
+      // Reset after 30 minutes
+      setTimeout(() => {
+        bannerDismissed = false;
+      }, 1800000);
+    });
 
     // Open weather modal
     weatherToggle.addEventListener('click', () => {
@@ -3236,6 +3364,15 @@
             • Suspension may be declared 2 hours before class schedule or during class hours<br>
             • <strong>Stay indoors and monitor official DepEd announcements</strong><br>
             • Location: Eastern Visayas Region (Region VIII)`;
+          
+          // Show emergency banner for RED warning
+          if (!bannerDismissed) {
+            emergencyBanner.classList.add('active');
+            emergencyBanner.classList.remove('orange');
+            document.body.classList.add('banner-active');
+            bannerIcon.textContent = '🔴';
+            bannerText.textContent = '⚠️ RED RAINFALL WARNING - AUTOMATIC CLASS SUSPENSION FOR ALL LEVELS';
+          }
         } else if (rainfallIntensity >= 15) {
           warningLevel = 'orange';
           warningText = 'ORANGE RAINFALL WARNING';
@@ -3248,6 +3385,14 @@
             • Monitor official announcements from DepEd Division Office and local authorities<br>
             • Be prepared for possible class suspension<br>
             • Location: Eastern Visayas Region (Region VIII)`;
+          
+          // Show emergency banner for ORANGE warning
+          if (!bannerDismissed) {
+            emergencyBanner.classList.add('active', 'orange');
+            document.body.classList.add('banner-active');
+            bannerIcon.textContent = '🟠';
+            bannerText.textContent = '⚠️ ORANGE RAINFALL WARNING - POSSIBLE CLASS SUSPENSION (Pre-school, Elementary, JHS)';
+          }
         } else if (rainfallIntensity >= 7.5) {
           warningLevel = 'yellow';
           warningText = 'YELLOW RAINFALL WARNING';
@@ -3259,8 +3404,16 @@
             • Bring umbrellas and rain gear<br>
             • Stay updated with weather advisories<br>
             • Location: Eastern Visayas Region (Region VIII)`;
+          
+          // Hide banner for yellow and below
+          emergencyBanner.classList.remove('active', 'orange');
+          document.body.classList.remove('banner-active');
         } else {
           weatherToggle.classList.remove('warning');
+          
+          // Hide banner for normal conditions
+          emergencyBanner.classList.remove('active', 'orange');
+          document.body.classList.remove('banner-active');
           
           // Check if there's any rain first (even if below warning threshold)
           if (rainfallIntensity > 0) {
