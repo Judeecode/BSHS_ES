@@ -3651,25 +3651,23 @@
           }
           
           // Format weather response
-          let weatherResponse = '🌤️ <strong>Current Weather in Eastern Visayas</strong>\n\n';
+          let weatherResponse = '🌤️ <strong>Current Weather in Balangkayan, Eastern Samar</strong>\n\n';
           
           if (currentWeatherData) {
-            const temp = currentWeatherData.current.temperature_2m;
-            const precipitation = currentWeatherData.current.precipitation || 0;
-            const rain = currentWeatherData.current.rain || 0;
-            const humidity = currentWeatherData.current.relative_humidity_2m || 0;
-            const windSpeed = currentWeatherData.current.wind_speed_10m || 0;
+            // WeatherAPI.com data structure
+            const temp = currentWeatherData.current.temp_c;
+            const precipitation = currentWeatherData.current.precip_mm || 0;
+            const humidity = currentWeatherData.current.humidity || 0;
+            const windSpeed = currentWeatherData.current.wind_kph || 0;
+            const condition = currentWeatherData.current.condition.text;
             
-            let rainfallIntensity = rain || precipitation;
-            if (currentWeatherData.hourly && currentWeatherData.hourly.precipitation) {
-              const currentHour = new Date().getHours();
-              const recentPrecip = currentWeatherData.hourly.precipitation.slice(currentHour, currentHour + 1)[0] || 0;
-              rainfallIntensity = Math.max(rainfallIntensity, recentPrecip);
-            }
+            // Rainfall intensity from WeatherAPI
+            let rainfallIntensity = precipitation;
             
             weatherResponse += `🌡️ <strong>Temperature:</strong> ${temp}°C\n`;
+            weatherResponse += `☁️ <strong>Condition:</strong> ${condition}\n`;
             weatherResponse += `💧 <strong>Humidity:</strong> ${humidity}%\n`;
-            weatherResponse += `💨 <strong>Wind Speed:</strong> ${windSpeed} km/h\n`;
+            weatherResponse += `💨 <strong>Wind Speed:</strong> ${windSpeed.toFixed(1)} km/h\n`;
             weatherResponse += `🌧️ <strong>Rainfall:</strong> ${rainfallIntensity.toFixed(1)} mm/h\n\n`;
             
             // Check rainfall warning levels
@@ -3740,25 +3738,23 @@
           }
           
           // Format weather response
-          let weatherResponse = '🌤️ <strong>Current Weather in Eastern Visayas</strong>\n\n';
+          let weatherResponse = '🌤️ <strong>Current Weather in Balangkayan, Eastern Samar</strong>\n\n';
           
           if (currentWeatherData) {
-            const temp = currentWeatherData.current.temperature_2m;
-            const precipitation = currentWeatherData.current.precipitation || 0;
-            const rain = currentWeatherData.current.rain || 0;
-            const humidity = currentWeatherData.current.relative_humidity_2m || 0;
-            const windSpeed = currentWeatherData.current.wind_speed_10m || 0;
+            // WeatherAPI.com data structure
+            const temp = currentWeatherData.current.temp_c;
+            const precipitation = currentWeatherData.current.precip_mm || 0;
+            const humidity = currentWeatherData.current.humidity || 0;
+            const windSpeed = currentWeatherData.current.wind_kph || 0;
+            const condition = currentWeatherData.current.condition.text;
             
-            let rainfallIntensity = rain || precipitation;
-            if (currentWeatherData.hourly && currentWeatherData.hourly.precipitation) {
-              const currentHour = new Date().getHours();
-              const recentPrecip = currentWeatherData.hourly.precipitation.slice(currentHour, currentHour + 1)[0] || 0;
-              rainfallIntensity = Math.max(rainfallIntensity, recentPrecip);
-            }
+            // Rainfall intensity from WeatherAPI
+            let rainfallIntensity = precipitation;
             
             weatherResponse += `🌡️ <strong>Temperature:</strong> ${temp}°C\n`;
+            weatherResponse += `☁️ <strong>Condition:</strong> ${condition}\n`;
             weatherResponse += `💧 <strong>Humidity:</strong> ${humidity}%\n`;
-            weatherResponse += `💨 <strong>Wind Speed:</strong> ${windSpeed} km/h\n`;
+            weatherResponse += `💨 <strong>Wind Speed:</strong> ${windSpeed.toFixed(1)} km/h\n`;
             weatherResponse += `🌧️ <strong>Rainfall:</strong> ${rainfallIntensity.toFixed(1)} mm/h\n\n`;
             
             // Check rainfall warning levels
