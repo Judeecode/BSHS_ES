@@ -2416,6 +2416,7 @@
         <p><strong>Current Status:</strong> <span id="weatherDescription">Checking weather conditions...</span></p>
         <p><strong>Rainfall Warning:</strong> <span id="rainfallWarning">None</span></p>
         <p><strong>Temperature:</strong> <span id="weatherTemp">--°C</span></p>
+        <p style="font-size: 0.85em; margin-top: 10px; opacity: 0.8;"><em>Note: Weather data updates every 10 minutes. Actual conditions may vary slightly. For immediate severe weather, monitor local news and official DepEd announcements.</em></p>
       </div>
       <div class="suspension-notice" id="suspensionNotice" style="display: none;">
         <h4>⚠️ Class Suspension Guidelines</h4>
@@ -2824,7 +2825,7 @@
         // Orange: 15-30 mm/hour (Moderate to Heavy)
         // Red: >30 mm/hour (Heavy to Intense)
         
-        console.log(`Eastern Visayas Weather - Rainfall: ${rainfallIntensity}mm/h, Temp: ${temp}°C, Humidity: ${humidity}%, Wind: ${windSpeed}km/h`);
+        console.log(`Eastern Visayas Weather Update - Rainfall: ${rainfallIntensity}mm/h, Temp: ${temp}°C, Humidity: ${humidity}%, Wind: ${windSpeed}km/h, Weather Code: ${weatherCode}`);
         
         if (rainfallIntensity >= 30) {
           warningLevel = 'red';
@@ -2863,28 +2864,43 @@
             • Location: Eastern Visayas Region (Region VIII)`;
         } else {
           weatherToggle.classList.remove('warning');
-          // Determine weather icon based on weather code
-          if (weatherCode >= 95) {
-            icon = '⛈️';
-            statusText = 'Thunderstorm';
-          } else if (weatherCode >= 80) {
-            icon = '🌧️';
-            statusText = 'Rainy Weather';
-          } else if (weatherCode >= 60) {
-            icon = '🌦️';
-            statusText = 'Light Rain';
-          } else if (weatherCode >= 51) {
-            icon = '🌧️';
-            statusText = 'Drizzle';
-          } else if (weatherCode >= 3) {
-            icon = '☁️';
-            statusText = 'Cloudy';
-          } else if (weatherCode >= 2) {
-            icon = '⛅';
-            statusText = 'Partly Cloudy';
+          
+          // Check if there's any rain first (even if below warning threshold)
+          if (rainfallIntensity > 0) {
+            if (rainfallIntensity >= 5) {
+              icon = '🌧️';
+              statusText = `Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
+            } else if (rainfallIntensity >= 2) {
+              icon = '🌦️';
+              statusText = `Drizzle (${rainfallIntensity.toFixed(1)}mm/h)`;
+            } else {
+              icon = '🌦️';
+              statusText = `Very Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
+            }
           } else {
-            icon = '☀️';
-            statusText = 'Clear Sky';
+            // No rain detected, use weather code
+            if (weatherCode >= 95) {
+              icon = '⛈️';
+              statusText = 'Thunderstorm';
+            } else if (weatherCode >= 80) {
+              icon = '🌧️';
+              statusText = 'Rainy Weather';
+            } else if (weatherCode >= 60) {
+              icon = '🌦️';
+              statusText = 'Light Rain';
+            } else if (weatherCode >= 51) {
+              icon = '🌧️';
+              statusText = 'Drizzle';
+            } else if (weatherCode >= 3) {
+              icon = '☁️';
+              statusText = 'Cloudy';
+            } else if (weatherCode >= 2) {
+              icon = '⛅';
+              statusText = 'Partly Cloudy';
+            } else {
+              icon = '☀️';
+              statusText = 'Clear Sky';
+            }
           }
           
           // Add humidity and wind info for normal conditions
