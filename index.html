@@ -6,7 +6,6 @@
   
   <!-- Primary Meta Tags -->
   <title>Balangkayan Senior High School (BSHS) - Stand Alone | Eastern Samar</title>
-  <meta name="title" content="Balangkayan Senior High School (BSHS) - Stand Alone | Eastern Samar">
   <meta name="description" content="Official website of Balangkayan Senior High School - Stand Alone (BSHS) in Eastern Samar. Offering Academic Track (ABM, HUMSS) and Technical-Vocational Track (EIM, CSS, Home Economics). Enroll now for quality education.">
   <meta name="keywords" content="Balangkayan Senior High School, BSHS, Balangkayan, Eastern Samar, senior high school, SHS, ABM, HUMSS, EIM, CSS, Home Economics, enrollment, education, Philippines, stand alone">
   <meta name="author" content="Balangkayan Senior High School - Stand Alone">
@@ -47,7 +46,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
   
   <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com" crossorigin="anonymous"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -241,6 +240,24 @@
     .animate-on-scroll.animated {
       opacity: 1;
       transform: translateY(0);
+    }
+    
+    /* Animation delay classes */
+    .delay-200 {
+      animation-delay: 0.2s;
+    }
+    
+    .delay-300 {
+      animation-delay: 0.3s;
+    }
+    
+    .delay-400 {
+      animation-delay: 0.4s;
+    }
+    
+    /* Utility classes */
+    .hidden-element {
+      display: none !important;
     }
 
     /* Header */
@@ -1979,12 +1996,7 @@
 
     .message {
       display: flex;
-      gap: 10px;
-      animation: fadeInUp 0.3s ease;
-    }
-
-    .message.user {
-      flex-direction: row-reverse;
+      animation: fadeInUp 0.8s ease-out;
     }
 
     .message .avatar {
@@ -2729,10 +2741,10 @@
       <span class="logo-text">Balangkayan Senior High School - Stand Alone</span>
     </div>
     
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-      <span></span>
-      <span></span>
-      <span></span>
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
     </button>
     
     <nav id="mainNav">
@@ -2741,7 +2753,7 @@
         <li><a href="#daily-reminders" class="transition-all duration-300 hover:text-accent nav-link">Announcements</a></li>
         <li><a href="#about" class="transition-all duration-300 hover:text-accent nav-link">About</a></li>
         <li><a href="#programs" class="transition-all duration-300 hover:text-accent nav-link">Programs</a></li>
-        <li style="display: none;"><a href="login.html" class="transition-all duration-300 hover:text-accent nav-link">Admin Log in</a></li>
+        <li class="hidden-element"><a href="login.html" class="transition-all duration-300 hover:text-accent nav-link">Admin Log in</a></li>
         <li>
           <button class="weather-toggle transition-all duration-300 hover:scale-110 hover:rotate-12" id="weatherToggle" aria-label="Check weather alerts">
             <span class="weather-icon">🌤️</span>
@@ -2792,13 +2804,13 @@
   <section class="hero" id="hero">
     <div class="hero-content animate-slide-up">
       <h1 class="animate-fade-in">Building <span class="highlight">Bright</span> Futures</h1>
-      <p class="animate-fade-in" style="animation-delay: 0.2s;">At Balangkayan Senior High School - Stand Alone, we empower learners with knowledge, skills, and values to thrive in life and make a difference in the world.</p>
-      <button class="btn transition-all duration-300 hover:scale-105 hover:shadow-2xl" onclick="window.location.href='step1.html'" style="animation-delay: 0.4s; display: none;">
+      <p class="animate-fade-in delay-200">At Balangkayan Senior High School - Stand Alone, we empower learners with knowledge, skills, and values to thrive in life and make a difference in the world.</p>
+      <button class="btn transition-all duration-300 hover:scale-105 hover:shadow-2xl enroll-btn delay-400 hidden-element">
         <span>Enroll Now</span>
         <span class="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span>
       </button>
     </div>
-    <div class="hero-visual animate-slide-up" style="animation-delay: 0.3s;">
+    <div class="hero-visual animate-slide-up delay-300">
       <div class="hero-visual-card transition-all duration-500 hover:rotate-0 hover:scale-105">
         <span class="icon animate-bounce-slow">🎓</span>
         <h3 class="transition-colors duration-300">Start Your Journey</h3>
@@ -2937,10 +2949,10 @@
             <li>ABM (Accountancy, Business & Management)</li>
             <li>HUMSS (Humanities & Social Sciences)</li>
           </ul>
-          <button class="back-button" onclick="event.stopPropagation(); toggleProgramCard(this.closest('.program-card'))">← Back</button>
+          <button class="back-button">← Back</button>
         </div>
       </div>
-      <div class="program-card transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer" onclick="toggleProgramCard(this)">
+      <div class="program-card transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
         <div class="program-card-front">
           <span class="icon transition-transform duration-300 hover:scale-110">🔧</span>
           <div class="title transition-colors duration-300">Technical-Vocational Track</div>
@@ -2953,7 +2965,7 @@
             <li>CSS (Computer Systems Servicing)</li>
             <li>Home Economics</li>
           </ul>
-          <button class="back-button" onclick="event.stopPropagation(); toggleProgramCard(this.closest('.program-card'))">← Back</button>
+          <button class="back-button">← Back</button>
         </div>
       </div>
     </div>
@@ -3035,10 +3047,10 @@
               Hello! I'm the BSHS virtual assistant. How can I help you today?
             </div>
             <div class="quick-replies">
-              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="sendQuickReply('What programs do you offer?')">Programs</button>
-              <!-- <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="sendQuickReply('How do I enroll?')">Enrollment</button> -->
-              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="sendQuickReply('What are your contact details?')">Contact</button>
-              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="sendQuickReply('Easter Egg')">🎉 Easter Egg</button>
+              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" data-reply="What programs do you offer?">Programs</button>
+              <!-- <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" data-reply="How do I enroll?">Enrollment</button> -->
+              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" data-reply="What are your contact details?">Contact</button>
+              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" data-reply="Easter Egg">🎉 Easter Egg</button>
             </div>
           </div>
         </div>
@@ -3098,9 +3110,10 @@
     const navLinks = document.querySelectorAll('.nav-link');
 
     hamburger.addEventListener('click', () => {
-      hamburger.classList.toggle('active');
+      const isActive = hamburger.classList.toggle('active');
       mainNav.classList.toggle('active');
-      document.body.style.overflow = hamburger.classList.contains('active') ? 'hidden' : '';
+      document.body.style.overflow = isActive ? 'hidden' : '';
+      hamburger.setAttribute('aria-expanded', isActive);
     });
 
     // Close menu when clicking on a link
@@ -3109,6 +3122,7 @@
         hamburger.classList.remove('active');
         mainNav.classList.remove('active');
         document.body.style.overflow = '';
+        hamburger.setAttribute('aria-expanded', 'false');
       });
     });
 
@@ -3118,6 +3132,7 @@
         hamburger.classList.remove('active');
         mainNav.classList.remove('active');
         document.body.style.overflow = '';
+        hamburger.setAttribute('aria-expanded', 'false');
       }
     });
 
@@ -3213,15 +3228,7 @@
         // Orange: 15-30 mm/hour (Moderate to Heavy)
         // Red: >30 mm/hour (Heavy to Intense)
         
-        console.log(`Eastern Visayas Weather Update:
-          - Rainfall Intensity: ${rainfallIntensity.toFixed(2)}mm/h
-          - Rain: ${rain}mm/h | Precipitation: ${precipitation}mm/h | Showers: ${showers}mm/h
-          - Temperature: ${temp}°C
-          - Humidity: ${humidity}%
-          - Wind Speed: ${windSpeed}km/h
-          - Weather Code: ${weatherCode}
-          - Data Source: Open-Meteo API
-          ⚠️ For official warnings, check PAGASA/NDRRMC`);
+        // Weather data fetched successfully
         
         if (rainfallIntensity >= 30) {
           warningLevel = 'red';
@@ -3329,7 +3336,6 @@
         })}`;
         
       } catch (error) {
-        console.error('Error fetching weather data:', error);
         weatherDescription.textContent = 'Unable to fetch weather data. Please try again later.';
         rainfallWarning.textContent = 'Error';
       }
@@ -3759,6 +3765,40 @@
     function toggleProgramCard(card) {
       card.classList.toggle('flipped');
     }
+    
+    // Add event listeners to program cards
+    document.querySelectorAll('.program-card').forEach(card => {
+      card.addEventListener('click', function() {
+        toggleProgramCard(this);
+      });
+      
+      // Back button handler
+      const backButton = card.querySelector('.back-button');
+      if (backButton) {
+        backButton.addEventListener('click', function(e) {
+          e.stopPropagation();
+          toggleProgramCard(card);
+        });
+      }
+    });
+    
+    // Add event listener to enroll button
+    const enrollBtn = document.querySelector('.enroll-btn');
+    if (enrollBtn) {
+      enrollBtn.addEventListener('click', function() {
+        window.location.href = 'step1.html';
+      });
+    }
+    
+    // Add event listeners to quick reply buttons
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('quick-reply')) {
+        const message = e.target.getAttribute('data-reply');
+        if (message) {
+          sendQuickReply(message);
+        }
+      }
+    });
 
     // ===== FIREWORKS CLICK EFFECT =====
     (function() {
@@ -4130,7 +4170,6 @@
           isSunny: !isRainy && weatherCode <= 3 // Clear or partly cloudy
         };
       } catch (error) {
-        console.log('Weather API error, defaulting to sunny:', error);
         // Default to sunny if API fails
         return { isRainy: false, isSunny: true };
       }
@@ -4320,7 +4359,6 @@
         `;
         
         container.innerHTML = reminderHTML;
-        console.log(`Generated daily reminder for ${getDayName(dayOfWeek)}`);
       }
     }
     
@@ -4347,8 +4385,6 @@
         initializeAll();
         scheduleNextMidnightRefresh(); // Schedule next midnight refresh
       }, timeUntilMidnight);
-      
-      console.log(`Next reminder refresh scheduled at midnight (in ${Math.round(timeUntilMidnight / 1000 / 60)} minutes)`);
     }
     
     scheduleNextMidnightRefresh();
