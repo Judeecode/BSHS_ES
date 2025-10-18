@@ -3636,9 +3636,9 @@
                 • 🌂 Umbrella recommended<br>
                 • 👟 Watch your step on wet ground${rainDayAdvice}`;
             } else {
-              // Rainfall is negligible (< 0.5mm/h), treat as cloudy
+              // Rainfall is negligible (< 0.5mm/h), treat as cloudy with trace rain
               icon = '☁️';
-              statusText = condition;
+              statusText = 'Cloudy with Trace Rain';
               suspensionInfo = `<strong>☁️ Cloudy with Trace Rain (${currentDay}):</strong><br>
                 • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
                 • 🌂 Umbrella optional<br>
@@ -3777,7 +3777,7 @@
         })}`;
         
         // Update weather background effects
-        updateWeatherBackground(condition, rainfallIntensity);
+        updateWeatherBackground(statusText, rainfallIntensity);
         
       } catch (error) {
         console.error('Weather fetch error:', error);
@@ -3807,12 +3807,16 @@
       
       if (conditionLower.includes('thunder') || conditionLower.includes('storm')) {
         // Thunderstorm: Rain + Lightning
-        createRainEffect(weatherBg, 100);
+        createRainEffect(weatherBg, 100, false);
         createLightningEffect(weatherBg);
+      } else if (conditionLower.includes('trace rain')) {
+        // Trace rain: Clouds with 4 tiny raindrops
+        createCloudsEffect(weatherBg, 5);
+        createRainEffect(weatherBg, 4, true);
       } else if (isActuallyRaining && rainfall > 0) {
         // Rain effect - intensity based on rainfall
         const rainDrops = rainfall >= 15 ? 150 : rainfall >= 7.5 ? 100 : 50;
-        createRainEffect(weatherBg, rainDrops);
+        createRainEffect(weatherBg, rainDrops, false);
       } else if (conditionLower.includes('sunny') || conditionLower.includes('clear')) {
         // Sunny: Sun rays
         createSunRaysEffect(weatherBg);
@@ -3842,7 +3846,7 @@
     }
 
     // Create rain effect
-    function createRainEffect(container, dropCount) {
+    function createRainEffect(container, dropCount, isTraceRain = false) {
       const rainContainer = document.createElement('div');
       rainContainer.className = 'rain-container';
       
@@ -3850,9 +3854,21 @@
         const rain = document.createElement('div');
         rain.className = 'rain';
         rain.style.left = Math.random() * 100 + '%';
-        rain.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
-        rain.style.animationDelay = Math.random() * 2 + 's';
-        rain.style.opacity = Math.random() * 0.5 + 0.3;
+        
+        if (isTraceRain) {
+          // Trace rain: tiny, very light, slow-falling drops
+          rain.style.width = '1px';
+          rain.style.height = (Math.random() * 15 + 10) + 'px'; // 10-25px (shorter)
+          rain.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's'; // 1.5-3s (slower)
+          rain.style.animationDelay = Math.random() * 5 + 's'; // More spread out
+          rain.style.opacity = Math.random() * 0.2 + 0.1; // 0.1-0.3 (very faint)
+        } else {
+          // Normal rain
+          rain.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+          rain.style.animationDelay = Math.random() * 2 + 's';
+          rain.style.opacity = Math.random() * 0.5 + 0.3;
+        }
+        
         rainContainer.appendChild(rain);
       }
       
