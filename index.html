@@ -160,21 +160,6 @@
   </script>
   
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      line-height: 1.6;
-      background: #ffffff;
-      color: #1a1a2e;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-    
     :root {
       --primary: #FCF259;
       --secondary: #B4E50D;
@@ -183,6 +168,28 @@
       --accent: #4a90e2;
       --text-dark: #1a1a2e;
       --text-light: #6c757d;
+      --background: #ffffff;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text-dark);
+      background: var(--background);
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
     }
 
     /* Animations */
@@ -1446,6 +1453,21 @@
         padding: 15px 20px;
       }
       
+      .logo {
+        gap: 10px;
+      }
+      
+      .logo img {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .logo-text {
+        font-size: 0.9em;
+        max-width: 180px;
+        line-height: 1.2;
+      }
+      
       .mobile-menu-toggle {
         display: flex;
       }
@@ -1492,52 +1514,131 @@
         width: 100%;
       }
       
-      .theme-toggle {
+      .theme-toggle,
+      .weather-toggle {
         margin: 0;
       }
       
       .hero {
-        padding: 60px 20px;
+        padding: 80px 20px 60px 20px;
+        min-height: auto;
       }
       
       .hero h1 {
-        font-size: 3em;
+        font-size: 2.5em;
+        line-height: 1.2;
       }
       
       .hero p {
-        font-size: 1.1em;
+        font-size: 1em;
+        line-height: 1.6;
+      }
+      
+      .hero-visual-card {
+        padding: 50px 30px;
+        margin-top: 40px;
+      }
+      
+      .hero-visual-card h3 {
+        font-size: 1.8em;
       }
       
       section {
-        padding: 80px 20px;
+        padding: 60px 20px;
       }
       
       section h2 {
-        font-size: 2.5em;
+        font-size: 2em;
+      }
+      
+      section > p {
+        font-size: 1em;
       }
       
       .programs-grid {
         grid-template-columns: 1fr;
-        gap: 35px;
+        gap: 30px;
+      }
+      
+      .program-card {
+        padding: 35px 25px;
+      }
+      
+      .program-card h3 {
+        font-size: 1.5em;
       }
       
       .testimonials-container {
         grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      
+      .testimonial-card {
+        padding: 30px 25px;
+      }
+      
+      .weather-modal-content {
+        width: 95%;
+        padding: 30px 20px;
+        max-height: 85vh;
+      }
+      
+      .weather-modal-title {
+        font-size: 1.5em;
+      }
+      
+      .weather-modal-icon {
+        font-size: 3em;
+      }
+      
+      footer {
+        padding: 40px 20px 30px 20px;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+      }
+      
+      .footer-section h3 {
+        font-size: 1.3em;
       }
     }
 
     @media (max-width: 480px) {
+      .logo-text {
+        font-size: 0.75em;
+        max-width: 150px;
+      }
+      
+      .hero {
+        padding: 60px 15px 40px 15px;
+      }
+      
       .hero h1 {
-        font-size: 2.2em;
+        font-size: 2em;
+      }
+      
+      .hero p {
+        font-size: 0.95em;
       }
       
       .hero-visual-card {
-        padding: 40px 30px;
+        padding: 35px 20px;
+      }
+      
+      .hero-visual-card h3 {
+        font-size: 1.5em;
       }
       
       .btn {
-        padding: 16px 35px;
-        font-size: 1.05em;
+        padding: 14px 30px;
+        font-size: 1em;
+      }
+      
+      section {
+        padding: 50px 15px;
       }
       
       section h2 {
@@ -1857,15 +1958,67 @@
       }
     }
 
+    @media (max-width: 768px) {
+      .chatbot-window {
+        width: calc(100vw - 30px);
+        height: 550px;
+        bottom: 75px;
+        right: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .chatbot-container {
+        bottom: 15px;
+        right: 15px;
+      }
+      
+      .chatbot-button {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .chatbot-header {
+        padding: 15px;
+      }
+      
+      .chatbot-messages {
+        padding: 15px;
+      }
+      
+      .message .bubble {
+        max-width: 85%;
+      }
+    }
+    
     @media (max-width: 480px) {
       .chatbot-window {
-        width: calc(100vw - 40px);
+        width: calc(100vw - 20px);
         height: 500px;
       }
 
       .chatbot-container {
-        bottom: 20px;
-        right: 20px;
+        bottom: 10px;
+        right: 10px;
+      }
+      
+      .chatbot-button {
+        width: 55px;
+        height: 55px;
+        font-size: 1.8em;
+      }
+      
+      .chatbot-header .avatar {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .chatbot-header .info h3 {
+        font-size: 1em;
+      }
+      
+      .chatbot-header .info p {
+        font-size: 0.8em;
       }
     }
 
