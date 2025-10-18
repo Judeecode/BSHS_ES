@@ -2830,9 +2830,181 @@
       }
     }
 
+    /* ===== WEATHER BACKGROUND EFFECTS ===== */
+    .weather-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .weather-background.active {
+      opacity: 1;
+    }
+
+    /* Sun Rays Effect */
+    .sun-rays {
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      width: 200%;
+      height: 200%;
+      transform: translate(-50%, 0);
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba(255, 200, 50, 0.1) 10deg,
+        transparent 20deg,
+        transparent 40deg,
+        rgba(255, 200, 50, 0.1) 50deg,
+        transparent 60deg,
+        transparent 80deg,
+        rgba(255, 200, 50, 0.1) 90deg,
+        transparent 100deg,
+        transparent 120deg,
+        rgba(255, 200, 50, 0.1) 130deg,
+        transparent 140deg,
+        transparent 160deg,
+        rgba(255, 200, 50, 0.1) 170deg,
+        transparent 180deg
+      );
+      animation: rotate-rays 60s linear infinite;
+    }
+
+    @keyframes rotate-rays {
+      from { transform: translate(-50%, 0) rotate(0deg); }
+      to { transform: translate(-50%, 0) rotate(360deg); }
+    }
+
+    /* Rain Effect */
+    .rain-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .rain {
+      position: absolute;
+      width: 2px;
+      height: 50px;
+      background: linear-gradient(transparent, rgba(100, 150, 255, 0.6));
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+      }
+    }
+
+    /* Cloud Effect */
+    .clouds-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 100px;
+      animation: drift linear infinite;
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: '';
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 100px;
+    }
+
+    .cloud::before {
+      width: 50px;
+      height: 50px;
+      top: -25px;
+      left: 10px;
+    }
+
+    .cloud::after {
+      width: 60px;
+      height: 60px;
+      top: -30px;
+      right: 10px;
+    }
+
+    @keyframes drift {
+      from {
+        transform: translateX(-100%);
+      }
+      to {
+        transform: translateX(100vw);
+      }
+    }
+
+    /* Thunder/Lightning Effect */
+    .lightning {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0);
+      animation: flash 4s infinite;
+    }
+
+    @keyframes flash {
+      0%, 100% { background: rgba(255, 255, 255, 0); }
+      49% { background: rgba(255, 255, 255, 0); }
+      50% { background: rgba(255, 255, 255, 0.3); }
+      51% { background: rgba(255, 255, 255, 0); }
+      52% { background: rgba(255, 255, 255, 0.2); }
+      53% { background: rgba(255, 255, 255, 0); }
+    }
+
+    /* Fog/Mist Effect */
+    .fog {
+      position: absolute;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(200, 200, 200, 0) 0%,
+        rgba(200, 200, 200, 0.3) 25%,
+        rgba(200, 200, 200, 0.3) 75%,
+        rgba(200, 200, 200, 0) 100%
+      );
+      animation: fog-drift 20s linear infinite;
+    }
+
+    @keyframes fog-drift {
+      from { transform: translateX(-50%); }
+      to { transform: translateX(0%); }
+    }
+
+    /* Partly Cloudy - Subtle clouds with light rays */
+    .partly-cloudy-effect {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
   </style>
 </head>
 <body>
+  <!-- Weather Background Effects -->
+  <div class="weather-background" id="weatherBackground"></div>
+
   <!-- Emergency Alert Banner -->
   <div class="emergency-alert-banner" id="emergencyBanner">
     <div class="banner-content">
@@ -3584,10 +3756,119 @@
           timeZone: 'Asia/Manila'
         })}`;
         
+        // Update weather background effects
+        updateWeatherBackground(condition, rainfallIntensity);
+        
       } catch (error) {
         weatherDescription.textContent = 'Unable to fetch weather data. Please try again later.';
         rainfallWarning.textContent = 'Error';
       }
+    }
+
+    // Function to update weather background effects
+    function updateWeatherBackground(condition, rainfall) {
+      const weatherBg = document.getElementById('weatherBackground');
+      const conditionLower = condition.toLowerCase();
+      
+      // Clear existing effects
+      weatherBg.innerHTML = '';
+      weatherBg.classList.remove('active');
+      
+      // Determine which effect to show
+      if (conditionLower.includes('thunder') || conditionLower.includes('storm')) {
+        // Thunderstorm: Rain + Lightning
+        createRainEffect(weatherBg, 100);
+        createLightningEffect(weatherBg);
+      } else if (conditionLower.includes('rain') || conditionLower.includes('drizzle') || conditionLower.includes('shower') || rainfall > 0) {
+        // Rain effect - intensity based on rainfall
+        const rainDrops = rainfall >= 15 ? 150 : rainfall >= 7.5 ? 100 : 50;
+        createRainEffect(weatherBg, rainDrops);
+      } else if (conditionLower.includes('sunny') || conditionLower.includes('clear')) {
+        // Sunny: Sun rays
+        createSunRaysEffect(weatherBg);
+      } else if (conditionLower.includes('partly')) {
+        // Partly cloudy: Light sun rays + few clouds
+        createSunRaysEffect(weatherBg);
+        createCloudsEffect(weatherBg, 3);
+      } else if (conditionLower.includes('cloudy') || conditionLower.includes('overcast')) {
+        // Cloudy: Drifting clouds
+        createCloudsEffect(weatherBg, 5);
+      } else if (conditionLower.includes('mist') || conditionLower.includes('fog')) {
+        // Fog/Mist effect
+        createFogEffect(weatherBg);
+      }
+      
+      // Activate background
+      setTimeout(() => {
+        weatherBg.classList.add('active');
+      }, 100);
+    }
+
+    // Create sun rays effect
+    function createSunRaysEffect(container) {
+      const sunRays = document.createElement('div');
+      sunRays.className = 'sun-rays';
+      container.appendChild(sunRays);
+    }
+
+    // Create rain effect
+    function createRainEffect(container, dropCount) {
+      const rainContainer = document.createElement('div');
+      rainContainer.className = 'rain-container';
+      
+      for (let i = 0; i < dropCount; i++) {
+        const rain = document.createElement('div');
+        rain.className = 'rain';
+        rain.style.left = Math.random() * 100 + '%';
+        rain.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+        rain.style.animationDelay = Math.random() * 2 + 's';
+        rain.style.opacity = Math.random() * 0.5 + 0.3;
+        rainContainer.appendChild(rain);
+      }
+      
+      container.appendChild(rainContainer);
+    }
+
+    // Create clouds effect
+    function createCloudsEffect(container, cloudCount) {
+      const cloudsContainer = document.createElement('div');
+      cloudsContainer.className = 'clouds-container';
+      
+      for (let i = 0; i < cloudCount; i++) {
+        const cloud = document.createElement('div');
+        cloud.className = 'cloud';
+        cloud.style.width = (Math.random() * 100 + 80) + 'px';
+        cloud.style.height = (Math.random() * 40 + 40) + 'px';
+        cloud.style.top = (Math.random() * 30) + '%';
+        cloud.style.animationDuration = (Math.random() * 30 + 40) + 's';
+        cloud.style.animationDelay = (Math.random() * 10) + 's';
+        cloudsContainer.appendChild(cloud);
+      }
+      
+      container.appendChild(cloudsContainer);
+    }
+
+    // Create lightning effect
+    function createLightningEffect(container) {
+      const lightning = document.createElement('div');
+      lightning.className = 'lightning';
+      container.appendChild(lightning);
+    }
+
+    // Create fog effect
+    function createFogEffect(container) {
+      const fog1 = document.createElement('div');
+      fog1.className = 'fog';
+      fog1.style.animationDuration = '20s';
+      
+      const fog2 = document.createElement('div');
+      fog2.className = 'fog';
+      fog2.style.animationDuration = '25s';
+      fog2.style.animationDelay = '10s';
+      fog2.style.opacity = '0.5';
+      
+      container.appendChild(fog1);
+      container.appendChild(fog2);
     }
 
     // Auto-update weather every 10 minutes
