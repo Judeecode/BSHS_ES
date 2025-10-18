@@ -3174,47 +3174,41 @@
     // Fetch weather data and check rainfall warnings
     async function updateWeatherInfo() {
       try {
-        // Using Open-Meteo API for weather data (Eastern Visayas, Philippines)
-        // Coordinates for Balangkayan, Eastern Samar (Eastern Visayas Region VIII)
-        const lat = 11.5167; // Balangkayan latitude
-        const lon = 125.5167; // Balangkayan longitude
+        // Using WeatherAPI.com for accurate weather data
+        // Location: Balangkayan, Eastern Samar, Philippines (Zip: 6801)
+        const apiKey = '772090ef7d8e457bbd175713251810';
+        const location = 'Balangkayan,Eastern Samar,Philippines';
         
-        // Fetch current weather with minutely precipitation data for more accuracy
+        // Fetch current weather data
         const response = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,precipitation,rain,showers,weather_code,wind_speed_10m&minutely_15=precipitation&hourly=precipitation&timezone=Asia/Manila&forecast_days=1`
+          `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`
         );
         
         const data = await response.json();
         currentWeatherData = data;
         
-        // Get current weather
-        const temp = data.current.temperature_2m;
-        const precipitation = data.current.precipitation || 0;
-        const rain = data.current.rain || 0;
-        const showers = data.current.showers || 0;
-        const weatherCode = data.current.weather_code;
-        const humidity = data.current.relative_humidity_2m || 0;
-        const windSpeed = data.current.wind_speed_10m || 0;
+        // Get current weather from WeatherAPI.com response
+        const temp = data.current.temp_c;
+        const precipitation = data.current.precip_mm || 0;
+        const humidity = data.current.humidity || 0;
+        const windSpeed = data.current.wind_kph || 0;
+        const condition = data.current.condition.text;
+        const isRaining = data.current.condition.text.toLowerCase().includes('rain') || 
+                          data.current.condition.text.toLowerCase().includes('drizzle') ||
+                          data.current.condition.text.toLowerCase().includes('shower');
         
-        // Calculate rainfall intensity from multiple sources (more accurate)
-        let rainfallIntensity = Math.max(rain, precipitation, showers);
-        
-        // Check minutely data for most recent precipitation (15-minute intervals)
-        if (data.minutely_15 && data.minutely_15.precipitation && data.minutely_15.precipitation.length > 0) {
-          // Get the most recent 15-minute precipitation value
-          const recentMinutelyPrecip = data.minutely_15.precipitation[0] || 0;
-          rainfallIntensity = Math.max(rainfallIntensity, recentMinutelyPrecip);
-        }
-        
-        // Check recent hourly precipitation to get better rainfall rate
-        if (data.hourly && data.hourly.precipitation) {
-          const currentHour = new Date().getHours();
-          const recentPrecip = data.hourly.precipitation.slice(currentHour, currentHour + 1)[0] || 0;
-          rainfallIntensity = Math.max(rainfallIntensity, recentPrecip);
-        }
+        // Calculate rainfall intensity (mm/hour)
+        // WeatherAPI provides precipitation in mm, we'll use it as hourly rate
+        let rainfallIntensity = precipitation;
         
         // Update temperature
         weatherTemp.textContent = `${temp}°C`;
+        
+        // Get current day for day-specific advice
+        const currentDate = new Date();
+        const dayOfWeek = currentDate.getDay(); // 0=Sunday, 1=Monday, etc.
+        const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const currentDay = dayNames[dayOfWeek];
         
         // Determine rainfall warning level based on DepEd Order No. 022, s. 2024
         let warningLevel = 'normal';
@@ -3270,44 +3264,127 @@
           
           // Check if there's any rain first (even if below warning threshold)
           if (rainfallIntensity > 0) {
+            const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+            let rainDayAdvice = '';
+            
+            if (isWeekend) {
+              rainDayAdvice = '<br>• 🎉 <strong>No classes today - It\'s the weekend!</strong><br>• Stay safe and dry at home';
+            } else if (dayOfWeek === 1) { // Monday
+              rainDayAdvice = '<br>• 🇵🇭 <strong>Flag Ceremony may be cancelled</strong> due to rain';
+            } else if (dayOfWeek === 5) { // Friday
+              rainDayAdvice = '<br>• 🇵🇭 <strong>Flag Retreat may be cancelled</strong> due to rain';
+            }
+            
             if (rainfallIntensity >= 5) {
               icon = '🌧️';
               statusText = `Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
+              suspensionInfo = `<strong>🌧️ Light Rain (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes continue as normal'}<br>
+                • 🌂 Bring umbrella and raincoat<br>
+                • 👟 Wear appropriate footwear<br>
+                • 💧 Stay dry and avoid getting wet<br>
+                • 📱 Keep valuables protected from water${rainDayAdvice}`;
             } else if (rainfallIntensity >= 2) {
               icon = '🌦️';
               statusText = `Drizzle (${rainfallIntensity.toFixed(1)}mm/h)`;
+              suspensionInfo = `<strong>🌦️ Drizzle (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                • 🌂 Bring umbrella just in case<br>
+                • 👕 Light rain gear recommended<br>
+                • 🚶 Walk carefully on wet surfaces${rainDayAdvice}`;
             } else {
               icon = '🌦️';
               statusText = `Very Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
+              suspensionInfo = `<strong>🌦️ Very Light Rain (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Normal class schedule'}<br>
+                • 🌂 Umbrella recommended<br>
+                • 👟 Watch your step on wet ground${rainDayAdvice}`;
             }
           } else {
-            // No rain detected, use weather code
-            if (weatherCode >= 95) {
+            // No rain detected, use weather condition from API
+            const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+            const conditionLower = condition.toLowerCase();
+            
+            if (conditionLower.includes('thunder')) {
               icon = '⛈️';
-              statusText = 'Thunderstorm';
-            } else if (weatherCode >= 80) {
-              icon = '🌧️';
-              statusText = 'Rainy Weather';
-            } else if (weatherCode >= 60) {
-              icon = '🌦️';
-              statusText = 'Light Rain';
-            } else if (weatherCode >= 51) {
-              icon = '🌧️';
-              statusText = 'Drizzle';
-            } else if (weatherCode >= 3) {
+              statusText = condition;
+              suspensionInfo = `<strong>⛈️ Thunderstorm Possible (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Stay alert during school hours'}<br>
+                • ⚡ Stay indoors during lightning<br>
+                • 🌂 Bring umbrella and raincoat<br>
+                • 📱 Monitor weather updates closely<br>
+                • 🏃 Seek shelter if thunder is heard<br>
+                • ⚠️ Avoid open areas and tall objects`;
+            } else if (conditionLower.includes('cloudy') || conditionLower.includes('overcast')) {
               icon = '☁️';
-              statusText = 'Cloudy';
-            } else if (weatherCode >= 2) {
+              statusText = condition;
+              let cloudyDayAdvice = '';
+              if (isWeekend) {
+                cloudyDayAdvice = '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong>';
+              } else if (dayOfWeek === 1) { // Monday
+                cloudyDayAdvice = '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Bring umbrella just in case';
+              } else if (dayOfWeek === 5) { // Friday
+                cloudyDayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
+              }
+              suspensionInfo = `<strong>☁️ Cloudy Weather (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                • 🌂 Bring umbrella (rain possible)<br>
+                • 🌡️ Comfortable temperature expected<br>
+                • 👕 Regular uniform appropriate${cloudyDayAdvice}`;
+            } else if (conditionLower.includes('partly')) {
               icon = '⛅';
-              statusText = 'Partly Cloudy';
-            } else {
+              statusText = condition;
+              let partlyDayAdvice = '';
+              if (isWeekend) {
+                partlyDayAdvice = '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong>';
+              } else if (dayOfWeek === 1) { // Monday
+                partlyDayAdvice = '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Be on time!';
+              } else if (dayOfWeek === 5) { // Friday
+                partlyDayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
+              }
+              suspensionInfo = `<strong>⛅ Partly Cloudy (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Perfect weather for classes!'}<br>
+                • ☀️ Some sunshine expected<br>
+                • 🌂 Umbrella optional<br>
+                • 💧 Stay hydrated${partlyDayAdvice}`;
+            } else if (conditionLower.includes('clear') || conditionLower.includes('sunny')) {
               icon = '☀️';
-              statusText = 'Clear Sky';
+              statusText = condition;
+              let dayAdvice = '';
+              if (isWeekend) {
+                dayAdvice = '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong><br>• Perfect weather for outdoor activities!';
+              } else if (dayOfWeek === 1) { // Monday
+                dayAdvice = '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Be on time!';
+              } else if (dayOfWeek === 5) { // Friday
+                dayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
+              }
+              suspensionInfo = `<strong>☀️ Sunny Weather (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Great day for learning!'}<br>
+                • ☀️ Wear sun protection if needed<br>
+                • 💧 Drink plenty of water<br>
+                • 🧴 Apply sunscreen for outdoor activities<br>
+                • 🧢 Hat recommended for ${isWeekend ? 'outdoor fun' : 'PE class'}${dayAdvice}`;
+            } else if (conditionLower.includes('mist') || conditionLower.includes('fog')) {
+              icon = '🌫️';
+              statusText = condition;
+              suspensionInfo = `<strong>🌫️ Misty/Foggy (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes continue as scheduled'}<br>
+                • 👀 Reduced visibility - walk carefully<br>
+                • 🚶 Take extra care when crossing<br>
+                • 🌡️ May feel cooler than usual`;
+            } else {
+              icon = '🌤️';
+              statusText = condition;
+              suspensionInfo = `<strong>🌤️ Good Weather (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Enjoy your weekend!' : 'Classes proceed normally'}<br>
+                • 📚 Perfect day for ${isWeekend ? 'relaxing' : 'learning'}<br>
+                • 💧 Stay hydrated<br>
+                • 😊 Have a great ${isWeekend ? 'weekend' : 'day at school'}!`;
             }
           }
           
           // Add humidity and wind info for normal conditions
-          statusText += ` • Humidity: ${humidity}% • Wind: ${windSpeed} km/h`;
+          statusText += ` • Humidity: ${humidity}% • Wind: ${windSpeed.toFixed(1)} km/h`;
         }
         
         // Update UI
@@ -3319,10 +3396,29 @@
         weatherDescription.textContent = statusText;
         rainfallWarning.textContent = warningText;
         
-        // Show/hide suspension notice
+        // Update suspension notice with dynamic title and styling
+        const suspensionNoticeTitle = document.querySelector('#suspensionNotice h4');
         if (suspensionInfo) {
           suspensionNotice.style.display = 'block';
           suspensionText.innerHTML = suspensionInfo;
+          
+          // Change title and styling based on warning level
+          if (warningLevel === 'red' || warningLevel === 'orange') {
+            suspensionNoticeTitle.textContent = '⚠️ Class Suspension Guidelines';
+            suspensionNotice.style.background = 'linear-gradient(135deg, rgba(255, 87, 34, 0.1), rgba(244, 67, 54, 0.1))';
+            suspensionNotice.style.borderColor = '#ff5722';
+            suspensionNoticeTitle.style.color = '#d32f2f';
+          } else if (warningLevel === 'yellow') {
+            suspensionNoticeTitle.textContent = '🟡 Weather Advisory';
+            suspensionNotice.style.background = 'linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1))';
+            suspensionNotice.style.borderColor = '#ffc107';
+            suspensionNoticeTitle.style.color = '#f57c00';
+          } else {
+            suspensionNoticeTitle.textContent = '💡 Weather Advice for Students';
+            suspensionNotice.style.background = 'linear-gradient(135deg, rgba(33, 150, 243, 0.05), rgba(3, 169, 244, 0.05))';
+            suspensionNotice.style.borderColor = '#2196f3';
+            suspensionNoticeTitle.style.color = '#1976d2';
+          }
         } else {
           suspensionNotice.style.display = 'none';
         }
@@ -4152,22 +4248,26 @@
     
     async function getWeatherCondition() {
       try {
-        // Using Open-Meteo API (free, no API key required)
-        // Coordinates for Balangkayan, Eastern Samar (11.477476, 125.506518)
-        const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=11.477476&longitude=125.506518&current=weather_code,rain&timezone=Asia/Manila');
+        // Using WeatherAPI.com for accurate weather data
+        const apiKey = '772090ef7d8e457bbd175713251810';
+        const location = 'Balangkayan,Eastern Samar,Philippines';
+        const response = await fetch(`https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`);
         const data = await response.json();
         
-        // Weather code interpretation (WMO Weather interpretation codes)
-        const weatherCode = data.current.weather_code;
-        const rain = data.current.rain || 0;
+        // Get weather condition
+        const condition = data.current.condition.text.toLowerCase();
+        const precipitation = data.current.precip_mm || 0;
         
         // Determine if it's rainy
-        // Weather codes: 51-67 (drizzle/rain), 80-99 (rain showers/thunderstorms)
-        const isRainy = (weatherCode >= 51 && weatherCode <= 67) || (weatherCode >= 80 && weatherCode <= 99) || rain > 0;
+        const isRainy = condition.includes('rain') || condition.includes('drizzle') || 
+                        condition.includes('shower') || precipitation > 0;
+        
+        // Determine if it's sunny
+        const isSunny = condition.includes('sunny') || condition.includes('clear');
         
         return {
           isRainy: isRainy,
-          isSunny: !isRainy && weatherCode <= 3 // Clear or partly cloudy
+          isSunny: isSunny
         };
       } catch (error) {
         // Default to sunny if API fails
