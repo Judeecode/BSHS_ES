@@ -3618,6 +3618,71 @@
 
     let currentWeatherData = null;
     let bannerDismissed = false;
+    let weatherDataCache = {
+      data: null,
+      timestamp: 0,
+      cacheTime: 5 * 60 * 1000 // 5 minutes cache
+    };
+    
+    // Centralized function to calculate rainfall intensity from weather data
+    function calculateRainfallIntensity(data) {
+      let rainfallIntensity = 0;
+      
+      if (data.forecast && data.forecast.forecastday && data.forecast.forecastday[0]) {
+        const today = data.forecast.forecastday[0];
+        const currentHour = new Date().getHours();
+        
+        if (today.hour && today.hour[currentHour]) {
+          const currentHourData = today.hour[currentHour];
+          const willRain = currentHourData.will_it_rain === 1;
+          const hourlyPrecip = currentHourData.precip_mm || 0;
+          
+          rainfallIntensity = (willRain && hourlyPrecip >= 0.1) ? hourlyPrecip : 0;
+        }
+      }
+      
+      // Fallback: use current precipitation if available
+      if (rainfallIntensity === 0) {
+        const currentPrecip = data.current.precip_mm || 0;
+        rainfallIntensity = currentPrecip >= 0.1 ? currentPrecip : 0;
+      }
+      
+      return rainfallIntensity;
+    }
+    
+    // Centralized function to fetch weather data with caching
+    async function fetchWeatherData(forceRefresh = false) {
+      const now = Date.now();
+      
+      // Return cached data if still valid
+      if (!forceRefresh && weatherDataCache.data && (now - weatherDataCache.timestamp) < weatherDataCache.cacheTime) {
+        return weatherDataCache.data;
+      }
+      
+      try {
+        const response = await fetch('/api/weather');
+        
+        if (!response.ok) {
+          throw new Error(`Weather API error: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        // Update cache
+        weatherDataCache.data = data;
+        weatherDataCache.timestamp = now;
+        
+        return data;
+      } catch (error) {
+        console.error('Weather fetch error:', error);
+        // Return cached data if available, even if expired
+        if (weatherDataCache.data) {
+          console.warn('Using cached weather data due to fetch error');
+          return weatherDataCache.data;
+        }
+        throw error;
+      }
+    }
 
     // Banner close button
     if (bannerClose) {
@@ -3659,14 +3724,8 @@
     // Fetch weather data and check rainfall warnings
     async function updateWeatherInfo() {
       try {
-        // Using secure backend proxy to protect API key
-        const response = await fetch('/api/weather');
-        
-        if (!response.ok) {
-          throw new Error(`Weather API error: ${response.status}`);
-        }
-        
-        const data = await response.json();
+        // Use centralized fetch with caching
+        const data = await fetchWeatherData();
         currentWeatherData = data;
         
         // Get current weather from WeatherAPI.com response
@@ -3676,31 +3735,8 @@
         const condition = data.current.condition.text;
         const conditionLower = condition.toLowerCase();
         
-        // Calculate rainfall intensity (mm/hour) using forecast data
-        // WeatherAPI provides hourly forecast which is more accurate for current conditions
-        let rainfallIntensity = 0;
-        
-        if (data.forecast && data.forecast.forecastday && data.forecast.forecastday[0]) {
-          const today = data.forecast.forecastday[0];
-          const currentHour = new Date().getHours();
-          
-          // Find the current hour's forecast
-          if (today.hour && today.hour[currentHour]) {
-            const currentHourData = today.hour[currentHour];
-            // Use will_it_rain and precip_mm from hourly forecast for accurate current rainfall rate
-            const willRain = currentHourData.will_it_rain === 1;
-            const hourlyPrecip = currentHourData.precip_mm || 0;
-            
-            // Only use precipitation value if forecast indicates rain and value is significant
-            rainfallIntensity = (willRain && hourlyPrecip >= 0.1) ? hourlyPrecip : 0;
-          }
-        }
-        
-        // Fallback: use current precipitation if available
-        if (rainfallIntensity === 0) {
-          const currentPrecip = data.current.precip_mm || 0;
-          rainfallIntensity = currentPrecip >= 0.1 ? currentPrecip : 0;
-        }
+        // Use centralized rainfall calculation
+        const rainfallIntensity = calculateRainfallIntensity(data);
         
         // Determine if it's actually raining based on MEASURABLE rainfall
         // Don't rely solely on condition text (e.g., "Patchy rain" might not mean active rain)
@@ -4414,31 +4450,9 @@
             const humidity = currentWeatherData.current.humidity || 0;
             const windSpeed = currentWeatherData.current.wind_kph || 0;
             const condition = currentWeatherData.current.condition.text;
-            const conditionLower = condition.toLowerCase();
             
-            // Calculate rainfall intensity using forecast data (same as main weather function)
-            let rainfallIntensity = 0;
-            
-            if (currentWeatherData.forecast && currentWeatherData.forecast.forecastday && currentWeatherData.forecast.forecastday[0]) {
-              const today = currentWeatherData.forecast.forecastday[0];
-              const currentHour = new Date().getHours();
-              
-              if (today.hour && today.hour[currentHour]) {
-                const currentHourData = today.hour[currentHour];
-                const willRain = currentHourData.will_it_rain === 1;
-                const hourlyPrecip = currentHourData.precip_mm || 0;
-                
-                rainfallIntensity = (willRain && hourlyPrecip >= 0.1) ? hourlyPrecip : 0;
-              }
-            }
-            
-            // Fallback: use current precipitation if available
-            if (rainfallIntensity === 0) {
-              const currentPrecip = currentWeatherData.current.precip_mm || 0;
-              rainfallIntensity = currentPrecip >= 0.1 ? currentPrecip : 0;
-            }
-            
-            // Determine if it's actually raining based on MEASURABLE rainfall
+            // Use centralized rainfall calculation
+            const rainfallIntensity = calculateRainfallIntensity(currentWeatherData);
             const isRaining = rainfallIntensity >= 0.5;
             
             weatherResponse += `🌡️ <strong>Temperature:</strong> ${temp}°C\n`;
@@ -4945,34 +4959,14 @@
     
     async function getWeatherCondition() {
       try {
-        // Using secure backend proxy to protect API key
-        const response = await fetch('/api/weather');
-        const data = await response.json();
+        // Use centralized fetch with caching
+        const data = await fetchWeatherData();
         
         // Get weather condition
         const condition = data.current.condition.text.toLowerCase();
         
-        // Calculate rainfall using forecast data for accuracy
-        let rainfallIntensity = 0;
-        
-        if (data.forecast && data.forecast.forecastday && data.forecast.forecastday[0]) {
-          const today = data.forecast.forecastday[0];
-          const currentHour = new Date().getHours();
-          
-          if (today.hour && today.hour[currentHour]) {
-            const currentHourData = today.hour[currentHour];
-            const willRain = currentHourData.will_it_rain === 1;
-            const hourlyPrecip = currentHourData.precip_mm || 0;
-            
-            rainfallIntensity = (willRain && hourlyPrecip >= 0.1) ? hourlyPrecip : 0;
-          }
-        }
-        
-        // Fallback to current precipitation if no forecast data
-        if (rainfallIntensity === 0) {
-          const currentPrecip = data.current.precip_mm || 0;
-          rainfallIntensity = currentPrecip;
-        }
+        // Use centralized rainfall calculation
+        const rainfallIntensity = calculateRainfallIntensity(data);
         
         // Determine if it's rainy based on measurable rainfall
         const isRainy = rainfallIntensity >= 0.5;
@@ -4988,8 +4982,14 @@
         };
       } catch (error) {
         console.error('Weather condition fetch error:', error);
-        // Default to sunny if API fails
-        return { isRainy: false, isSunny: true };
+        // Return null values to indicate error instead of misleading defaults
+        return { 
+          isRainy: false, 
+          isSunny: false, 
+          rainfallIntensity: 0, 
+          condition: 'unavailable',
+          error: true 
+        };
       }
     }
     
@@ -5210,10 +5210,10 @@
         const reminderHTML = `
           <div class="reminder-card">
             <div class="reminder-header">
-              <div class="reminder-icon">${sanitizeHTML(reminder.icon)}</div>
+              <div class="reminder-icon">${reminder.icon}</div>
               <div class="reminder-header-text">
-                <h3>${sanitizeHTML(reminder.title)}</h3>
-                <span class="reminder-date-badge">📅 ${sanitizeHTML(getDayName(dayOfWeek))}, ${sanitizeHTML(formatDate(now))}</span>
+                <h3>${reminder.title}</h3>
+                <span class="reminder-date-badge">📅 ${getDayName(dayOfWeek)}, ${formatDate(now)}</span>
               </div>
             </div>
             <div class="reminder-content">
@@ -5223,7 +5223,8 @@
           </div>
         `;
         
-        setSafeHTML(container, reminderHTML);
+        // Use innerHTML directly since all content is generated internally (no user input)
+        container.innerHTML = reminderHTML;
       }
     }
     
