@@ -4926,16 +4926,17 @@
           rainfallIntensity = currentPrecip;
         }
         
-        // Determine if it's rainy
-        const isRainy = condition.includes('rain') || condition.includes('drizzle') || 
-                        condition.includes('shower') || rainfallIntensity > 0;
+        // Determine if it's rainy based on measurable rainfall
+        const isRainy = rainfallIntensity >= 0.5;
         
         // Determine if it's sunny
         const isSunny = condition.includes('sunny') || condition.includes('clear');
         
         return {
           isRainy: isRainy,
-          isSunny: isSunny
+          isSunny: isSunny,
+          rainfallIntensity: rainfallIntensity,
+          condition: condition
         };
       } catch (error) {
         console.error('Weather condition fetch error:', error);
@@ -4970,8 +4971,37 @@
       // Generate reminder based on day of week
       switch(dayOfWeek) {
         case 1: // Monday
-          // Flag ceremony announcement
-          if (weather.isSunny) {
+          // Flag ceremony announcement - check rainfall intensity for accurate status
+          const rainfall = weather.rainfallIntensity || 0;
+          
+          if (rainfall >= 7.5) {
+            // Heavy rain - ceremony cancelled
+            reminder = {
+              icon: '🌧️',
+              title: 'No Flag Ceremony Today',
+              content: `Good morning, students! Due to heavy rainfall, there will be <strong>NO Flag Ceremony</strong> today. Stay safe and dry!`,
+              details: [
+                { label: '🌧️ Weather', value: `Heavy rain (${rainfall.toFixed(1)}mm/h)` },
+                { label: '👔 Dress Code', value: 'Complete uniform still required' },
+                { label: '🆔 Requirement', value: 'Bring your school ID' },
+                { label: '☂️ Reminder', value: 'Bring your umbrella and raincoat' }
+              ]
+            };
+          } else if (rainfall >= 0.5) {
+            // Light rain - ceremony may be cancelled
+            reminder = {
+              icon: '🌦️',
+              title: 'Flag Ceremony May Be Cancelled',
+              content: `Good morning, students! Due to light rain, the <strong>Flag Ceremony may be cancelled</strong>. Please bring your umbrella and wait for announcements.`,
+              details: [
+                { label: '🌦️ Weather', value: `Light rain (${rainfall.toFixed(1)}mm/h)` },
+                { label: '⏰ Time', value: '7:15 AM - Check for updates' },
+                { label: '👔 Dress Code', value: 'Complete uniform required' },
+                { label: '☂️ Reminder', value: 'Bring umbrella just in case' }
+              ]
+            };
+          } else if (weather.isSunny) {
+            // Sunny - ceremony will proceed
             reminder = {
               icon: '🇵🇭',
               title: 'Flag Ceremony Today',
@@ -4984,15 +5014,16 @@
               ]
             };
           } else {
+            // Cloudy/other - ceremony will proceed
             reminder = {
-              icon: '🌧️',
-              title: 'No Flag Ceremony Today',
-              content: `Good morning, students! Due to rainy weather, there will be <strong>NO Flag Ceremony</strong> today. Stay safe and dry!`,
+              icon: '🇵🇭',
+              title: 'Flag Ceremony Today',
+              content: `Good morning, students! There will be a <strong>Flag Ceremony</strong> today. Let's show our respect to our national flag and start the week with pride!`,
               details: [
-                { label: '🌧️ Weather', value: 'Rainy conditions' },
-                { label: '👔 Dress Code', value: 'Complete uniform still required' },
-                { label: '🆔 Requirement', value: 'Bring your school ID' },
-                { label: '☂️ Reminder', value: 'Bring your umbrella' }
+                { label: '⏰ Time', value: '7:15 AM sharp' },
+                { label: '☁️ Weather', value: `${weather.condition || 'Good conditions'} - Ceremony will proceed` },
+                { label: '👔 Dress Code', value: 'Complete uniform required' },
+                { label: '🆔 Requirement', value: 'Bring your school ID' }
               ]
             };
           }
@@ -5039,28 +5070,45 @@
           
         case 5: // Friday
           const currentHour = now.getHours();
+          const fridayRainfall = weather.rainfallIntensity || 0;
+          
           if (currentHour >= 14) { // Show after 2 PM - Flag retreat info
-            if (!weather.isRainy) {
+            if (fridayRainfall >= 7.5) {
+              // Heavy rain - ceremony cancelled
+              reminder = {
+                icon: '🌧️',
+                title: 'No Flag Retreat Today',
+                content: `Attention, students! Due to heavy rainfall, there will be <strong>NO Flag Retreat</strong> at 4:00 PM today. Stay safe and have a great weekend!`,
+                details: [
+                  { label: '🌧️ Weather', value: `Heavy rain (${fridayRainfall.toFixed(1)}mm/h)` },
+                  { label: '👔 Dress Code', value: 'Complete school uniform' },
+                  { label: '☂️ Safety', value: 'Proceed home safely with umbrella' }
+                ]
+              };
+            } else if (fridayRainfall >= 0.5) {
+              // Light rain - ceremony may be cancelled
+              reminder = {
+                icon: '🌦️',
+                title: 'Flag Retreat May Be Cancelled',
+                content: `Attention, students! Due to light rain, the <strong>Flag Retreat may be cancelled</strong>. Please wait for announcements at 4:00 PM.`,
+                details: [
+                  { label: '🌦️ Weather', value: `Light rain (${fridayRainfall.toFixed(1)}mm/h)` },
+                  { label: '⏰ Time', value: '4:00 PM - Check for updates' },
+                  { label: '👔 Dress Code', value: 'Complete school uniform' },
+                  { label: '☂️ Reminder', value: 'Bring umbrella just in case' }
+                ]
+              };
+            } else {
+              // Good weather - ceremony will proceed
               reminder = {
                 icon: '🇵🇭',
                 title: 'Flag Retreat at 4:00 PM',
                 content: `Attention, students! There will be a <strong>Flag Retreat</strong> ceremony this afternoon. Let's end the week with honor and respect for our flag!`,
                 details: [
                   { label: '⏰ Time', value: '4:00 PM sharp' },
-                  { label: '☀️ Weather', value: 'Good conditions - Will proceed' },
+                  { label: weather.isSunny ? '☀️ Weather' : '☁️ Weather', value: `${weather.condition || 'Good conditions'} - Will proceed` },
                   { label: '👔 Dress Code', value: 'Complete school uniform' },
                   { label: '🙏 Reminder', value: 'Show respect during ceremony' }
-                ]
-              };
-            } else {
-              reminder = {
-                icon: '🌧️',
-                title: 'No Flag Retreat Today',
-                content: `Attention, students! Due to rainy weather, there will be <strong>NO Flag Retreat</strong> at 4:00 PM today. Stay safe and have a great weekend!`,
-                details: [
-                  { label: '🌧️ Weather', value: 'Rainy conditions' },
-                  { label: '👔 Dress Code', value: 'Complete school uniform' },
-                  { label: '☂️ Safety', value: 'Proceed home safely' }
                 ]
               };
             }
