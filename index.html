@@ -2,11 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  
+  <!-- Security Headers -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://cdn.jsdelivr.net https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://unpkg.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.weatherapi.com; frame-src 'self';">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
   
   <!-- Primary Meta Tags -->
   <title>Balangkayan Senior High School (BSHS) - Stand Alone | Eastern Samar</title>
-  <meta name="title" content="Balangkayan Senior High School (BSHS) - Stand Alone | Eastern Samar">
   <meta name="description" content="Official website of Balangkayan Senior High School - Stand Alone (BSHS) in Eastern Samar. Offering Academic Track (ABM, HUMSS) and Technical-Vocational Track (EIM, CSS, Home Economics). Enroll now for quality education.">
   <meta name="keywords" content="Balangkayan Senior High School, BSHS, Balangkayan, Eastern Samar, senior high school, SHS, ABM, HUMSS, EIM, CSS, Home Economics, enrollment, education, Philippines, stand alone">
   <meta name="author" content="Balangkayan Senior High School - Stand Alone">
@@ -39,15 +45,15 @@
   <link rel="icon" type="image/jpeg" href="bshs logo.jfif">
   <link rel="apple-touch-icon" href="bshs logo.jfif">
   
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
   
   <!-- Swiper CSS -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" integrity="sha256-6z8xKCGqLjKLqmKLqKqKqKqKqKqKqKqKqKqKqKqKqKs=" crossorigin="anonymous">
   
   <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.tailwindcss.com" crossorigin="anonymous"></script>
   <script>
     tailwind.config = {
       theme: {
@@ -160,21 +166,6 @@
   </script>
   
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      line-height: 1.6;
-      background: #ffffff;
-      color: #1a1a2e;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-    
     :root {
       --primary: #FCF259;
       --secondary: #B4E50D;
@@ -183,6 +174,29 @@
       --accent: #4a90e2;
       --text-dark: #1a1a2e;
       --text-light: #6c757d;
+      --background: #ffffff;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text-dark);
+      background: var(--background);
+      overflow-x: hidden;
+      width: 100%;
+      position: relative;
+      padding-top: 105px;
     }
 
     /* Animations */
@@ -234,6 +248,127 @@
       opacity: 1;
       transform: translateY(0);
     }
+    
+    /* Animation delay classes */
+    .delay-200 {
+      animation-delay: 0.2s;
+    }
+    
+    .delay-300 {
+      animation-delay: 0.3s;
+    }
+    
+    .delay-400 {
+      animation-delay: 0.4s;
+    }
+    
+    /* Utility classes */
+    .hidden-element {
+      display: none !important;
+    }
+
+    /* Emergency Alert Banner */
+    .emergency-alert-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 10000;
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      color: white;
+      padding: 15px 20px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 1.1em;
+      box-shadow: 0 4px 20px rgba(220, 38, 38, 0.5);
+      animation: slide-down-banner 0.5s ease-out, pulse-banner 2s ease-in-out infinite;
+      display: none;
+      border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .emergency-alert-banner.active {
+      display: block;
+    }
+
+    .emergency-alert-banner.orange {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      box-shadow: 0 4px 20px rgba(249, 115, 22, 0.5);
+    }
+
+    .emergency-alert-banner .banner-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .emergency-alert-banner .banner-icon {
+      font-size: 1.5em;
+      animation: shake-icon 0.5s ease-in-out infinite;
+    }
+
+    .emergency-alert-banner .banner-close {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2em;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .emergency-alert-banner .banner-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    @keyframes slide-down-banner {
+      from {
+        transform: translateY(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse-banner {
+      0%, 100% {
+        box-shadow: 0 4px 20px rgba(220, 38, 38, 0.5);
+      }
+      50% {
+        box-shadow: 0 4px 30px rgba(220, 38, 38, 0.8);
+      }
+    }
+
+    @keyframes shake-icon {
+      0%, 100% { transform: rotate(0deg); }
+      25% { transform: rotate(-10deg); }
+      75% { transform: rotate(10deg); }
+    }
+
+    /* Adjust header when banner is active */
+    body.banner-active header {
+      top: 70px;
+    }
+
+    body.banner-active .hero {
+      margin-top: 70px;
+    }
 
     /* Header */
     header {
@@ -243,62 +378,158 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
       z-index: 1000;
-      box-shadow: 0 2px 30px rgba(0,0,0,0.05);
-      border-bottom: 1px solid rgba(252, 242, 89, 0.2);
+      box-shadow: 0 2px 30px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+    }
+    
+    header.scrolled {
+      padding: 15px 60px;
+      box-shadow: 0 4px 40px rgba(0,0,0,0.12);
+      background: rgba(255, 255, 255, 0.95);
+    }
+    
+    header.scrolled .logo img {
+      width: 50px;
+      height: 50px;
+    }
+    
+    /* Hamburger Menu Button */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 30px;
+      height: 24px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 1001;
+      position: relative;
+    }
+    
+    .hamburger span {
+      width: 30px;
+      height: 3px;
+      background: var(--text-dark);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+    
+    .hamburger.active span:nth-child(1) {
+      transform: translateY(10.5px) rotate(45deg);
+    }
+    
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    
+    .hamburger.active span:nth-child(3) {
+      transform: translateY(-10.5px) rotate(-45deg);
+    }
+    
+    body.dark-mode .hamburger span {
+      background: #e0e0e0;
     }
 
     .logo {
       display: flex;
       align-items: center;
-      gap: 15px;
-      transition: transform 0.3s ease;
-    }
-
-    .logo:hover {
-      transform: scale(1.03);
-    }
-
-    .logo img {
-      width: 55px;
-      height: 55px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 3px solid var(--primary);
-      box-shadow: 0 4px 20px rgba(252, 242, 89, 0.4);
+      gap: 18px;
       transition: all 0.3s ease;
     }
 
+    .logo:hover {
+      transform: scale(1.02);
+    }
+
+    .logo img {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      box-shadow: 0 4px 20px rgba(252, 242, 89, 0.5), 0 0 0 0 rgba(252, 242, 89, 0.4);
+      transition: all 0.4s ease;
+      animation: logo-pulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes logo-pulse {
+      0%, 100% {
+        box-shadow: 0 4px 20px rgba(252, 242, 89, 0.5), 0 0 0 0 rgba(252, 242, 89, 0.4);
+      }
+      50% {
+        box-shadow: 0 6px 30px rgba(252, 242, 89, 0.6), 0 0 0 8px rgba(252, 242, 89, 0.1);
+      }
+    }
+
     .logo:hover img {
-      box-shadow: 0 6px 30px rgba(252, 242, 89, 0.6);
-      transform: rotate(5deg);
+      box-shadow: 0 8px 35px rgba(252, 242, 89, 0.7);
+      transform: rotate(5deg) scale(1.05);
     }
 
     .logo-text {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.3em;
-      font-weight: 700;
+      font-size: 1.5em;
+      font-weight: 800;
       color: var(--text-dark);
       letter-spacing: -0.5px;
+      line-height: 1.3;
+      background: linear-gradient(135deg, var(--text-dark), #2d3748);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      position: relative;
+    }
+    
+    .logo-text::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary), var(--button));
+      transition: width 0.4s ease;
+      border-radius: 2px;
+    }
+    
+    .logo:hover .logo-text::after {
+      width: 100%;
+    }
+    
+    body.dark-mode .logo-text {
+      background: linear-gradient(135deg, #e0e0e0, #ffffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     nav ul {
       display: flex;
-      gap: 40px;
+      gap: 45px;
       list-style: none;
       align-items: center;
     }
 
     nav a {
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text-dark);
-      padding: 8px 0;
+      padding: 12px 0;
       transition: all 0.3s ease;
       text-decoration: none;
       position: relative;
-      font-size: 1.05em;
+      font-size: 1.15em;
+      letter-spacing: 0.3px;
     }
 
     nav a::after {
@@ -307,9 +538,10 @@
       bottom: 0;
       left: 0;
       width: 0;
-      height: 2px;
+      height: 3px;
       background: linear-gradient(90deg, var(--button), var(--primary));
       transition: width 0.3s ease;
+      border-radius: 2px;
     }
 
     nav a:hover::after {
@@ -318,24 +550,30 @@
 
     nav a:hover {
       color: var(--button);
+      transform: translateY(-2px);
+    }
+    
+    nav a:active {
+      transform: translateY(0);
     }
 
     /* Theme Toggle Button */
     .theme-toggle {
-      background: linear-gradient(135deg, #ff7b00, #ff5722);
+      background: linear-gradient(135deg, #ffd700, #ff8c00);
       border: none;
-      width: 45px;
-      height: 45px;
+      width: 55px;
+      height: 55px;
       border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5em;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(255, 123, 0, 0.3);
+      font-size: 1.6em;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
       position: relative;
       overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.3);
     }
 
     .theme-toggle::before {
@@ -346,25 +584,297 @@
       width: 0;
       height: 0;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
       transform: translate(-50%, -50%);
-      transition: width 0.4s, height 0.4s;
+      transition: width 0.6s ease, height 0.6s ease;
     }
 
     .theme-toggle:hover::before {
-      width: 100%;
-      height: 100%;
+      width: 120%;
+      height: 120%;
     }
 
     .theme-toggle:hover {
-      transform: scale(1.1) rotate(15deg);
-      box-shadow: 0 6px 20px rgba(255, 123, 0, 0.5);
+      transform: scale(1.15) rotate(180deg);
+      box-shadow: 0 8px 30px rgba(255, 215, 0, 0.6);
+    }
+
+    .theme-toggle:active {
+      transform: scale(0.95);
     }
 
     .theme-icon {
       position: relative;
       z-index: 1;
-      transition: transform 0.3s ease;
+      transition: transform 0.4s ease;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-3px); }
+    }
+    
+    body.dark-mode .theme-toggle {
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+    }
+    
+    body.dark-mode .theme-toggle:hover {
+      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6);
+    }
+    
+    /* Weather Toggle Button */
+    .weather-toggle {
+      background: linear-gradient(135deg, #60a5fa, #3b82f6, #2563eb);
+      border: none;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6em;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+      position: relative;
+      overflow: hidden;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .weather-toggle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.4), transparent);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+    
+    .weather-toggle:hover::before {
+      width: 120%;
+      height: 120%;
+    }
+    
+    .weather-toggle:hover {
+      transform: scale(1.15) rotate(-10deg);
+      box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6);
+    }
+    
+    .weather-toggle:active {
+      transform: scale(0.95);
+    }
+    
+    .weather-toggle.warning {
+      background: linear-gradient(135deg, #f59e0b, #f97316, #dc2626);
+      animation: pulse-warning 2s ease-in-out infinite;
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+    
+    @keyframes pulse-warning {
+      0%, 100% {
+        box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
+        transform: scale(1);
+      }
+      50% {
+        box-shadow: 0 8px 35px rgba(239, 68, 68, 0.8), 0 0 20px rgba(239, 68, 68, 0.4);
+        transform: scale(1.08);
+      }
+    }
+    
+    .weather-icon {
+      position: relative;
+      z-index: 1;
+      transition: transform 0.4s ease;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      animation: bounce-subtle 2s ease-in-out infinite;
+    }
+    
+    @keyframes bounce-subtle {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(5deg); }
+    }
+    
+    body.dark-mode .weather-toggle {
+      background: linear-gradient(135deg, #3b82f6, #2563eb, #1e40af);
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.5);
+    }
+    
+    body.dark-mode .weather-toggle:hover {
+      box-shadow: 0 8px 30px rgba(37, 99, 235, 0.7);
+    }
+    
+    /* Weather Alert Modal */
+    .weather-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(5px);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .weather-modal.active {
+      display: flex;
+    }
+    
+    .weather-modal-content {
+      background: white;
+      border-radius: 25px;
+      padding: 40px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: slideUp 0.4s ease;
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .weather-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.1);
+      border: none;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    
+    .weather-modal-close:hover {
+      background: rgba(0, 0, 0, 0.2);
+      transform: rotate(90deg);
+    }
+    
+    .weather-modal-header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    
+    .weather-modal-icon {
+      font-size: 4em;
+      margin-bottom: 15px;
+    }
+    
+    .weather-modal-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8em;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 10px;
+    }
+    
+    .weather-status {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+    }
+    
+    .weather-status.normal {
+      background: linear-gradient(135deg, #4caf50, #45a049);
+      color: white;
+    }
+    
+    .weather-status.yellow {
+      background: linear-gradient(135deg, #ffd700, #ffa500);
+      color: #333;
+    }
+    
+    .weather-status.orange {
+      background: linear-gradient(135deg, #ff9800, #ff5722);
+      color: white;
+    }
+    
+    .weather-status.red {
+      background: linear-gradient(135deg, #f44336, #d32f2f);
+      color: white;
+      animation: pulse-warning 2s ease-in-out infinite;
+    }
+    
+    .weather-info {
+      background: rgba(74, 144, 226, 0.1);
+      border-left: 4px solid #4a90e2;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .weather-info p {
+      margin: 10px 0;
+      color: var(--text-light);
+      line-height: 1.6;
+    }
+    
+    .weather-info strong {
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+    
+    .suspension-notice {
+      background: linear-gradient(135deg, rgba(255, 87, 34, 0.1), rgba(244, 67, 54, 0.1));
+      border: 2px solid #ff5722;
+      border-radius: 15px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    
+    .suspension-notice h4 {
+      color: #d32f2f;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .suspension-notice p {
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin: 8px 0;
+    }
+    
+    .weather-update-time {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 0.85em;
+      margin-top: 20px;
+      font-style: italic;
     }
 
     /* Dark Mode Styles */
@@ -377,6 +887,11 @@
       background: rgba(26, 26, 46, 0.98);
       border-bottom: 1px solid rgba(252, 242, 89, 0.3);
     }
+    
+    body.dark-mode header.scrolled {
+      background: rgba(26, 26, 46, 0.95);
+      box-shadow: 0 4px 40px rgba(0,0,0,0.3);
+    }
 
     body.dark-mode .logo-text,
     body.dark-mode nav a {
@@ -385,6 +900,41 @@
 
     body.dark-mode nav a:hover {
       color: var(--primary);
+    }
+    
+    @media (max-width: 768px) {
+      body.dark-mode nav {
+        background: rgba(26, 26, 46, 0.98);
+      }
+    }
+    
+    body.dark-mode .weather-modal-content {
+      background: #2d2d44;
+    }
+    
+    body.dark-mode .weather-modal-title {
+      color: #e0e0e0;
+    }
+    
+    body.dark-mode .weather-info {
+      background: rgba(74, 144, 226, 0.15);
+      border-left-color: #4a90e2;
+    }
+    
+    body.dark-mode .weather-info p {
+      color: #b0b0b0;
+    }
+    
+    body.dark-mode .weather-info strong {
+      color: #e0e0e0;
+    }
+    
+    body.dark-mode .suspension-notice {
+      background: linear-gradient(135deg, rgba(255, 87, 34, 0.2), rgba(244, 67, 54, 0.2));
+    }
+    
+    body.dark-mode .suspension-notice p {
+      color: #e0e0e0;
     }
 
     body.dark-mode .hero {
@@ -467,6 +1017,81 @@
 
     body.dark-mode .map-info-item strong {
       color: #e0e0e0;
+    }
+
+    body.dark-mode .announcements-section {
+      background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 50%, #1a1a2e 100%);
+    }
+    
+    body.dark-mode .event-card {
+      background: #2d2d44;
+      border-color: rgba(74, 144, 226, 0.3);
+    }
+    
+    body.dark-mode .event-header {
+      border-bottom-color: rgba(74, 144, 226, 0.2);
+    }
+    
+    body.dark-mode .event-header-text h3 {
+      color: #e0e0e0;
+    }
+    
+    body.dark-mode .event-content {
+      color: #b0b0b0;
+    }
+    
+    body.dark-mode .event-detail-item {
+      background: rgba(74, 144, 226, 0.12);
+      border-left-color: #4a90e2;
+      color: #e0e0e0;
+    }
+    
+    body.dark-mode .event-detail-item strong {
+      color: #4a90e2;
+    }
+    
+    body.dark-mode .empty-events {
+      background: #2d2d44;
+      border-color: rgba(74, 144, 226, 0.3);
+    }
+    
+    body.dark-mode .empty-events h3 {
+      color: #e0e0e0;
+    }
+    
+    body.dark-mode .empty-events p {
+      color: #b0b0b0;
+    }
+    
+    body.dark-mode .daily-reminders-section {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+    }
+    
+    body.dark-mode .reminder-card {
+      background: #2d2d44;
+      border-color: rgba(255, 123, 0, 0.3);
+    }
+    
+    body.dark-mode .reminder-header {
+      border-bottom-color: rgba(255, 123, 0, 0.2);
+    }
+    
+    body.dark-mode .reminder-header-text h3 {
+      color: #e0e0e0;
+    }
+    
+    body.dark-mode .reminder-content {
+      color: #b0b0b0;
+    }
+    
+    body.dark-mode .reminder-detail-item {
+      background: rgba(255, 123, 0, 0.12);
+      border-left-color: var(--button);
+      color: #e0e0e0;
+    }
+    
+    body.dark-mode .reminder-detail-item strong {
+      color: var(--button);
     }
 
     body.dark-mode #pledge {
@@ -1036,68 +1661,285 @@
     }
 
     @media (max-width: 768px) {
+      body {
+        padding-top: 80px;
+      }
+      
       header {
-        padding: 15px 20px;
-        flex-direction: column;
-        gap: 15px;
+        padding: 18px 20px;
+      }
+      
+      header.scrolled {
+        padding: 14px 20px;
+      }
+      
+      header.scrolled .logo img {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .logo {
+        gap: 12px;
+        flex: 1;
+      }
+      
+      .logo img {
+        width: 55px;
+        height: 55px;
+      }
+      
+      .logo-text {
+        font-size: 1.15em;
+        max-width: 220px;
+        line-height: 1.3;
+        font-weight: 800;
+      }
+      
+      .hamburger {
+        display: flex;
+        flex-shrink: 0;
+      }
+      
+      nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 300px;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        padding: 100px 40px 40px 40px;
+        transition: right 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        z-index: 1000;
+        box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+        overflow-y: auto;
+      }
+      
+      nav.active {
+        right: 0;
       }
       
       nav ul {
-        gap: 25px;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-direction: column;
+        gap: 0;
+        align-items: flex-start;
+      }
+      
+      nav ul li {
+        width: 100%;
+        opacity: 0;
+        transform: translateX(20px);
+        animation: slideInNav 0.4s ease forwards;
+      }
+      
+      nav.active ul li {
+        opacity: 1;
+        transform: translateX(0);
+      }
+      
+      nav.active ul li:nth-child(1) { animation-delay: 0.1s; }
+      nav.active ul li:nth-child(2) { animation-delay: 0.15s; }
+      nav.active ul li:nth-child(3) { animation-delay: 0.2s; }
+      nav.active ul li:nth-child(4) { animation-delay: 0.25s; }
+      nav.active ul li:nth-child(5) { animation-delay: 0.3s; }
+      nav.active ul li:nth-child(6) { animation-delay: 0.35s; }
+      
+      @keyframes slideInNav {
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
       
       nav a {
-        font-size: 1em;
+        font-size: 1.2em;
+        padding: 18px 0;
+        display: block;
+        width: 100%;
+        font-weight: 600;
+      }
+      
+      .theme-toggle,
+      .weather-toggle {
+        width: 100%;
+        height: 55px;
+        border-radius: 12px;
+        justify-content: flex-start;
+        padding-left: 0;
+        font-size: 1.3em;
+        margin-top: 10px;
       }
       
       .hero {
-        padding: 60px 20px;
+        padding: 60px 25px 50px 25px;
+        min-height: auto;
       }
       
       .hero h1 {
-        font-size: 3em;
+        font-size: 2.8em;
+        line-height: 1.2;
+        margin-bottom: 20px;
       }
       
       .hero p {
         font-size: 1.1em;
+        line-height: 1.7;
+        margin-bottom: 25px;
+      }
+      
+      .hero-visual-card {
+        padding: 45px 30px;
+        margin-top: 35px;
+      }
+      
+      .hero-visual-card h3 {
+        font-size: 2em;
       }
       
       section {
-        padding: 80px 20px;
+        padding: 60px 25px;
       }
       
       section h2 {
-        font-size: 2.5em;
+        font-size: 2.2em;
+        margin-bottom: 20px;
+      }
+      
+      section > p {
+        font-size: 1.05em;
+        line-height: 1.7;
       }
       
       .programs-grid {
         grid-template-columns: 1fr;
-        gap: 35px;
+        gap: 30px;
+      }
+      
+      .program-card {
+        padding: 35px 25px;
+      }
+      
+      .program-card h3 {
+        font-size: 1.5em;
       }
       
       .testimonials-container {
         grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      
+      .testimonial-card {
+        padding: 30px 25px;
+      }
+      
+      .weather-modal-content {
+        width: 95%;
+        padding: 30px 20px;
+        max-height: 85vh;
+      }
+      
+      .weather-modal-title {
+        font-size: 1.5em;
+      }
+      
+      .weather-modal-icon {
+        font-size: 3em;
+      }
+      
+      footer {
+        padding: 40px 20px 30px 20px;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        text-align: center;
+      }
+      
+      .footer-section h3 {
+        font-size: 1.3em;
       }
     }
 
     @media (max-width: 480px) {
+      body {
+        padding-top: 75px;
+      }
+      
+      header {
+        padding: 15px 18px;
+      }
+      
+      .logo-text {
+        font-size: 1em;
+        max-width: 170px;
+        font-weight: 800;
+      }
+      
+      .logo img {
+        width: 50px;
+        height: 50px;
+      }
+      
+      header.scrolled .logo img {
+        width: 45px;
+        height: 45px;
+      }
+      
+      nav ul {
+        gap: 10px;
+      }
+      
+      nav a {
+        font-size: 1.15em;
+      }
+      
+      .theme-toggle,
+      .weather-toggle {
+        width: 50px;
+        height: 50px;
+        font-size: 1.4em;
+      }
+      
+      .hero {
+        padding: 50px 20px 40px 20px;
+      }
+      
       .hero h1 {
-        font-size: 2.2em;
+        font-size: 2.3em;
+        margin-bottom: 18px;
+      }
+      
+      .hero p {
+        font-size: 1.05em;
+        line-height: 1.6;
       }
       
       .hero-visual-card {
-        padding: 40px 30px;
+        padding: 40px 25px;
+      }
+      
+      .hero-visual-card h3 {
+        font-size: 1.7em;
       }
       
       .btn {
-        padding: 16px 35px;
+        padding: 15px 32px;
         font-size: 1.05em;
+      }
+      
+      section {
+        padding: 50px 20px;
       }
       
       section h2 {
         font-size: 2em;
+        margin-bottom: 18px;
+      }
+      
+      section > p {
+        font-size: 1.02em;
+        line-height: 1.6;
       }
     }
 
@@ -1264,12 +2106,7 @@
 
     .message {
       display: flex;
-      gap: 10px;
-      animation: fadeInUp 0.3s ease;
-    }
-
-    .message.user {
-      flex-direction: row-reverse;
+      animation: fadeInUp 0.8s ease-out;
     }
 
     .message .avatar {
@@ -1413,15 +2250,78 @@
       }
     }
 
-    @media (max-width: 480px) {
-      .chatbot-window {
-        width: calc(100vw - 40px);
-        height: 500px;
-      }
-
+    @media (max-width: 768px) {
       .chatbot-container {
-        bottom: 20px;
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        z-index: 9999 !important;
+      }
+      
+      .chatbot-window {
+        position: fixed;
+        width: calc(100vw - 40px);
+        height: 70vh;
+        max-height: 600px;
+        bottom: 90px;
         right: 20px;
+        left: auto;
+        transform: none;
+      }
+      
+      .chatbot-button {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .chatbot-header {
+        padding: 15px;
+      }
+      
+      .chatbot-messages {
+        padding: 15px;
+      }
+      
+      .message .bubble {
+        max-width: 85%;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .chatbot-container {
+        position: fixed !important;
+        bottom: 15px !important;
+        right: 15px !important;
+        z-index: 9999 !important;
+      }
+      
+      .chatbot-window {
+        position: fixed;
+        width: calc(100vw - 30px);
+        height: 65vh;
+        max-height: 500px;
+        bottom: 80px;
+        right: 15px;
+        left: auto;
+      }
+      
+      .chatbot-button {
+        width: 55px;
+        height: 55px;
+        font-size: 1.8em;
+      }
+      
+      .chatbot-header .avatar {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .chatbot-header .info h3 {
+        font-size: 1em;
+      }
+      
+      .chatbot-header .info p {
+        font-size: 0.8em;
       }
     }
 
@@ -1569,10 +2469,10 @@
       }
     }
 
-    /* Announcement Carousel Styles */
+    /* Important Events & Schedules Section */
     .announcements-section {
       padding: 80px 60px;
-      background: linear-gradient(135deg, #fff9e6 0%, #ffffff 100%);
+      background: linear-gradient(135deg, #e6f7ff 0%, #cceeff 50%, #ffffff 100%);
       position: relative;
       overflow: hidden;
     }
@@ -1593,158 +2493,286 @@
       margin-bottom: 50px;
     }
 
-    .announcement-carousel {
-      max-width: 1200px;
+    .events-container {
+      max-width: 900px;
       margin: 0 auto;
-      position: relative;
-    }
-
-    .swiper {
-      width: 100%;
-      padding: 20px 0 60px 0;
-    }
-
-    .announcement-slide {
-      background: white;
-      border-radius: 25px;
-      padding: 50px 40px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-      min-height: 350px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      border: 3px solid var(--primary);
-      transition: all 0.3s ease;
+      gap: 30px;
+    }
+
+    .event-card {
+      background: white;
+      border-radius: 20px;
+      padding: 35px 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      border: 2px solid rgba(74, 144, 226, 0.2);
+      transition: all 0.4s ease;
       position: relative;
       overflow: hidden;
     }
-
-    .announcement-slide::before {
+    
+    .event-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      height: 8px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--button));
+      bottom: 0;
+      width: 6px;
+      background: linear-gradient(180deg, #4a90e2, #357abd);
     }
-
-    .announcement-slide:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 50px rgba(252, 242, 89, 0.3);
+    
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(74, 144, 226, 0.2);
+      border-color: #4a90e2;
     }
-
-    .announcement-icon {
-      font-size: 4em;
-      margin-bottom: 25px;
-      animation: bounce 2s infinite;
-    }
-
-    .announcement-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2em;
-      font-weight: 700;
-      color: var(--text-dark);
-      margin-bottom: 20px;
-    }
-
-    .announcement-date {
-      color: var(--button);
-      font-weight: 600;
-      font-size: 1em;
-      margin-bottom: 15px;
+    
+    .event-header {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .announcement-content {
-      color: var(--text-light);
-      font-size: 1.1em;
-      line-height: 1.8;
+      gap: 20px;
       margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid rgba(74, 144, 226, 0.15);
     }
-
-    .announcement-badge {
-      display: inline-block;
-      background: var(--primary);
+    
+    .event-icon {
+      font-size: 3.5em;
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    }
+    
+    .event-header-text h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8em;
+      font-weight: 800;
       color: var(--text-dark);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    
+    .event-date-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #4a90e2, #357abd);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 15px;
+      font-weight: 700;
+      font-size: 0.75em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .event-content {
+      color: var(--text-light);
+      font-size: 1.05em;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    
+    .event-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    
+    .event-detail-item {
+      background: rgba(74, 144, 226, 0.08);
+      padding: 12px 16px;
+      border-radius: 10px;
+      border-left: 3px solid #4a90e2;
+      font-size: 0.95em;
+      color: var(--text-dark);
+      transition: all 0.3s ease;
+    }
+    
+    .event-detail-item:hover {
+      background: rgba(74, 144, 226, 0.15);
+      transform: translateX(3px);
+    }
+    
+    .event-detail-item strong {
+      color: #4a90e2;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.88em;
+      font-weight: 700;
+    }
+    
+    .event-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #ff5722, #e64a19);
+      color: white;
       padding: 8px 20px;
       border-radius: 20px;
-      font-weight: 600;
-      font-size: 0.9em;
-      margin-top: 10px;
-    }
-
-    /* Swiper Navigation Buttons */
-    .swiper-button-next,
-    .swiper-button-prev {
-      background: var(--primary);
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      color: var(--text-dark) !important;
-      font-weight: 900;
+      font-weight: 700;
+      font-size: 0.82em;
+      box-shadow: 0 3px 10px rgba(255, 87, 34, 0.3);
       transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 15px;
+      display: inline-block;
     }
-
-    .swiper-button-next:hover,
-    .swiper-button-prev:hover {
-      background: var(--button);
-      color: white !important;
-      transform: scale(1.1);
-    }
-
-    .swiper-button-next::after,
-    .swiper-button-prev::after {
-      font-size: 20px;
-      font-weight: 900;
-    }
-
-    /* Swiper Pagination */
-    .swiper-pagination-bullet {
-      width: 12px;
-      height: 12px;
-      background: var(--text-light);
-      opacity: 0.5;
-      transition: all 0.3s ease;
-    }
-
-    .swiper-pagination-bullet-active {
-      background: var(--button);
-      opacity: 1;
-      width: 30px;
-      border-radius: 6px;
+    
+    .event-badge:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
     }
 
     /* Empty State */
-    .empty-announcements {
+    .empty-events {
       text-align: center;
       padding: 80px 40px;
       background: white;
       border-radius: 25px;
-      border: 3px dashed var(--primary);
+      border: 3px dashed #4a90e2;
+      max-width: 900px;
+      margin: 0 auto;
     }
 
-    .empty-announcements-icon {
+    .empty-events-icon {
       font-size: 5em;
       margin-bottom: 20px;
       opacity: 0.5;
     }
 
-    .empty-announcements h3 {
+    .empty-events h3 {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 2em;
       color: var(--text-dark);
       margin-bottom: 15px;
     }
 
-    .empty-announcements p {
+    .empty-events p {
       color: var(--text-light);
       font-size: 1.1em;
+    }
+
+    /* Daily Reminders Section */
+    .daily-reminders-section {
+      padding: 80px 60px;
+      background: linear-gradient(135deg, #fff5e6 0%, #ffe6cc 50%, #ffffff 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .daily-reminders-section h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 3em;
+      font-weight: 800;
+      color: var(--text-dark);
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .daily-reminders-section > p {
+      text-align: center;
+      color: var(--text-light);
+      font-size: 1.2em;
+      margin-bottom: 50px;
+    }
+    
+    .reminder-card {
+      background: white;
+      border-radius: 20px;
+      padding: 35px 40px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      border: 2px solid rgba(255, 123, 0, 0.2);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .reminder-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 6px;
+      background: linear-gradient(180deg, var(--button), var(--primary));
+    }
+    
+    .reminder-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(255, 123, 0, 0.2);
+      border-color: var(--button);
+    }
+    
+    .reminder-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 25px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid rgba(255, 123, 0, 0.15);
+    }
+    
+    .reminder-icon {
+      font-size: 3.5em;
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    }
+    
+    .reminder-header-text h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8em;
+      font-weight: 800;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    
+    .reminder-date-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--button), #ff5722);
+      color: white;
+      padding: 6px 16px;
+      border-radius: 15px;
+      font-weight: 700;
+      font-size: 0.75em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .reminder-content {
+      color: var(--text-light);
+      font-size: 1.05em;
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+    
+    .reminder-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    
+    .reminder-detail-item {
+      background: rgba(255, 123, 0, 0.08);
+      padding: 12px 16px;
+      border-radius: 10px;
+      border-left: 3px solid var(--button);
+      font-size: 0.95em;
+      color: var(--text-dark);
+      transition: all 0.3s ease;
+    }
+    
+    .reminder-detail-item:hover {
+      background: rgba(255, 123, 0, 0.15);
+      transform: translateX(3px);
+    }
+    
+    .reminder-detail-item strong {
+      color: var(--button);
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.88em;
+      font-weight: 700;
     }
 
     @media (max-width: 768px) {
@@ -1752,35 +2780,314 @@
         padding: 60px 20px;
       }
 
-      .announcement-slide {
-        padding: 40px 25px;
-        min-height: 300px;
-      }
-
       .announcements-section h2 {
         font-size: 2em;
+      }
+      
+      .event-card {
+        padding: 30px 25px;
+      }
+      
+      .event-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .event-icon {
+        font-size: 3em;
+      }
+      
+      .event-header-text h3 {
+        font-size: 1.5em;
+      }
+      
+      .event-details {
+        grid-template-columns: 1fr;
+      }
+      
+      .daily-reminders-section {
+        padding: 60px 20px;
+      }
+      
+      .daily-reminders-section h2 {
+        font-size: 2em;
+      }
+      
+      .reminder-card {
+        padding: 30px 25px;
+      }
+      
+      .reminder-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      
+      .reminder-icon {
+        font-size: 3em;
+      }
+      
+      .reminder-header-text h3 {
+        font-size: 1.5em;
+      }
+      
+      .reminder-details {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ===== WEATHER BACKGROUND EFFECTS ===== */
+    .weather-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .weather-background.active {
+      opacity: 1;
+    }
+
+    /* Sun Rays Effect */
+    .sun-rays {
+      position: absolute;
+      top: -50%;
+      left: 50%;
+      width: 200%;
+      height: 200%;
+      transform: translate(-50%, 0);
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        rgba(255, 200, 50, 0.1) 10deg,
+        transparent 20deg,
+        transparent 40deg,
+        rgba(255, 200, 50, 0.1) 50deg,
+        transparent 60deg,
+        transparent 80deg,
+        rgba(255, 200, 50, 0.1) 90deg,
+        transparent 100deg,
+        transparent 120deg,
+        rgba(255, 200, 50, 0.1) 130deg,
+        transparent 140deg,
+        transparent 160deg,
+        rgba(255, 200, 50, 0.1) 170deg,
+        transparent 180deg
+      );
+      animation: rotate-rays 60s linear infinite;
+    }
+
+    @keyframes rotate-rays {
+      from { transform: translate(-50%, 0) rotate(0deg); }
+      to { transform: translate(-50%, 0) rotate(360deg); }
+    }
+
+    /* Rain Effect */
+    .rain-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .rain {
+      position: absolute;
+      width: 2px;
+      height: 50px;
+      background: linear-gradient(transparent, rgba(100, 150, 255, 0.6));
+      animation: fall linear infinite;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(100vh);
+      }
+    }
+
+    /* Cloud Effect */
+    .clouds-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 100px;
+      animation: drift linear infinite;
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: '';
+      position: absolute;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 100px;
+    }
+
+    .cloud::before {
+      width: 50px;
+      height: 50px;
+      top: -25px;
+      left: 10px;
+    }
+
+    .cloud::after {
+      width: 60px;
+      height: 60px;
+      top: -30px;
+      right: 10px;
+    }
+
+    @keyframes drift {
+      from {
+        transform: translateX(-100%);
+      }
+      to {
+        transform: translateX(100vw);
+      }
+    }
+
+    /* Thunder/Lightning Effect */
+    .lightning {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0);
+      animation: flash 4s infinite;
+    }
+
+    @keyframes flash {
+      0%, 100% { background: rgba(255, 255, 255, 0); }
+      49% { background: rgba(255, 255, 255, 0); }
+      50% { background: rgba(255, 255, 255, 0.3); }
+      51% { background: rgba(255, 255, 255, 0); }
+      52% { background: rgba(255, 255, 255, 0.2); }
+      53% { background: rgba(255, 255, 255, 0); }
+    }
+
+    /* Fog/Mist Effect */
+    .fog {
+      position: absolute;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(200, 200, 200, 0) 0%,
+        rgba(200, 200, 200, 0.3) 25%,
+        rgba(200, 200, 200, 0.3) 75%,
+        rgba(200, 200, 200, 0) 100%
+      );
+      animation: fog-drift 20s linear infinite;
+    }
+
+    @keyframes fog-drift {
+      from { transform: translateX(-50%); }
+      to { transform: translateX(0%); }
+    }
+
+    /* Partly Cloudy - Subtle clouds with light rays */
+    .partly-cloudy-effect {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Wind Effect */
+    .wind-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .wind-line {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      animation: wind-blow 2s linear infinite;
+      transform-origin: left center;
+    }
+
+    @keyframes wind-blow {
+      0% {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(100vw);
+        opacity: 0;
       }
     }
 
   </style>
 </head>
 <body>
+  <!-- Weather Background Effects -->
+  <div class="weather-background" id="weatherBackground"></div>
+
+  <!-- Emergency Alert Banner -->
+  <div class="emergency-alert-banner" id="emergencyBanner">
+    <div class="banner-content">
+      <span class="banner-icon" id="bannerIcon">⚠️</span>
+      <span id="bannerText">Weather Alert</span>
+    </div>
+    <button class="banner-close" id="bannerClose" aria-label="Close alert banner">×</button>
+  </div>
+
   <!-- Running Student Animation -->
   <div class="running-student" title="Click me - BSHS on the move!">
-    <img src="bshs logo.jfif" alt="BSHS Logo">
+    <img src="bshs logo.jfif" alt="Balangkayan Senior High School Logo" loading="lazy">
   </div>
   <!-- HEADER -->
   <header class="animate-slide-down">
     <div class="logo transition-all duration-300 hover:scale-105">
-      <img src="bshs logo.jfif" alt="BSHS Logo" class="transition-transform duration-300 hover:rotate-6">
+      <img src="bshs logo.jfif" alt="Balangkayan Senior High School Logo" class="transition-transform duration-300 hover:rotate-6">
       <span class="logo-text">Balangkayan Senior High School - Stand Alone</span>
     </div>
-    <nav>
+    
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </button>
+    
+    <nav id="mainNav">
       <ul>
-        <li><a href="#hero" class="transition-all duration-300 hover:text-accent">Home</a></li>
-        <li><a href="#about" class="transition-all duration-300 hover:text-accent">About</a></li>
-        <li><a href="#programs" class="transition-all duration-300 hover:text-accent">Programs</a></li>
-        <li style="display: none;"><a href="login.html" class="transition-all duration-300 hover:text-accent">Admin Log in</a></li>
+        <li><a href="#hero" class="transition-all duration-300 hover:text-accent nav-link">Home</a></li>
+        <li><a href="#daily-reminders" class="transition-all duration-300 hover:text-accent nav-link">Announcements</a></li>
+        <li><a href="#about" class="transition-all duration-300 hover:text-accent nav-link">About</a></li>
+        <li><a href="#programs" class="transition-all duration-300 hover:text-accent nav-link">Programs</a></li>
+        <li class="hidden-element"><a href="login.html" class="transition-all duration-300 hover:text-accent nav-link">Admin Log in</a></li>
+        <li>
+          <button class="weather-toggle transition-all duration-300 hover:scale-110 hover:rotate-12" id="weatherToggle" aria-label="Check weather alerts">
+            <span class="weather-icon">🌤️</span>
+          </button>
+        </li>
         <li>
           <button class="theme-toggle transition-all duration-300 hover:scale-110 hover:rotate-12" id="themeToggle" aria-label="Toggle theme">
             <span class="theme-icon">🌙</span>
@@ -1790,17 +3097,49 @@
     </nav>
   </header>
 
+  <!-- WEATHER ALERT MODAL -->
+  <div class="weather-modal" id="weatherModal">
+    <div class="weather-modal-content">
+      <button class="weather-modal-close" id="weatherModalClose">×</button>
+      <div class="weather-modal-header">
+        <div class="weather-modal-icon" id="weatherModalIcon">🌤️</div>
+        <h3 class="weather-modal-title">Weather & Rainfall Alert</h3>
+        <span class="weather-status normal" id="weatherStatus">Normal Conditions</span>
+      </div>
+      <div class="weather-info" id="weatherInfo">
+        <p><strong>Current Status:</strong> <span id="weatherDescription">Checking weather conditions...</span></p>
+        <p><strong>Rainfall Warning:</strong> <span id="rainfallWarning">None</span></p>
+        <p><strong>Temperature:</strong> <span id="weatherTemp">--°C</span></p>
+        <p style="font-size: 0.85em; margin-top: 15px; padding: 12px; background: rgba(255, 152, 0, 0.1); border-left: 3px solid #ff9800; border-radius: 8px;">
+          <strong>⚠️ IMPORTANT:</strong> This is automated weather data. For official rainfall warnings and class suspensions, always prioritize:
+          <br>• <strong>PAGASA</strong> (Philippine Atmospheric, Geophysical and Astronomical Services Administration)
+          <br>• <strong>NDRRMC</strong> (National Disaster Risk Reduction and Management Council)
+          <br>• <strong>DepEd Official Announcements</strong>
+          <br>• <strong>Local Government Units (LGU)</strong>
+        </p>
+        <p style="font-size: 0.85em; margin-top: 10px; opacity: 0.8;"><em>Weather data updates every 10 minutes but may lag behind real-time conditions during severe weather events.</em></p>
+      </div>
+      <div class="suspension-notice" id="suspensionNotice" style="display: none;">
+        <h4>⚠️ Class Suspension Guidelines</h4>
+        <p id="suspensionText"></p>
+      </div>
+      <div class="weather-update-time" id="weatherUpdateTime">
+        Last updated: --
+      </div>
+    </div>
+  </div>
+
   <!-- HERO -->
   <section class="hero" id="hero">
     <div class="hero-content animate-slide-up">
       <h1 class="animate-fade-in">Building <span class="highlight">Bright</span> Futures</h1>
-      <p class="animate-fade-in" style="animation-delay: 0.2s;">At Balangkayan Senior High School - Stand Alone, we empower learners with knowledge, skills, and values to thrive in life and make a difference in the world.</p>
-      <button class="btn transition-all duration-300 hover:scale-105 hover:shadow-2xl" onclick="window.location.href='step1.html'" style="animation-delay: 0.4s; display: none;">
+      <p class="animate-fade-in delay-200">At Balangkayan Senior High School - Stand Alone, we empower learners with knowledge, skills, and values to thrive in life and make a difference in the world.</p>
+      <button class="btn transition-all duration-300 hover:scale-105 hover:shadow-2xl enroll-btn delay-400 hidden-element">
         <span>Enroll Now</span>
         <span class="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span>
       </button>
     </div>
-    <div class="hero-visual animate-slide-up" style="animation-delay: 0.3s;">
+    <div class="hero-visual animate-slide-up delay-300">
       <div class="hero-visual-card transition-all duration-500 hover:rotate-0 hover:scale-105">
         <span class="icon animate-bounce-slow">🎓</span>
         <h3 class="transition-colors duration-300">Start Your Journey</h3>
@@ -1809,68 +3148,77 @@
     </div>
   </section>
 
-  <!-- ANNOUNCEMENTS CAROUSEL -->
-  <section class="announcements-section animate-on-scroll transition-all duration-700" id="announcements">
-    <h2 class="transition-all duration-500 hover:scale-105">📢 Latest Announcements</h2>
-    <p>Stay updated with the latest news and events from BSHS</p>
+  <!-- DAILY REMINDERS -->
+  <section class="daily-reminders-section animate-on-scroll transition-all duration-700" id="daily-reminders">
+    <h2 class="transition-all duration-500 hover:scale-105">📅 Today's Reminder</h2>
+    <p>Your daily guide for uniforms, ceremonies, and school activities</p>
     
-    <div class="announcement-carousel">
-      <!-- Swiper Container -->
-      <div class="swiper announcementSwiper">
-        <div class="swiper-wrapper">
-          
-          <!-- Empty State (shown when all announcements expire) -->
-          <div class="swiper-slide" id="empty-announcement" style="display: none;">
-            <div class="empty-announcements">
-              <div class="empty-announcements-icon">📭</div>
-              <h3>No Current Announcements</h3>
-              <p>All announcements have passed. Check back soon for new updates and news from BSHS!</p>
-            </div>
-          </div>
+    <div id="daily-reminder-container">
+      <!-- Daily reminder will be generated by JavaScript -->
+    </div>
+  </section>
 
-          <!-- Announcement Slides -->
-          <div class="swiper-slide announcement-item" data-expiry="2025-10-17T13:30:00">
-            <div class="announcement-slide">
-              <div class="announcement-icon">💃</div>
-              <div class="announcement-date">
-                <span>📅</span>
-                <span>Today - October 17, 2025</span>
-              </div>
-              <h3 class="announcement-title">Dance Culminating Activity 2025</h3>
-              <p class="announcement-content">
-                Dance Culminating Activity 2025 for the subject Health Optimizing Physical Education.<br>
-                <strong>Time:</strong> 1:30 PM<br>
-                <strong>Venue:</strong> School Ground
-              </p>
-              <span class="announcement-badge">Event</span>
-            </div>
+  <!-- IMPORTANT EVENTS & SCHEDULES -->
+  <section class="announcements-section animate-on-scroll transition-all duration-700" id="announcements">
+    <h2 class="transition-all duration-500 hover:scale-105">📢 Important Events & Schedules</h2>
+    <p>Stay updated with upcoming exams, events, and important dates</p>
+    
+    <div class="events-container">
+      <!-- Event Cards (add your important events and exams here) -->
+      <div class="event-card">
+        <div class="event-header">
+          <div class="event-icon">📝</div>
+          <div class="event-header-text">
+            <h3>Second Quarter Examinations</h3>
+            <span class="event-date-badge">📅 October 23 & 24, 2025</span>
           </div>
-
-          <div class="swiper-slide announcement-item" data-expiry="2025-10-24T23:59:59">
-            <div class="announcement-slide">
-              <div class="announcement-icon">📝</div>
-              <div class="announcement-date">
-                <span>📅</span>
-                <span>Next Week - October 23 & 24, 2025</span>
-              </div>
-              <h3 class="announcement-title">Second Quarter Examinations</h3>
-              <p class="announcement-content">
-                The Second Quarter Examinations will be held on October 23 and 24, 2025. 
-                Please prepare well and review your lessons. Good luck to all students!
-              </p>
-              <span class="announcement-badge">Important</span>
-            </div>
-          </div>
-
         </div>
-        
-        <!-- Navigation Buttons -->
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        
-        <!-- Pagination -->
-        <div class="swiper-pagination"></div>
+        <div class="event-content">
+          <p>The Second Quarter Examinations will be held on October 23 and 24, 2025. Prepare well and review your lessons. Good luck to all students!</p>
+        </div>
+        <div class="event-details">
+          <div class="event-detail-item">
+            <strong>📅 Dates</strong>
+            October 23 & 24, 2025
+          </div>
+          <div class="event-detail-item">
+            <strong>📚 Preparation</strong>
+            Review all lessons thoroughly
+          </div>
+          <div class="event-detail-item">
+            <strong>✏️ Requirements</strong>
+            Bring pens, pencils, and ID
+          </div>
+        </div>
+        <span class="event-badge">Important</span>
       </div>
+
+      <!-- Add more event cards here as needed -->
+      <!-- Example:
+      <div class="event-card">
+        <div class="event-header">
+          <div class="event-icon">🎉</div>
+          <div class="event-header-text">
+            <h3>Foundation Day Celebration</h3>
+            <span class="event-date-badge">📅 November 15, 2025</span>
+          </div>
+        </div>
+        <div class="event-content">
+          <p>Join us for our annual Foundation Day celebration!</p>
+        </div>
+        <div class="event-details">
+          <div class="event-detail-item">
+            <strong>📅 Date</strong>
+            November 15, 2025
+          </div>
+          <div class="event-detail-item">
+            <strong>⏰ Time</strong>
+            8:00 AM - 5:00 PM
+          </div>
+        </div>
+        <span class="event-badge">Event</span>
+      </div>
+      -->
     </div>
   </section>
 
@@ -1918,7 +3266,7 @@
     <h2>Our Programs</h2>
     <p>Choose from our diverse academic tracks designed to match your interests and career goals.</p>
     <div class="programs-grid">
-      <div class="program-card transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer" onclick="toggleProgramCard(this)">
+      <div class="program-card transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
         <div class="program-card-front">
           <span class="icon transition-transform duration-300 hover:scale-110">📚</span>
           <div class="title transition-colors duration-300">Academic Track</div>
@@ -1930,10 +3278,10 @@
             <li>ABM (Accountancy, Business & Management)</li>
             <li>HUMSS (Humanities & Social Sciences)</li>
           </ul>
-          <button class="back-button" onclick="event.stopPropagation(); toggleProgramCard(this.closest('.program-card'))">← Back</button>
+          <button class="back-button">← Back</button>
         </div>
       </div>
-      <div class="program-card transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer" onclick="toggleProgramCard(this)">
+      <div class="program-card transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer">
         <div class="program-card-front">
           <span class="icon transition-transform duration-300 hover:scale-110">🔧</span>
           <div class="title transition-colors duration-300">Technical-Vocational Track</div>
@@ -1946,7 +3294,7 @@
             <li>CSS (Computer Systems Servicing)</li>
             <li>Home Economics</li>
           </ul>
-          <button class="back-button" onclick="event.stopPropagation(); toggleProgramCard(this.closest('.program-card'))">← Back</button>
+          <button class="back-button">← Back</button>
         </div>
       </div>
     </div>
@@ -2028,10 +3376,10 @@
               Hello! I'm the BSHS virtual assistant. How can I help you today?
             </div>
             <div class="quick-replies">
-              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="sendQuickReply('What programs do you offer?')">Programs</button>
-              <!-- <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="sendQuickReply('How do I enroll?')">Enrollment</button> -->
-              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="sendQuickReply('What are your contact details?')">Contact</button>
-              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" onclick="sendQuickReply('Easter Egg')">🎉 Easter Egg</button>
+              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" data-reply="What programs do you offer?">Programs</button>
+              <!-- <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" data-reply="How do I enroll?">Enrollment</button> -->
+              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" data-reply="What are your contact details?">Contact</button>
+              <button class="quick-reply transition-all duration-300 hover:scale-105 hover:shadow-lg" data-reply="Easter Egg">🎉 Easter Egg</button>
             </div>
           </div>
         </div>
@@ -2049,15 +3397,87 @@
     const themeIcon = document.querySelector('.theme-icon');
     const body = document.body;
 
+    // HTML Sanitization function to prevent XSS attacks
+    function sanitizeHTML(str) {
+      const temp = document.createElement('div');
+      temp.textContent = str;
+      return temp.innerHTML;
+    }
+
+    // Safe HTML setter that allows only specific safe tags
+    function setSafeHTML(element, html) {
+      // Create a temporary element to parse HTML
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+      
+      // Define allowed tags and attributes
+      const allowedTags = ['strong', 'br', 'em', 'b', 'i', 'u', 'span', 'p', 'ul', 'li', 'ol', 'div', 'h3', 'h4'];
+      const allowedAttributes = ['class', 'style', 'id'];
+      
+      // Recursively clean the HTML
+      function cleanNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          return node.cloneNode();
+        }
+        
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          const tagName = node.tagName.toLowerCase();
+          
+          // Only allow whitelisted tags
+          if (!allowedTags.includes(tagName)) {
+            // Replace disallowed tags with their text content
+            const textNode = document.createTextNode(node.textContent);
+            return textNode;
+          }
+          
+          // Create new element with same tag
+          const newNode = document.createElement(tagName);
+          
+          // Copy only allowed attributes
+          for (let attr of node.attributes) {
+            if (allowedAttributes.includes(attr.name.toLowerCase())) {
+              newNode.setAttribute(attr.name, attr.value);
+            }
+          }
+          
+          // Recursively clean children
+          for (let child of node.childNodes) {
+            const cleanedChild = cleanNode(child);
+            if (cleanedChild) {
+              newNode.appendChild(cleanedChild);
+            }
+          }
+          
+          return newNode;
+        }
+        
+        return null;
+      }
+      
+      // Clean all child nodes
+      const fragment = document.createDocumentFragment();
+      for (let child of temp.childNodes) {
+        const cleanedChild = cleanNode(child);
+        if (cleanedChild) {
+          fragment.appendChild(cleanedChild);
+        }
+      }
+      
+      // Clear element and append cleaned content
+      element.innerHTML = '';
+      element.appendChild(fragment);
+    }
+
     // Check for saved theme preference or default to light mode
     const currentTheme = localStorage.getItem('theme') || 'light';
-    if (currentTheme === 'dark') {
+    if (currentTheme === 'dark' && themeIcon) {
       body.classList.add('dark-mode');
       themeIcon.textContent = '☀️';
     }
 
     // Toggle theme
-    themeToggle.addEventListener('click', () => {
+    if (themeToggle && themeIcon) {
+      themeToggle.addEventListener('click', () => {
       body.classList.toggle('dark-mode');
       
       if (body.classList.contains('dark-mode')) {
@@ -2067,7 +3487,634 @@
         themeIcon.textContent = '🌙';
         localStorage.setItem('theme', 'light');
       }
-    });
+      });
+    }
+
+    // Header scroll effect
+    const header = document.querySelector('header');
+    let lastScroll = 0;
+
+    if (header) {
+      window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+        
+        lastScroll = currentScroll;
+      });
+    }
+
+    // Hamburger menu toggle
+    const hamburger = document.getElementById('hamburger');
+    const mainNav = document.getElementById('mainNav');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    if (hamburger && mainNav) {
+      hamburger.addEventListener('click', () => {
+        const isActive = hamburger.classList.toggle('active');
+        mainNav.classList.toggle('active');
+        document.body.style.overflow = isActive ? 'hidden' : '';
+        hamburger.setAttribute('aria-expanded', isActive);
+      });
+    }
+
+    // Close menu when clicking on a link
+    if (hamburger && mainNav && navLinks.length > 0) {
+      navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          mainNav.classList.remove('active');
+          document.body.style.overflow = '';
+          hamburger.setAttribute('aria-expanded', 'false');
+        });
+      });
+    }
+
+    // Close menu when clicking outside
+    if (hamburger && mainNav) {
+      document.addEventListener('click', (e) => {
+        if (!mainNav.contains(e.target) && !hamburger.contains(e.target) && mainNav.classList.contains('active')) {
+          hamburger.classList.remove('active');
+          mainNav.classList.remove('active');
+          document.body.style.overflow = '';
+          hamburger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+
+    // ===== WEATHER ALERT SYSTEM =====
+    const weatherToggle = document.getElementById('weatherToggle');
+    const weatherModal = document.getElementById('weatherModal');
+    const weatherModalClose = document.getElementById('weatherModalClose');
+    const weatherIcon = document.querySelector('.weather-icon');
+    const weatherModalIcon = document.getElementById('weatherModalIcon');
+    const weatherStatus = document.getElementById('weatherStatus');
+    const weatherDescription = document.getElementById('weatherDescription');
+    const rainfallWarning = document.getElementById('rainfallWarning');
+    const weatherTemp = document.getElementById('weatherTemp');
+    const suspensionNotice = document.getElementById('suspensionNotice');
+    const suspensionText = document.getElementById('suspensionText');
+    const weatherUpdateTime = document.getElementById('weatherUpdateTime');
+    const emergencyBanner = document.getElementById('emergencyBanner');
+    const bannerText = document.getElementById('bannerText');
+    const bannerIcon = document.getElementById('bannerIcon');
+    const bannerClose = document.getElementById('bannerClose');
+
+    // Null check for critical weather elements
+    if (!weatherToggle || !weatherModal || !weatherModalClose || !weatherIcon || 
+        !weatherModalIcon || !weatherStatus || !weatherDescription || !rainfallWarning || 
+        !weatherTemp || !suspensionNotice || !suspensionText || !weatherUpdateTime || 
+        !emergencyBanner || !bannerText || !bannerIcon || !bannerClose) {
+      console.warn('Weather system: One or more required elements not found. Weather features disabled.');
+    }
+
+    let currentWeatherData = null;
+    let bannerDismissed = false;
+
+    // Banner close button
+    if (bannerClose) {
+      bannerClose.addEventListener('click', () => {
+        emergencyBanner.classList.remove('active');
+        document.body.classList.remove('banner-active');
+        bannerDismissed = true;
+        // Reset after 30 minutes
+        setTimeout(() => {
+          bannerDismissed = false;
+        }, 1800000);
+      });
+    }
+
+    // Open weather modal
+    if (weatherToggle && weatherModal) {
+      weatherToggle.addEventListener('click', () => {
+        weatherModal.classList.add('active');
+        updateWeatherInfo();
+      });
+    }
+
+    // Close weather modal
+    if (weatherModalClose && weatherModal) {
+      weatherModalClose.addEventListener('click', () => {
+        weatherModal.classList.remove('active');
+      });
+    }
+
+    // Close modal when clicking outside
+    if (weatherModal) {
+      weatherModal.addEventListener('click', (e) => {
+        if (e.target === weatherModal) {
+          weatherModal.classList.remove('active');
+        }
+      });
+    }
+
+    // Fetch weather data and check rainfall warnings
+    async function updateWeatherInfo() {
+      try {
+        let data;
+        
+        // Try secure backend proxy first (production)
+        try {
+          const response = await fetch('/api/weather');
+          if (response.ok) {
+            data = await response.json();
+          } else {
+            throw new Error('Proxy not available');
+          }
+        } catch (proxyError) {
+          // Fallback to direct API call (development/local only)
+          // TODO: Remove this fallback after deployment
+          console.warn('Using fallback direct API call. Deploy serverless function for production.');
+          const apiKey = '772090ef7d8e457bbd175713251810';
+          const location = 'Balangkayan,Eastern Samar,Philippines';
+          const fallbackResponse = await fetch(
+            `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`
+          );
+          if (!fallbackResponse.ok) {
+            throw new Error(`Weather API error: ${fallbackResponse.status}`);
+          }
+          data = await fallbackResponse.json();
+        }
+        
+        currentWeatherData = data;
+        
+        // Get current weather from WeatherAPI.com response
+        const temp = data.current.temp_c;
+        const precipitation = data.current.precip_mm || 0;
+        const humidity = data.current.humidity || 0;
+        const windSpeed = data.current.wind_kph || 0;
+        const condition = data.current.condition.text;
+        const conditionLower = condition.toLowerCase();
+        
+        // Check if it's actually raining based on weather condition
+        const isRaining = conditionLower.includes('rain') || 
+                          conditionLower.includes('drizzle') ||
+                          conditionLower.includes('shower') ||
+                          conditionLower.includes('sleet');
+        
+        // Calculate rainfall intensity (mm/hour)
+        // Only use precipitation value if weather condition indicates rain
+        // Otherwise, precipitation might be residual/forecast data
+        // Also ignore very small precipitation values (< 0.1mm) as they're negligible
+        let rainfallIntensity = (isRaining && precipitation >= 0.1) ? precipitation : 0;
+        
+        // Update temperature
+        weatherTemp.textContent = `${temp}°C`;
+        
+        // Get current day for day-specific advice
+        const currentDate = new Date();
+        const dayOfWeek = currentDate.getDay(); // 0=Sunday, 1=Monday, etc.
+        const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        const currentDay = dayNames[dayOfWeek];
+        
+        // Determine rainfall warning level based on DepEd Order No. 022, s. 2024
+        let warningLevel = 'normal';
+        let warningText = 'None';
+        let statusText = 'Normal Conditions';
+        let icon = '🌤️';
+        let suspensionInfo = '';
+        
+        // Rainfall thresholds based on DepEd Order No. 022, s. 2024
+        // Yellow: 7.5-15 mm/hour (Light to Moderate)
+        // Orange: 15-30 mm/hour (Moderate to Heavy)
+        // Red: >30 mm/hour (Heavy to Intense)
+        
+        // Weather data fetched successfully
+        
+        if (rainfallIntensity >= 30) {
+          warningLevel = 'red';
+          warningText = 'RED RAINFALL WARNING';
+          statusText = 'Heavy to Intense Rainfall (>30mm/h)';
+          icon = '🔴';
+          weatherToggle.classList.add('warning');
+          suspensionInfo = `<strong>RED WARNING (>30mm/hour):</strong><br>
+            • <strong>AUTOMATIC SUSPENSION</strong> of classes in ALL LEVELS<br>
+            • Includes: Pre-school, Elementary, Junior High School, Senior High School<br>
+            • Suspension may be declared 2 hours before class schedule or during class hours<br>
+            • <strong>Stay indoors and monitor official DepEd announcements</strong><br>
+            • Location: Eastern Visayas Region (Region VIII)`;
+          
+          // Show emergency banner for RED warning
+          if (!bannerDismissed) {
+            emergencyBanner.classList.add('active');
+            emergencyBanner.classList.remove('orange');
+            document.body.classList.add('banner-active');
+            bannerIcon.textContent = '🔴';
+            bannerText.textContent = '⚠️ RED RAINFALL WARNING - AUTOMATIC CLASS SUSPENSION FOR ALL LEVELS';
+          }
+        } else if (rainfallIntensity >= 15) {
+          warningLevel = 'orange';
+          warningText = 'ORANGE RAINFALL WARNING';
+          statusText = 'Moderate to Heavy Rainfall (15-30mm/h)';
+          icon = '🟠';
+          weatherToggle.classList.add('warning');
+          suspensionInfo = `<strong>ORANGE WARNING (15-30mm/hour):</strong><br>
+            • <strong>POSSIBLE SUSPENSION</strong> of classes in Pre-school, Elementary, and Junior High School<br>
+            • Senior High School classes may continue with caution<br>
+            • Monitor official announcements from DepEd Division Office and local authorities<br>
+            • Be prepared for possible class suspension<br>
+            • Location: Eastern Visayas Region (Region VIII)`;
+          
+          // Show emergency banner for ORANGE warning
+          if (!bannerDismissed) {
+            emergencyBanner.classList.add('active', 'orange');
+            document.body.classList.add('banner-active');
+            bannerIcon.textContent = '🟠';
+            bannerText.textContent = '⚠️ ORANGE RAINFALL WARNING - POSSIBLE CLASS SUSPENSION (Pre-school, Elementary, JHS)';
+          }
+        } else if (rainfallIntensity >= 7.5) {
+          warningLevel = 'yellow';
+          warningText = 'YELLOW RAINFALL WARNING';
+          statusText = 'Light to Moderate Rainfall (7.5-15mm/h)';
+          icon = '🟡';
+          suspensionInfo = `<strong>YELLOW WARNING (7.5-15mm/hour):</strong><br>
+            • Classes continue as normal<br>
+            • Be prepared for possible weather changes<br>
+            • Bring umbrellas and rain gear<br>
+            • Stay updated with weather advisories<br>
+            • Location: Eastern Visayas Region (Region VIII)`;
+          
+          // Hide banner for yellow and below
+          emergencyBanner.classList.remove('active', 'orange');
+          document.body.classList.remove('banner-active');
+        } else {
+          weatherToggle.classList.remove('warning');
+          
+          // Hide banner for normal conditions
+          emergencyBanner.classList.remove('active', 'orange');
+          document.body.classList.remove('banner-active');
+          
+          // Check if there's any rain first (even if below warning threshold)
+          // Only show rain info if weather condition actually indicates rain
+          if (isRaining && rainfallIntensity > 0) {
+            const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+            let rainDayAdvice = '';
+            
+            if (isWeekend) {
+              rainDayAdvice = '<br>• 🎉 <strong>No classes today - It\'s the weekend!</strong><br>• Stay safe and dry at home';
+            } else if (dayOfWeek === 1) { // Monday
+              rainDayAdvice = '<br>• 🇵🇭 <strong>Flag Ceremony may be cancelled</strong> due to rain';
+            } else if (dayOfWeek === 5) { // Friday
+              rainDayAdvice = '<br>• 🇵🇭 <strong>Flag Retreat may be cancelled</strong> due to rain';
+            }
+            
+            if (rainfallIntensity >= 5) {
+              icon = '🌧️';
+              statusText = `Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
+              suspensionInfo = `<strong>🌧️ Light Rain (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes continue as normal'}<br>
+                • 🌂 Bring umbrella and raincoat<br>
+                • 👟 Wear appropriate footwear<br>
+                • 💧 Stay dry and avoid getting wet<br>
+                • 📱 Keep valuables protected from water${rainDayAdvice}`;
+            } else if (rainfallIntensity >= 2) {
+              icon = '🌦️';
+              statusText = `Drizzle (${rainfallIntensity.toFixed(1)}mm/h)`;
+              suspensionInfo = `<strong>🌦️ Drizzle (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                • 🌂 Bring umbrella just in case<br>
+                • 👕 Light rain gear recommended<br>
+                • 🚶 Walk carefully on wet surfaces${rainDayAdvice}`;
+            } else if (rainfallIntensity >= 0.5) {
+              icon = '🌦️';
+              statusText = `Very Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
+              suspensionInfo = `<strong>🌦️ Very Light Rain (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Normal class schedule'}<br>
+                • 🌂 Umbrella recommended<br>
+                • 👟 Watch your step on wet ground${rainDayAdvice}`;
+            } else {
+              // Rainfall is negligible (< 0.5mm/h), treat as cloudy with trace rain
+              icon = '☁️';
+              statusText = 'Cloudy with Trace Rain';
+              suspensionInfo = `<strong>☁️ Cloudy with Trace Rain (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                • 🌂 Umbrella optional<br>
+                • 🌡️ Comfortable temperature expected${isWeekend ? '' : '<br>• 👕 Regular uniform appropriate'}${rainDayAdvice}`;
+            }
+          } else {
+            // No rain detected, use weather condition from API
+            const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+            // conditionLower already defined at top of function
+            
+            if (conditionLower.includes('thunder')) {
+              icon = '⛈️';
+              statusText = condition;
+              suspensionInfo = `<strong>⛈️ Thunderstorm Possible (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Stay alert during school hours'}<br>
+                • ⚡ Stay indoors during lightning<br>
+                • 🌂 Bring umbrella and raincoat<br>
+                • 📱 Monitor weather updates closely<br>
+                • 🏃 Seek shelter if thunder is heard<br>
+                • ⚠️ Avoid open areas and tall objects`;
+            } else if (conditionLower.includes('cloudy') || conditionLower.includes('overcast')) {
+              icon = '☁️';
+              statusText = condition;
+              let cloudyDayAdvice = '';
+              if (isWeekend) {
+                cloudyDayAdvice = '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong>';
+              } else if (dayOfWeek === 1) { // Monday
+                cloudyDayAdvice = '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Bring umbrella just in case';
+              } else if (dayOfWeek === 5) { // Friday
+                cloudyDayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
+              }
+              suspensionInfo = `<strong>☁️ Cloudy Weather (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                • 🌂 Bring umbrella (rain possible)<br>
+                • 🌡️ Comfortable temperature expected${isWeekend ? '' : '<br>• 👕 Regular uniform appropriate'}${cloudyDayAdvice}`;
+            } else if (conditionLower.includes('partly')) {
+              icon = '⛅';
+              statusText = condition;
+              let partlyDayAdvice = '';
+              if (isWeekend) {
+                partlyDayAdvice = '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong>';
+              } else if (dayOfWeek === 1) { // Monday
+                partlyDayAdvice = '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Be on time!';
+              } else if (dayOfWeek === 5) { // Friday
+                partlyDayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
+              }
+              suspensionInfo = `<strong>⛅ Partly Cloudy (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Perfect weather for classes!'}<br>
+                • ☀️ Some sunshine expected<br>
+                • 🌂 Umbrella optional<br>
+                • 💧 Stay hydrated${partlyDayAdvice}`;
+            } else if (conditionLower.includes('clear') || conditionLower.includes('sunny')) {
+              icon = '☀️';
+              statusText = condition;
+              let dayAdvice = '';
+              if (isWeekend) {
+                dayAdvice = '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong><br>• Perfect weather for outdoor activities!';
+              } else if (dayOfWeek === 1) { // Monday
+                dayAdvice = '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Be on time!';
+              } else if (dayOfWeek === 5) { // Friday
+                dayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
+              }
+              suspensionInfo = `<strong>☀️ Sunny Weather (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Great day for learning!'}<br>
+                • ☀️ Wear sun protection if needed<br>
+                • 💧 Drink plenty of water<br>
+                • 🧴 Apply sunscreen for outdoor activities<br>
+                • 🧢 Hat recommended for ${isWeekend ? 'outdoor fun' : 'PE class'}${dayAdvice}`;
+            } else if (conditionLower.includes('mist') || conditionLower.includes('fog')) {
+              icon = '🌫️';
+              statusText = condition;
+              suspensionInfo = `<strong>🌫️ Misty/Foggy (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes continue as scheduled'}<br>
+                • 👀 Reduced visibility - walk carefully<br>
+                • 🚶 Take extra care when crossing<br>
+                • 🌡️ May feel cooler than usual`;
+            } else {
+              icon = '🌤️';
+              statusText = condition;
+              suspensionInfo = `<strong>🌤️ Good Weather (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Enjoy your weekend!' : 'Classes proceed normally'}<br>
+                • 📚 Perfect day for ${isWeekend ? 'relaxing' : 'learning'}<br>
+                • 💧 Stay hydrated<br>
+                • 😊 Have a great ${isWeekend ? 'weekend' : 'day at school'}!`;
+            }
+          }
+          
+          // Add humidity and wind info for normal conditions
+          statusText += ` • Humidity: ${humidity}% • Wind: ${windSpeed.toFixed(1)} km/h`;
+        }
+        
+        // Update UI
+        weatherIcon.textContent = icon;
+        weatherModalIcon.textContent = icon;
+        weatherStatus.textContent = statusText;
+        weatherStatus.className = `weather-status ${warningLevel}`;
+        
+        weatherDescription.textContent = statusText;
+        rainfallWarning.textContent = warningText;
+        
+        // Update suspension notice with dynamic title and styling
+        const suspensionNoticeTitle = document.querySelector('#suspensionNotice h4');
+        if (suspensionInfo) {
+          suspensionNotice.style.display = 'block';
+          setSafeHTML(suspensionText, suspensionInfo);
+          
+          // Change title and styling based on warning level
+          if (warningLevel === 'red' || warningLevel === 'orange') {
+            suspensionNoticeTitle.textContent = '⚠️ Class Suspension Guidelines';
+            suspensionNotice.style.background = 'linear-gradient(135deg, rgba(255, 87, 34, 0.1), rgba(244, 67, 54, 0.1))';
+            suspensionNotice.style.borderColor = '#ff5722';
+            suspensionNoticeTitle.style.color = '#d32f2f';
+          } else if (warningLevel === 'yellow') {
+            suspensionNoticeTitle.textContent = '🟡 Weather Advisory';
+            suspensionNotice.style.background = 'linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1))';
+            suspensionNotice.style.borderColor = '#ffc107';
+            suspensionNoticeTitle.style.color = '#f57c00';
+          } else {
+            suspensionNoticeTitle.textContent = '💡 Weather Advice for Students';
+            suspensionNotice.style.background = 'linear-gradient(135deg, rgba(33, 150, 243, 0.05), rgba(3, 169, 244, 0.05))';
+            suspensionNotice.style.borderColor = '#2196f3';
+            suspensionNoticeTitle.style.color = '#1976d2';
+          }
+        } else {
+          suspensionNotice.style.display = 'none';
+        }
+        
+        // Update timestamp
+        const now = new Date();
+        weatherUpdateTime.textContent = `Last updated: ${now.toLocaleString('en-PH', { 
+          dateStyle: 'medium', 
+          timeStyle: 'short',
+          timeZone: 'Asia/Manila'
+        })}`;
+        
+        // Update weather background effects
+        updateWeatherBackground(statusText, rainfallIntensity, windSpeed);
+        
+      } catch (error) {
+        console.error('Weather fetch error:', error);
+        weatherDescription.textContent = 'Unable to fetch weather data. Please try again later.';
+        rainfallWarning.textContent = 'Error';
+        weatherTemp.textContent = '--°C';
+        weatherIcon.textContent = '❌';
+        weatherModalIcon.textContent = '❌';
+      }
+    }
+
+    // Function to update weather background effects
+    function updateWeatherBackground(condition, rainfall, windSpeed = 0) {
+      const weatherBg = document.getElementById('weatherBackground');
+      const conditionLower = condition.toLowerCase();
+      
+      // Clear existing effects
+      weatherBg.innerHTML = '';
+      weatherBg.classList.remove('active');
+      
+      // Determine which effect to show
+      // Only show rain effects when weather condition actually indicates rain
+      const isActuallyRaining = conditionLower.includes('rain') || 
+                                conditionLower.includes('drizzle') || 
+                                conditionLower.includes('shower') ||
+                                conditionLower.includes('sleet');
+      
+      // Check for windy conditions (>25 km/h is considered windy)
+      const isWindy = windSpeed > 25;
+      
+      if (conditionLower.includes('thunder') || conditionLower.includes('storm')) {
+        // Thunderstorm: Rain + Lightning
+        createRainEffect(weatherBg, 100, false);
+        createLightningEffect(weatherBg);
+      } else if (conditionLower.includes('trace rain')) {
+        // Trace rain: Clouds with 4 tiny raindrops
+        createCloudsEffect(weatherBg, 5);
+        createRainEffect(weatherBg, 4, true);
+      } else if (isActuallyRaining) {
+        // Rain effect - intensity based on rainfall (or default if no data)
+        let rainDrops = 80; // Default moderate rain
+        if (rainfall >= 15) {
+          rainDrops = 150; // Heavy rain
+        } else if (rainfall >= 7.5) {
+          rainDrops = 100; // Moderate to heavy
+        } else if (rainfall > 0) {
+          rainDrops = 60; // Light rain
+        }
+        // If rainfall is 0 but weather says it's raining, use default
+        createRainEffect(weatherBg, rainDrops, false);
+      } else if (conditionLower.includes('sunny') || conditionLower.includes('clear')) {
+        // Sunny: Sun rays
+        createSunRaysEffect(weatherBg);
+      } else if (conditionLower.includes('partly')) {
+        // Partly cloudy: Light sun rays + few clouds
+        createSunRaysEffect(weatherBg);
+        createCloudsEffect(weatherBg, 3);
+      } else if (conditionLower.includes('cloudy') || conditionLower.includes('overcast')) {
+        // Cloudy: Drifting clouds
+        createCloudsEffect(weatherBg, 5);
+      } else if (conditionLower.includes('mist') || conditionLower.includes('fog')) {
+        // Fog/Mist effect
+        createFogEffect(weatherBg);
+      }
+      
+      // Add wind effect if windy (overlays on top of other effects)
+      if (isWindy) {
+        const windIntensity = windSpeed > 40 ? 'strong' : 'moderate';
+        createWindEffect(weatherBg, windIntensity);
+      }
+      
+      // Activate background
+      setTimeout(() => {
+        weatherBg.classList.add('active');
+      }, 100);
+    }
+
+    // Create sun rays effect
+    function createSunRaysEffect(container) {
+      const sunRays = document.createElement('div');
+      sunRays.className = 'sun-rays';
+      container.appendChild(sunRays);
+    }
+
+    // Create rain effect
+    function createRainEffect(container, dropCount, isTraceRain = false) {
+      const rainContainer = document.createElement('div');
+      rainContainer.className = 'rain-container';
+      
+      for (let i = 0; i < dropCount; i++) {
+        const rain = document.createElement('div');
+        rain.className = 'rain';
+        rain.style.left = Math.random() * 100 + '%';
+        
+        if (isTraceRain) {
+          // Trace rain: tiny, very light, slow-falling drops
+          rain.style.width = '1px';
+          rain.style.height = (Math.random() * 15 + 10) + 'px'; // 10-25px (shorter)
+          rain.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's'; // 1.5-3s (slower)
+          rain.style.animationDelay = Math.random() * 5 + 's'; // More spread out
+          rain.style.opacity = Math.random() * 0.2 + 0.1; // 0.1-0.3 (very faint)
+        } else {
+          // Normal rain
+          rain.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+          rain.style.animationDelay = Math.random() * 2 + 's';
+          rain.style.opacity = Math.random() * 0.5 + 0.3;
+        }
+        
+        rainContainer.appendChild(rain);
+      }
+      
+      container.appendChild(rainContainer);
+    }
+
+    // Create clouds effect
+    function createCloudsEffect(container, cloudCount) {
+      const cloudsContainer = document.createElement('div');
+      cloudsContainer.className = 'clouds-container';
+      
+      for (let i = 0; i < cloudCount; i++) {
+        const cloud = document.createElement('div');
+        cloud.className = 'cloud';
+        cloud.style.width = (Math.random() * 100 + 80) + 'px';
+        cloud.style.height = (Math.random() * 40 + 40) + 'px';
+        cloud.style.top = (Math.random() * 30) + '%';
+        cloud.style.animationDuration = (Math.random() * 30 + 40) + 's';
+        cloud.style.animationDelay = (Math.random() * 10) + 's';
+        cloudsContainer.appendChild(cloud);
+      }
+      
+      container.appendChild(cloudsContainer);
+    }
+
+    // Create lightning effect
+    function createLightningEffect(container) {
+      const lightning = document.createElement('div');
+      lightning.className = 'lightning';
+      container.appendChild(lightning);
+    }
+
+    // Create fog effect
+    function createFogEffect(container) {
+      const fog1 = document.createElement('div');
+      fog1.className = 'fog';
+      fog1.style.animationDuration = '20s';
+      
+      const fog2 = document.createElement('div');
+      fog2.className = 'fog';
+      fog2.style.animationDuration = '25s';
+      fog2.style.animationDelay = '10s';
+      fog2.style.opacity = '0.5';
+      
+      container.appendChild(fog1);
+      container.appendChild(fog2);
+    }
+
+    // Create wind effect
+    function createWindEffect(container, intensity = 'moderate') {
+      const windContainer = document.createElement('div');
+      windContainer.className = 'wind-container';
+      
+      // Number of wind lines based on intensity
+      const windLines = intensity === 'strong' ? 20 : 12;
+      
+      for (let i = 0; i < windLines; i++) {
+        const windLine = document.createElement('div');
+        windLine.className = 'wind-line';
+        windLine.style.top = Math.random() * 100 + '%';
+        windLine.style.animationDuration = (Math.random() * 1 + (intensity === 'strong' ? 0.5 : 1)) + 's';
+        windLine.style.animationDelay = Math.random() * 3 + 's';
+        windLine.style.opacity = Math.random() * 0.3 + 0.1;
+        
+        // Vary the length
+        const length = intensity === 'strong' ? Math.random() * 80 + 60 : Math.random() * 60 + 40;
+        windLine.style.width = length + 'px';
+        
+        windContainer.appendChild(windLine);
+      }
+      
+      container.appendChild(windContainer);
+    }
+
+    // Auto-update weather every 10 minutes
+    setInterval(updateWeatherInfo, 600000);
+    
+    // Initial weather check (silent, in background)
+    updateWeatherInfo();
 
     // Scroll animations
     const observerOptions = {
@@ -2108,14 +4155,21 @@
     const chatbotInput = document.getElementById('chatbotInput');
     const chatbotSend = document.getElementById('chatbotSend');
 
+    // Null check for chatbot elements
+    if (!chatbotToggle || !chatbotWindow || !chatbotMessages || !chatbotInput || !chatbotSend) {
+      console.warn('Chatbot: One or more required elements not found. Chatbot disabled.');
+    }
+
     // Toggle chatbot window
-    chatbotToggle.addEventListener('click', () => {
-      chatbotWindow.classList.toggle('active');
-      chatbotToggle.classList.toggle('active');
-      if (chatbotWindow.classList.contains('active')) {
-        chatbotInput.focus();
-      }
-    });
+    if (chatbotToggle && chatbotWindow && chatbotInput) {
+      chatbotToggle.addEventListener('click', () => {
+        chatbotWindow.classList.toggle('active');
+        chatbotToggle.classList.toggle('active');
+        if (chatbotWindow.classList.contains('active')) {
+          chatbotInput.focus();
+        }
+      });
+    }
 
     // Knowledge base for the chatbot
     const knowledgeBase = {
@@ -2151,6 +4205,11 @@
       'easteregg': {
         keywords: ['easter egg', 'easteregg', 'secret', 'hidden feature', 'logo trick', 'bouncing logo'],
         response: '🎉 <strong>BSHS Logo Easter Egg!</strong>\n\nWant to see something fun? Here\'s how to activate the hidden bouncing logo animation:\n\n<strong>Steps:</strong>\n1️⃣ Find the BSHS logo in the header (top-left corner)\n2️⃣ Click the logo <strong>3 times quickly</strong> (triple-click)\n3️⃣ Watch the magic happen! 🎨✨\n\nThe logo will start bouncing around your screen with rainbow colors!\n\n<strong>To deactivate:</strong>\nSimply triple-click the header logo again.\n\nTry it now and enjoy the show! 🌈'
+      },
+      'weather': {
+        keywords: ['weather', 'rain', 'rainfall', 'forecast', 'climate', 'temperature', 'suspension', 'class suspension', 'cancel', 'typhoon', 'storm'],
+        response: 'WEATHER_WIDGET',
+        action: 'showWeather'
       }
     };
 
@@ -2183,7 +4242,7 @@
       }
 
       // Default response
-      return { response: 'I\'m here to help! You can ask me about:\n\n• Our programs and tracks\n• Enrollment process\n• Contact information\n• Mission and vision\n• School facilities\n• School location (map)\n\nWhat would you like to know?' };
+      return { response: 'I\'m here to help! You can ask me about:\n\n• Our programs and tracks\n• Enrollment process\n• Contact information\n• Mission and vision\n• School facilities\n• School location (map)\n• Weather and rainfall warnings\n• Class suspension updates\n\nWhat would you like to know?' };
     }
 
     // Function to add message to chat
@@ -2197,7 +4256,7 @@
       
       const bubble = document.createElement('div');
       bubble.className = 'bubble';
-      bubble.innerHTML = text;
+      setSafeHTML(bubble, text);
       
       messageDiv.appendChild(avatar);
       messageDiv.appendChild(bubble);
@@ -2238,16 +4297,25 @@
     function sendMessage() {
       const message = chatbotInput.value.trim();
       if (!message) return;
+      
+      // Input validation: limit message length to prevent abuse
+      if (message.length > 500) {
+        addMessage('⚠️ Message too long. Please keep your message under 500 characters.', false);
+        return;
+      }
+      
+      // Sanitize user input before displaying
+      const sanitizedMessage = sanitizeHTML(message);
 
-      // Add user message
-      addMessage(message, true);
+      // Add user message (sanitized)
+      addMessage(sanitizedMessage, true);
       chatbotInput.value = '';
 
       // Show typing indicator
       showTypingIndicator();
 
       // Simulate bot thinking time
-      setTimeout(() => {
+      setTimeout(async () => {
         removeTypingIndicator();
         const result = getBotResponse(message);
         const response = typeof result === 'object' ? result.response : result;
@@ -2265,6 +4333,71 @@
               mapSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
           }, 1500);
+        } else if (response === 'WEATHER_WIDGET') {
+          // Get current weather data
+          if (!currentWeatherData) {
+            await updateWeatherInfo();
+          }
+          
+          // Format weather response
+          let weatherResponse = '🌤️ <strong>Current Weather in Balangkayan, Eastern Samar</strong>\n\n';
+          
+          if (currentWeatherData) {
+            // WeatherAPI.com data structure
+            const temp = currentWeatherData.current.temp_c;
+            const precipitation = currentWeatherData.current.precip_mm || 0;
+            const humidity = currentWeatherData.current.humidity || 0;
+            const windSpeed = currentWeatherData.current.wind_kph || 0;
+            const condition = currentWeatherData.current.condition.text;
+            const conditionLower = condition.toLowerCase();
+            
+            // Check if it's actually raining (same logic as main weather function)
+            const isRaining = conditionLower.includes('rain') || 
+                              conditionLower.includes('drizzle') ||
+                              conditionLower.includes('shower') ||
+                              conditionLower.includes('sleet');
+            
+            // Rainfall intensity - only use precipitation if actually raining
+            let rainfallIntensity = (isRaining && precipitation >= 0.1) ? precipitation : 0;
+            
+            weatherResponse += `🌡️ <strong>Temperature:</strong> ${temp}°C\n`;
+            weatherResponse += `☁️ <strong>Condition:</strong> ${condition}\n`;
+            weatherResponse += `💧 <strong>Humidity:</strong> ${humidity}%\n`;
+            weatherResponse += `💨 <strong>Wind Speed:</strong> ${windSpeed.toFixed(1)} km/h\n`;
+            weatherResponse += `🌧️ <strong>Rainfall:</strong> ${rainfallIntensity.toFixed(1)} mm/h\n\n`;
+            
+            // Check rainfall warning levels
+            if (rainfallIntensity >= 30) {
+              weatherResponse += '🔴 <strong>RED RAINFALL WARNING</strong>\n\n';
+              weatherResponse += '⚠️ <strong>AUTOMATIC CLASS SUSPENSION</strong>\n';
+              weatherResponse += '• All levels suspended (Pre-school to Senior High)\n';
+              weatherResponse += '• Stay indoors and safe\n';
+              weatherResponse += '• Monitor official DepEd announcements\n\n';
+            } else if (rainfallIntensity >= 15) {
+              weatherResponse += '🟠 <strong>ORANGE RAINFALL WARNING</strong>\n\n';
+              weatherResponse += '⚠️ <strong>POSSIBLE CLASS SUSPENSION</strong>\n';
+              weatherResponse += '• Pre-school, Elementary, Junior High may be suspended\n';
+              weatherResponse += '• Senior High may continue with caution\n';
+              weatherResponse += '• Monitor announcements from DepEd\n\n';
+            } else if (rainfallIntensity >= 7.5) {
+              weatherResponse += '🟡 <strong>YELLOW RAINFALL WARNING</strong>\n\n';
+              weatherResponse += '• Classes continue as normal\n';
+              weatherResponse += '• Bring umbrellas and rain gear\n';
+              weatherResponse += '• Be prepared for weather changes\n\n';
+            } else {
+              weatherResponse += '✅ <strong>Normal Weather Conditions</strong>\n\n';
+              weatherResponse += '• No rainfall warnings\n';
+              weatherResponse += '• Classes proceed as scheduled\n\n';
+            }
+            
+            weatherResponse += '<em>Based on DepEd Order No. 022, s. 2024</em>\n\n';
+            weatherResponse += '⚠️ <strong>IMPORTANT:</strong> This is automated data. For official warnings, always check <strong>PAGASA, NDRRMC, and DepEd announcements</strong>.\n\n';
+            weatherResponse += 'Click the weather button (🌤️) in the navigation to see detailed information!';
+          } else {
+            weatherResponse += 'Unable to fetch weather data at the moment. Please try again or click the weather button in the navigation bar.';
+          }
+          
+          addMessage(weatherResponse);
         } else {
           addMessage(response);
         }
@@ -2273,40 +4406,22 @@
 
     // Function to send quick reply
     function sendQuickReply(message) {
-      addMessage(message, true);
-      showTypingIndicator();
-      
-      setTimeout(() => {
-        removeTypingIndicator();
-        const result = getBotResponse(message);
-        const response = typeof result === 'object' ? result.response : result;
-        const action = typeof result === 'object' ? result.action : null;
-        
-        if (response === 'MAP_WIDGET') {
-          addMessage('Here\'s our school location on the map! 📍\n\n<strong>Balangkayan Senior High School</strong>\nBalangkayan, Eastern Samar\n\nCoordinates: 11.477476, 125.506518\n\nYou can also scroll down to the "Find Us" section on our homepage to see the interactive map!');
-          
-          // Scroll to map section
-          setTimeout(() => {
-            chatbotWindow.classList.remove('active');
-            chatbotToggle.classList.remove('active');
-            const mapSection = document.getElementById('location');
-            if (mapSection) {
-              mapSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-          }, 1500);
-        } else {
-          addMessage(response);
-        }
-      }, 800 + Math.random() * 700);
+      // Quick replies just call sendMessage with the message
+      chatbotInput.value = message;
+      sendMessage();
     }
 
     // Event listeners
-    chatbotSend.addEventListener('click', sendMessage);
-    chatbotInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        sendMessage();
-      }
-    });
+    if (chatbotSend) {
+      chatbotSend.addEventListener('click', sendMessage);
+    }
+    if (chatbotInput) {
+      chatbotInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+    }
 
     // Make sendQuickReply available globally
     window.sendQuickReply = sendQuickReply;
@@ -2342,7 +4457,7 @@
           <strong style="font-size: 1.1em; color: #ff7b00;">Balangkayan Senior High School</strong><br>
           <span style="color: #6c757d; font-size: 0.9em;">Stand Alone</span><br>
           <span style="color: #1a1a2e; margin-top: 8px; display: block;">📍 Balangkayan, Eastern Samar</span>
-          <a href="https://www.google.com/maps/dir/?api=1&destination=11.477476,125.506518" target="_blank" style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: linear-gradient(135deg, #ff7b00, #ff5722); color: white; text-decoration: none; border-radius: 20px; font-size: 0.85em; font-weight: 600;">Get Directions</a>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=11.477476,125.506518" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: linear-gradient(135deg, #ff7b00, #ff5722); color: white; text-decoration: none; border-radius: 20px; font-size: 0.85em; font-weight: 600;">Get Directions</a>
         </div>
       `).openPopup();
       
@@ -2362,6 +4477,40 @@
     function toggleProgramCard(card) {
       card.classList.toggle('flipped');
     }
+    
+    // Add event listeners to program cards
+    document.querySelectorAll('.program-card').forEach(card => {
+      card.addEventListener('click', function() {
+        toggleProgramCard(this);
+      });
+      
+      // Back button handler
+      const backButton = card.querySelector('.back-button');
+      if (backButton) {
+        backButton.addEventListener('click', function(e) {
+          e.stopPropagation();
+          toggleProgramCard(card);
+        });
+      }
+    });
+    
+    // Add event listener to enroll button
+    const enrollBtn = document.querySelector('.enroll-btn');
+    if (enrollBtn) {
+      enrollBtn.addEventListener('click', function() {
+        window.location.href = 'step1.html';
+      });
+    }
+    
+    // Add event listeners to quick reply buttons
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('quick-reply')) {
+        const message = e.target.getAttribute('data-reply');
+        if (message) {
+          sendQuickReply(message);
+        }
+      }
+    });
 
     // ===== FIREWORKS CLICK EFFECT =====
     (function() {
@@ -2481,8 +4630,8 @@
     const headerLogo = document.querySelector('header .logo img');
     let x = 0;
     let y = 0;
-    let speedX = 2;
-    let speedY = 2;
+    let speedX = 4;
+    let speedY = 3.5;
     let isPaused = false;
     let isActive = false;
     let animationId = null;
@@ -2503,15 +4652,23 @@
       x += speedX;
       y += speedY;
 
-      // Bounce off edges
+      // Bounce off edges with slight randomization
       if (x <= 0 || x >= window.innerWidth - 80) {
         speedX = -speedX;
+        // Add slight variation to prevent predictable bouncing
+        speedY += (Math.random() - 0.5) * 0.5;
         changeColor();
       }
       if (y <= 0 || y >= window.innerHeight - 80) {
         speedY = -speedY;
+        // Add slight variation to prevent predictable bouncing
+        speedX += (Math.random() - 0.5) * 0.5;
         changeColor();
       }
+
+      // Keep speeds within reasonable bounds
+      speedX = Math.max(-6, Math.min(6, speedX));
+      speedY = Math.max(-6, Math.min(6, speedY));
 
       // Apply position
       runningStudent.style.left = x + 'px';
@@ -2522,14 +4679,17 @@
 
     function changeColor() {
       const colors = [
-        'rgba(252, 242, 89, 0.7)',
-        'rgba(180, 229, 13, 0.7)',
-        'rgba(255, 123, 0, 0.7)',
-        'rgba(255, 87, 34, 0.7)',
-        'rgba(74, 144, 226, 0.7)'
+        'rgba(252, 242, 89, 0.8)',
+        'rgba(180, 229, 13, 0.8)',
+        'rgba(255, 123, 0, 0.8)',
+        'rgba(255, 87, 34, 0.8)',
+        'rgba(74, 144, 226, 0.8)',
+        'rgba(236, 72, 153, 0.8)',
+        'rgba(168, 85, 247, 0.8)',
+        'rgba(34, 197, 94, 0.8)'
       ];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      runningStudent.style.boxShadow = `0 4px 20px ${randomColor}`;
+      runningStudent.style.boxShadow = `0 6px 30px ${randomColor}, 0 0 15px ${randomColor}`;
     }
 
     // Easter Egg: Click header logo to activate bouncing animation
@@ -2699,117 +4859,267 @@
   
   <!-- Initialize Swiper -->
   <script>
-    // ===== AI ANNOUNCEMENT EXPIRY CHECKER =====
-    function checkAnnouncementExpiry() {
-      const currentDate = new Date();
-      const announcementItems = document.querySelectorAll('.announcement-item');
-      const emptyAnnouncement = document.getElementById('empty-announcement');
-      let activeAnnouncementsCount = 0;
-      
-      // Check each announcement
-      announcementItems.forEach(item => {
-        const expiryDate = new Date(item.getAttribute('data-expiry'));
+    // ===== AI AUTO-ANNOUNCEMENT GENERATOR =====
+    // This function automatically generates daily announcements based on the day of the week and weather
+    
+    async function getWeatherCondition() {
+      try {
+        let data;
         
-        // If announcement has passed, hide it
-        if (currentDate > expiryDate) {
-          item.style.display = 'none';
-          item.classList.add('expired');
-        } else {
-          item.style.display = 'block';
-          item.classList.remove('expired');
-          activeAnnouncementsCount++;
+        // Try secure backend proxy first (production)
+        try {
+          const response = await fetch('/api/weather');
+          if (response.ok) {
+            data = await response.json();
+          } else {
+            throw new Error('Proxy not available');
+          }
+        } catch (proxyError) {
+          // Fallback to direct API call (development/local only)
+          console.warn('Using fallback direct API call. Deploy serverless function for production.');
+          const apiKey = '772090ef7d8e457bbd175713251810';
+          const location = 'Balangkayan,Eastern Samar,Philippines';
+          const fallbackResponse = await fetch(
+            `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`
+          );
+          data = await fallbackResponse.json();
         }
-      });
-      
-      // If no active announcements, show empty state
-      if (activeAnnouncementsCount === 0) {
-        emptyAnnouncement.style.display = 'block';
-        console.log('All announcements have expired. Showing empty state.');
-      } else {
-        emptyAnnouncement.style.display = 'none';
-        console.log(`${activeAnnouncementsCount} active announcement(s) found.`);
+        
+        // Get weather condition
+        const condition = data.current.condition.text.toLowerCase();
+        const precipitation = data.current.precip_mm || 0;
+        
+        // Determine if it's rainy
+        const isRainy = condition.includes('rain') || condition.includes('drizzle') || 
+                        condition.includes('shower') || precipitation > 0;
+        
+        // Determine if it's sunny
+        const isSunny = condition.includes('sunny') || condition.includes('clear');
+        
+        return {
+          isRainy: isRainy,
+          isSunny: isSunny
+        };
+      } catch (error) {
+        console.error('Weather condition fetch error:', error);
+        // Default to sunny if API fails
+        return { isRainy: false, isSunny: true };
       }
-      
-      return activeAnnouncementsCount;
     }
     
-    // ===== ANNOUNCEMENT CAROUSEL =====
-    let announcementSwiper;
+    function getDayName(dayIndex) {
+      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      return days[dayIndex];
+    }
     
-    function initializeAnnouncementSwiper() {
-      // Check expiry first
-      const activeCount = checkAnnouncementExpiry();
+    function formatDate(date) {
+      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    }
+    
+    async function generateDailyReminder() {
+      const now = new Date();
+      const dayOfWeek = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+      const weather = await getWeatherCondition();
+      const container = document.getElementById('daily-reminder-container');
       
-      // Destroy existing swiper if it exists
-      if (announcementSwiper) {
-        announcementSwiper.destroy(true, true);
+      if (!container) return;
+      
+      // Clear existing reminder
+      container.innerHTML = '';
+      
+      let reminder = null;
+      
+      // Generate reminder based on day of week
+      switch(dayOfWeek) {
+        case 1: // Monday
+          // Flag ceremony announcement
+          if (weather.isSunny) {
+            reminder = {
+              icon: '🇵🇭',
+              title: 'Flag Ceremony Today',
+              content: `Good morning, students! There will be a <strong>Flag Ceremony</strong> today. Let's show our respect to our national flag and start the week with pride!`,
+              details: [
+                { label: '⏰ Time', value: '7:15 AM sharp' },
+                { label: '☀️ Weather', value: 'Sunny - Ceremony will proceed' },
+                { label: '👔 Dress Code', value: 'Complete uniform required' },
+                { label: '🆔 Requirement', value: 'Bring your school ID' }
+              ]
+            };
+          } else {
+            reminder = {
+              icon: '🌧️',
+              title: 'No Flag Ceremony Today',
+              content: `Good morning, students! Due to rainy weather, there will be <strong>NO Flag Ceremony</strong> today. Stay safe and dry!`,
+              details: [
+                { label: '🌧️ Weather', value: 'Rainy conditions' },
+                { label: '👔 Dress Code', value: 'Complete uniform still required' },
+                { label: '🆔 Requirement', value: 'Bring your school ID' },
+                { label: '☂️ Reminder', value: 'Bring your umbrella' }
+              ]
+            };
+          }
+          break;
+          
+        case 2: // Tuesday
+          reminder = {
+            icon: '📚',
+            title: 'Tuesday - Regular School Day',
+            content: `Good morning, students! Let's make today productive and focused. Have a great Tuesday!`,
+            details: [
+              { label: '👔 Dress Code', value: 'Complete school uniform' },
+              { label: '🆔 Requirement', value: 'Bring your school ID' },
+              { label: '📖 Reminder', value: 'Come prepared for classes' }
+            ]
+          };
+          break;
+          
+        case 3: // Wednesday
+          reminder = {
+            icon: '👕',
+            title: 'Wash Day - Civilian Attire',
+            content: `Good morning, students! Today is <strong>Wash Day</strong> - you may wear proper civilian attire. Enjoy your Wash Day while maintaining school decorum!`,
+            details: [
+              { label: '👕 Dress Code', value: 'Proper civilian attire allowed' },
+              { label: '🆔 Requirement', value: 'School ID is mandatory' },
+              { label: '👗 Guidelines', value: 'Dress modestly and appropriately' }
+            ]
+          };
+          break;
+          
+        case 4: // Thursday
+          reminder = {
+            icon: '💪',
+            title: 'Thursday - Keep Going Strong',
+            content: `Good morning, students! We're almost at the weekend - stay focused and motivated! Have a productive Thursday!`,
+            details: [
+              { label: '👔 Dress Code', value: 'Complete school uniform' },
+              { label: '🆔 Requirement', value: 'Bring your school ID' },
+              { label: '📚 Motivation', value: 'Stay focused on your goals' }
+            ]
+          };
+          break;
+          
+        case 5: // Friday
+          const currentHour = now.getHours();
+          if (currentHour >= 14) { // Show after 2 PM - Flag retreat info
+            if (!weather.isRainy) {
+              reminder = {
+                icon: '🇵🇭',
+                title: 'Flag Retreat at 4:00 PM',
+                content: `Attention, students! There will be a <strong>Flag Retreat</strong> ceremony this afternoon. Let's end the week with honor and respect for our flag!`,
+                details: [
+                  { label: '⏰ Time', value: '4:00 PM sharp' },
+                  { label: '☀️ Weather', value: 'Good conditions - Will proceed' },
+                  { label: '👔 Dress Code', value: 'Complete school uniform' },
+                  { label: '🙏 Reminder', value: 'Show respect during ceremony' }
+                ]
+              };
+            } else {
+              reminder = {
+                icon: '🌧️',
+                title: 'No Flag Retreat Today',
+                content: `Attention, students! Due to rainy weather, there will be <strong>NO Flag Retreat</strong> at 4:00 PM today. Stay safe and have a great weekend!`,
+                details: [
+                  { label: '🌧️ Weather', value: 'Rainy conditions' },
+                  { label: '👔 Dress Code', value: 'Complete school uniform' },
+                  { label: '☂️ Safety', value: 'Proceed home safely' }
+                ]
+              };
+            }
+          } else { // Morning - Regular Friday reminder
+            reminder = {
+              icon: '🎉',
+              title: 'Happy Friday!',
+              content: `Good morning, students! It's the last day of the school week - finish strong! Have a wonderful Friday!`,
+              details: [
+                { label: '👔 Dress Code', value: 'Complete school uniform' },
+                { label: '🆔 Requirement', value: 'Bring your school ID' },
+                { label: '✨ Motivation', value: 'End the week on a high note' },
+                { label: '🇵🇭 Later Today', value: 'Flag Retreat at 4:00 PM (weather permitting)' }
+              ]
+            };
+          }
+          break;
+          
+        case 0: // Sunday
+        case 6: // Saturday
+          reminder = {
+            icon: '🏖️',
+            title: `Happy ${getDayName(dayOfWeek)}!`,
+            content: `Enjoy your weekend and take time to rest and recharge! See you on Monday for another great week at BSHS!`,
+            details: [
+              { label: '🏖️ Weekend', value: 'No classes today' },
+              { label: '📚 Suggestion', value: 'Review lessons for next week' },
+              { label: '😊 Reminder', value: 'Rest well and stay healthy' }
+            ]
+          };
+          break;
       }
       
-      // Initialize swiper
-      announcementSwiper = new Swiper('.announcementSwiper', {
-        // Swiper parameters
-        slidesPerView: 1,
-        spaceBetween: 30,
-        loop: activeCount > 1, // Only loop if there are multiple active announcements
-      autoplay: {
-        delay: 5000,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true,
-      },
-      speed: 800,
-      effect: 'slide',
-      
-      // Navigation arrows
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-      
-      // Pagination
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-        dynamicBullets: true,
-      },
-      
-      // Responsive breakpoints
-      breakpoints: {
-        // When window width is >= 768px
-        768: {
-          slidesPerView: 1,
-          spaceBetween: 30
-        },
-        // When window width is >= 1024px
-        1024: {
-          slidesPerView: 1,
-          spaceBetween: 40
+      // Create HTML for reminder
+      if (reminder) {
+        // Generate details HTML if details exist
+        let detailsHTML = '';
+        if (reminder.details && reminder.details.length > 0) {
+          detailsHTML = '<div class="reminder-details">';
+          reminder.details.forEach(detail => {
+            detailsHTML += `
+              <div class="reminder-detail-item">
+                <strong>${detail.label}</strong>
+                ${detail.value}
+              </div>
+            `;
+          });
+          detailsHTML += '</div>';
         }
-      },
-      
-      // Keyboard control
-      keyboard: {
-        enabled: true,
-        onlyInViewport: true,
-      },
-      
-      // Mouse wheel control
-      mousewheel: {
-        forceToAxis: true,
-      },
-      
-      // Accessibility
-      a11y: {
-        prevSlideMessage: 'Previous announcement',
-        nextSlideMessage: 'Next announcement',
-      },
-      });
+        
+        const reminderHTML = `
+          <div class="reminder-card">
+            <div class="reminder-header">
+              <div class="reminder-icon">${sanitizeHTML(reminder.icon)}</div>
+              <div class="reminder-header-text">
+                <h3>${sanitizeHTML(reminder.title)}</h3>
+                <span class="reminder-date-badge">📅 ${sanitizeHTML(getDayName(dayOfWeek))}, ${sanitizeHTML(formatDate(now))}</span>
+              </div>
+            </div>
+            <div class="reminder-content">
+              <p>${reminder.content}</p>
+            </div>
+            ${detailsHTML}
+          </div>
+        `;
+        
+        setSafeHTML(container, reminderHTML);
+      }
     }
     
     // Initialize on page load
-    initializeAnnouncementSwiper();
+    async function initializeAll() {
+      await generateDailyReminder();
+    }
+    
+    initializeAll();
     
     // Re-check and update every hour (3600000 ms = 1 hour)
-    setInterval(initializeAnnouncementSwiper, 3600000);
+    setInterval(initializeAll, 3600000);
+    
+    // Also refresh at midnight to get new day's reminder
+    function scheduleNextMidnightRefresh() {
+      const now = new Date();
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      tomorrow.setHours(0, 0, 1, 0); // 00:00:01 next day
+      
+      const timeUntilMidnight = tomorrow - now;
+      
+      setTimeout(() => {
+        initializeAll();
+        scheduleNextMidnightRefresh(); // Schedule next midnight refresh
+      }, timeUntilMidnight);
+    }
+    
+    scheduleNextMidnightRefresh();
     
     // Optional: Check every minute for more frequent updates
     // Uncomment the line below if you want announcements to disappear within a minute of expiring

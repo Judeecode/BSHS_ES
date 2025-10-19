@@ -1,0 +1,28 @@
+# Environment variables (contains API keys - NEVER commit!)
+.env
+.env.local
+.env.production
+
+# Node modules (if using npm)
+node_modules/
+
+# Vercel
+.vercel
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
