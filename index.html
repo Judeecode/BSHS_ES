@@ -3628,7 +3628,6 @@
         
         // Get current weather from WeatherAPI.com response
         const temp = data.current.temp_c;
-        const precipitation = data.current.precip_mm || 0;
         const humidity = data.current.humidity || 0;
         const windSpeed = data.current.wind_kph || 0;
         const condition = data.current.condition.text;
@@ -3640,11 +3639,31 @@
                           conditionLower.includes('shower') ||
                           conditionLower.includes('sleet');
         
-        // Calculate rainfall intensity (mm/hour)
-        // Only use precipitation value if weather condition indicates rain
-        // Otherwise, precipitation might be residual/forecast data
-        // Also ignore very small precipitation values (< 0.1mm) as they're negligible
-        let rainfallIntensity = (isRaining && precipitation >= 0.1) ? precipitation : 0;
+        // Calculate rainfall intensity (mm/hour) using forecast data
+        // WeatherAPI provides hourly forecast which is more accurate for current conditions
+        let rainfallIntensity = 0;
+        
+        if (data.forecast && data.forecast.forecastday && data.forecast.forecastday[0]) {
+          const today = data.forecast.forecastday[0];
+          const currentHour = new Date().getHours();
+          
+          // Find the current hour's forecast
+          if (today.hour && today.hour[currentHour]) {
+            const currentHourData = today.hour[currentHour];
+            // Use will_it_rain and precip_mm from hourly forecast for accurate current rainfall rate
+            const willRain = currentHourData.will_it_rain === 1;
+            const hourlyPrecip = currentHourData.precip_mm || 0;
+            
+            // Only use precipitation value if forecast indicates rain and value is significant
+            rainfallIntensity = (willRain && hourlyPrecip >= 0.1) ? hourlyPrecip : 0;
+          }
+        }
+        
+        // Fallback: if no forecast data, use current precipitation only if weather condition indicates rain
+        if (rainfallIntensity === 0 && isRaining) {
+          const currentPrecip = data.current.precip_mm || 0;
+          rainfallIntensity = currentPrecip >= 0.1 ? currentPrecip : 0;
+        }
         
         // Update temperature
         weatherTemp.textContent = `${temp}°C`;
@@ -4328,7 +4347,6 @@
           if (currentWeatherData) {
             // WeatherAPI.com data structure
             const temp = currentWeatherData.current.temp_c;
-            const precipitation = currentWeatherData.current.precip_mm || 0;
             const humidity = currentWeatherData.current.humidity || 0;
             const windSpeed = currentWeatherData.current.wind_kph || 0;
             const condition = currentWeatherData.current.condition.text;
@@ -4340,8 +4358,27 @@
                               conditionLower.includes('shower') ||
                               conditionLower.includes('sleet');
             
-            // Rainfall intensity - only use precipitation if actually raining
-            let rainfallIntensity = (isRaining && precipitation >= 0.1) ? precipitation : 0;
+            // Calculate rainfall intensity using forecast data (same as main weather function)
+            let rainfallIntensity = 0;
+            
+            if (currentWeatherData.forecast && currentWeatherData.forecast.forecastday && currentWeatherData.forecast.forecastday[0]) {
+              const today = currentWeatherData.forecast.forecastday[0];
+              const currentHour = new Date().getHours();
+              
+              if (today.hour && today.hour[currentHour]) {
+                const currentHourData = today.hour[currentHour];
+                const willRain = currentHourData.will_it_rain === 1;
+                const hourlyPrecip = currentHourData.precip_mm || 0;
+                
+                rainfallIntensity = (willRain && hourlyPrecip >= 0.1) ? hourlyPrecip : 0;
+              }
+            }
+            
+            // Fallback: if no forecast data, use current precipitation only if weather condition indicates rain
+            if (rainfallIntensity === 0 && isRaining) {
+              const currentPrecip = currentWeatherData.current.precip_mm || 0;
+              rainfallIntensity = currentPrecip >= 0.1 ? currentPrecip : 0;
+            }
             
             weatherResponse += `🌡️ <strong>Temperature:</strong> ${temp}°C\n`;
             weatherResponse += `☁️ <strong>Condition:</strong> ${condition}\n`;
@@ -4853,11 +4890,32 @@
         
         // Get weather condition
         const condition = data.current.condition.text.toLowerCase();
-        const precipitation = data.current.precip_mm || 0;
+        
+        // Calculate rainfall using forecast data for accuracy
+        let rainfallIntensity = 0;
+        
+        if (data.forecast && data.forecast.forecastday && data.forecast.forecastday[0]) {
+          const today = data.forecast.forecastday[0];
+          const currentHour = new Date().getHours();
+          
+          if (today.hour && today.hour[currentHour]) {
+            const currentHourData = today.hour[currentHour];
+            const willRain = currentHourData.will_it_rain === 1;
+            const hourlyPrecip = currentHourData.precip_mm || 0;
+            
+            rainfallIntensity = (willRain && hourlyPrecip >= 0.1) ? hourlyPrecip : 0;
+          }
+        }
+        
+        // Fallback to current precipitation if no forecast data
+        if (rainfallIntensity === 0) {
+          const currentPrecip = data.current.precip_mm || 0;
+          rainfallIntensity = currentPrecip;
+        }
         
         // Determine if it's rainy
         const isRainy = condition.includes('rain') || condition.includes('drizzle') || 
-                        condition.includes('shower') || precipitation > 0;
+                        condition.includes('shower') || rainfallIntensity > 0;
         
         // Determine if it's sunny
         const isSunny = condition.includes('sunny') || condition.includes('clear');

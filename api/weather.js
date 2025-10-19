@@ -36,8 +36,9 @@ export default async function handler(req, res) {
 
   try {
     // Call WeatherAPI.com from server side
+    // Using forecast.json to get hourly forecast data for accurate rainfall intensity
     const weatherResponse = await fetch(
-      `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(location)}&aqi=no`,
+      `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${encodeURIComponent(location)}&days=1&aqi=no&alerts=yes`,
       {
         headers: {
           'User-Agent': 'BSHS-Weather-Service/1.0'
