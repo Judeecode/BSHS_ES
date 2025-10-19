@@ -3633,12 +3633,6 @@
         const condition = data.current.condition.text;
         const conditionLower = condition.toLowerCase();
         
-        // Check if it's actually raining based on weather condition
-        const isRaining = conditionLower.includes('rain') || 
-                          conditionLower.includes('drizzle') ||
-                          conditionLower.includes('shower') ||
-                          conditionLower.includes('sleet');
-        
         // Calculate rainfall intensity (mm/hour) using forecast data
         // WeatherAPI provides hourly forecast which is more accurate for current conditions
         let rainfallIntensity = 0;
@@ -3659,11 +3653,15 @@
           }
         }
         
-        // Fallback: if no forecast data, use current precipitation only if weather condition indicates rain
-        if (rainfallIntensity === 0 && isRaining) {
+        // Fallback: use current precipitation if available
+        if (rainfallIntensity === 0) {
           const currentPrecip = data.current.precip_mm || 0;
           rainfallIntensity = currentPrecip >= 0.1 ? currentPrecip : 0;
         }
+        
+        // Determine if it's actually raining based on MEASURABLE rainfall
+        // Don't rely solely on condition text (e.g., "Patchy rain" might not mean active rain)
+        const isRaining = rainfallIntensity >= 0.5; // At least 0.5mm/h to be considered "raining"
         
         // Update temperature
         weatherTemp.textContent = `${temp}°C`;
@@ -3803,7 +3801,25 @@
             const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
             // conditionLower already defined at top of function
             
-            if (conditionLower.includes('thunder')) {
+            // Handle "Patchy rain" or similar conditions when there's no measurable rainfall
+            if ((conditionLower.includes('patchy') && conditionLower.includes('rain')) || 
+                (conditionLower.includes('possible') && conditionLower.includes('rain'))) {
+              icon = '🌥️';
+              statusText = condition;
+              let patchyDayAdvice = '';
+              if (isWeekend) {
+                patchyDayAdvice = '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong>';
+              } else if (dayOfWeek === 1) { // Monday
+                patchyDayAdvice = '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Bring umbrella just in case';
+              } else if (dayOfWeek === 5) { // Friday
+                patchyDayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
+              }
+              suspensionInfo = `<strong>🌥️ ${condition} (${currentDay}):</strong><br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                • 🌂 Bring umbrella as precaution<br>
+                • ☁️ Rain possible but not currently falling<br>
+                • 📱 Monitor weather updates${isWeekend ? '' : '<br>• 👕 Regular uniform appropriate'}${patchyDayAdvice}`;
+            } else if (conditionLower.includes('thunder')) {
               icon = '⛈️';
               statusText = condition;
               suspensionInfo = `<strong>⛈️ Thunderstorm Possible (${currentDay}):</strong><br>
@@ -4352,12 +4368,6 @@
             const condition = currentWeatherData.current.condition.text;
             const conditionLower = condition.toLowerCase();
             
-            // Check if it's actually raining (same logic as main weather function)
-            const isRaining = conditionLower.includes('rain') || 
-                              conditionLower.includes('drizzle') ||
-                              conditionLower.includes('shower') ||
-                              conditionLower.includes('sleet');
-            
             // Calculate rainfall intensity using forecast data (same as main weather function)
             let rainfallIntensity = 0;
             
@@ -4374,11 +4384,14 @@
               }
             }
             
-            // Fallback: if no forecast data, use current precipitation only if weather condition indicates rain
-            if (rainfallIntensity === 0 && isRaining) {
+            // Fallback: use current precipitation if available
+            if (rainfallIntensity === 0) {
               const currentPrecip = currentWeatherData.current.precip_mm || 0;
               rainfallIntensity = currentPrecip >= 0.1 ? currentPrecip : 0;
             }
+            
+            // Determine if it's actually raining based on MEASURABLE rainfall
+            const isRaining = rainfallIntensity >= 0.5;
             
             weatherResponse += `🌡️ <strong>Temperature:</strong> ${temp}°C\n`;
             weatherResponse += `☁️ <strong>Condition:</strong> ${condition}\n`;
