@@ -3616,31 +3616,14 @@
     // Fetch weather data and check rainfall warnings
     async function updateWeatherInfo() {
       try {
-        let data;
+        // Using secure backend proxy to protect API key
+        const response = await fetch('/api/weather');
         
-        // Try secure backend proxy first (production)
-        try {
-          const response = await fetch('/api/weather');
-          if (response.ok) {
-            data = await response.json();
-          } else {
-            throw new Error('Proxy not available');
-          }
-        } catch (proxyError) {
-          // Fallback to direct API call (development/local only)
-          // TODO: Remove this fallback after deployment
-          console.warn('Using fallback direct API call. Deploy serverless function for production.');
-          const apiKey = '772090ef7d8e457bbd175713251810';
-          const location = 'Balangkayan,Eastern Samar,Philippines';
-          const fallbackResponse = await fetch(
-            `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`
-          );
-          if (!fallbackResponse.ok) {
-            throw new Error(`Weather API error: ${fallbackResponse.status}`);
-          }
-          data = await fallbackResponse.json();
+        if (!response.ok) {
+          throw new Error(`Weather API error: ${response.status}`);
         }
         
+        const data = await response.json();
         currentWeatherData = data;
         
         // Get current weather from WeatherAPI.com response
@@ -4864,26 +4847,9 @@
     
     async function getWeatherCondition() {
       try {
-        let data;
-        
-        // Try secure backend proxy first (production)
-        try {
-          const response = await fetch('/api/weather');
-          if (response.ok) {
-            data = await response.json();
-          } else {
-            throw new Error('Proxy not available');
-          }
-        } catch (proxyError) {
-          // Fallback to direct API call (development/local only)
-          console.warn('Using fallback direct API call. Deploy serverless function for production.');
-          const apiKey = '772090ef7d8e457bbd175713251810';
-          const location = 'Balangkayan,Eastern Samar,Philippines';
-          const fallbackResponse = await fetch(
-            `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}&aqi=no`
-          );
-          data = await fallbackResponse.json();
-        }
+        // Using secure backend proxy to protect API key
+        const response = await fetch('/api/weather');
+        const data = await response.json();
         
         // Get weather condition
         const condition = data.current.condition.text.toLowerCase();
