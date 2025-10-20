@@ -3765,14 +3765,14 @@
             }
           } else if (dayOfWeek === 1) { // Monday
             if (adviceType === 'rain') {
-              return '<br>• 🚩 <strong>Flag Ceremony may be cancelled</strong> due to rain';
+              return '<br>• 🇵🇭 <strong>Flag Ceremony may be cancelled</strong> due to rain';
             } else if (adviceType === 'sunny') {
-              return '<br>• 🚩 <strong>FLAG CEREMONY TODAY</strong> - Be on time!';
+              return '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Be on time!';
             } else {
-              return '<br>• 🚩 <strong>FLAG CEREMONY TODAY</strong> - Bring umbrella just in case';
+              return '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Bring umbrella just in case';
             }
           } else if (dayOfWeek === 5) { // Friday
-            return '<br>• 🚩 <strong>FLAG RETREAT at 4:00 PM</strong>';
+            return '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
           }
           return '';
         };
@@ -5040,7 +5040,7 @@
           } else if (rainfall >= 0.5) {
             // Light rain - ceremony may be cancelled
             reminder = {
-              icon: '🚩',
+              icon: '🇵🇭',
               title: 'Flag Ceremony May Be Cancelled',
               content: `Good morning, students! Due to light rain, the <strong>Flag Ceremony may be cancelled</strong>. Please bring your umbrella and wait for announcements.`,
               details: [
@@ -5053,7 +5053,7 @@
           } else if (weather.isSunny) {
             // Sunny - ceremony will proceed
             reminder = {
-              icon: '🚩',
+              icon: '🇵🇭',
               title: 'Flag Ceremony Today',
               content: `Good morning, students! There will be a <strong>Flag Ceremony</strong> today. Let's show our respect to our national flag and start the week with pride!`,
               details: [
@@ -5066,7 +5066,7 @@
           } else {
             // Cloudy/other - ceremony will proceed
             reminder = {
-              icon: '🚩',
+              icon: '🇵🇭',
               title: 'Flag Ceremony Today',
               content: `Good morning, students! There will be a <strong>Flag Ceremony</strong> today. Let's show our respect to our national flag and start the week with pride!`,
               details: [
@@ -5138,7 +5138,7 @@
             } else if (fridayRainfall >= 0.5) {
               // Light rain - ceremony may be cancelled
               reminder = {
-                icon: '🚩',
+                icon: '🇵🇭',
                 title: 'Flag Retreat May Be Cancelled',
                 content: `Attention, students! Due to light rain, the <strong>Flag Retreat may be cancelled</strong>. Please wait for announcements at 4:00 PM.`,
                 details: [
@@ -5151,7 +5151,7 @@
             } else {
               // Good weather - ceremony will proceed
               reminder = {
-                icon: '🚩',
+                icon: '🇵🇭',
                 title: 'Flag Retreat at 4:00 PM',
                 content: `Attention, students! There will be a <strong>Flag Retreat</strong> ceremony this afternoon. Let's end the week with honor and respect for our flag!`,
                 details: [
@@ -5171,7 +5171,7 @@
                 { label: '👔 Dress Code', value: 'Complete school uniform' },
                 { label: '🆔 Requirement', value: 'Bring your school ID' },
                 { label: '✨ Motivation', value: 'End the week on a high note' },
-                { label: '🚩 Later Today', value: 'Flag Retreat at 4:00 PM (weather permitting)' }
+                { label: '🇵🇭 Later Today', value: 'Flag Retreat at 4:00 PM (weather permitting)' }
               ]
             };
           }
@@ -5266,4 +5266,3 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </body>
 </html>
-
