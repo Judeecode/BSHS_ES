@@ -3730,6 +3730,7 @@
         
         // Get current weather from WeatherAPI.com response
         const temp = data.current.temp_c;
+        const feelsLike = data.current.feelslike_c; // Heat index / feels-like temperature
         const humidity = data.current.humidity || 0;
         const windSpeed = data.current.wind_kph || 0;
         const condition = data.current.condition.text;
@@ -3950,8 +3951,14 @@
               } else if (dayOfWeek === 5) { // Friday
                 dayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
               }
+              
+              // Add heat index information for sunny weather
+              const heatIndexInfo = feelsLike > temp 
+                ? `<br>• 🌡️ <strong>Temperature:</strong> ${temp}°C (Feels like ${feelsLike}°C)` 
+                : `<br>• 🌡️ <strong>Temperature:</strong> ${temp}°C`;
+              
               suspensionInfo = `<strong>☀️ Sunny Weather (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Great day for learning!'}<br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Great day for learning!'}${heatIndexInfo}<br>
                 • ☀️ Wear sun protection if needed<br>
                 • 💧 Drink plenty of water<br>
                 • 🧴 Apply sunscreen for outdoor activities<br>
