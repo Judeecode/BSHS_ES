@@ -3660,7 +3660,18 @@
       }
       
       try {
-        const response = await fetch('/api/weather');
+        // Try Vercel API endpoint first
+        let response = await fetch('/api/weather');
+        
+        // If API endpoint fails (local development), use direct API call
+        if (!response.ok) {
+          console.warn('Vercel API unavailable, using direct WeatherAPI call (development mode)');
+          const apiKey = 'b8c0c5e6b7f84d9c8f5e3a2d1c0b9a8f'; // Development key - replace with your own
+          const location = 'Balangkayan,Eastern Samar,Philippines';
+          response = await fetch(
+            `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${encodeURIComponent(location)}&days=1&aqi=no&alerts=yes`
+          );
+        }
         
         if (!response.ok) {
           throw new Error(`Weather API error: ${response.status}`);
