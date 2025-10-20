@@ -5228,6 +5228,7 @@
     // Initialize on page load
     async function initializeAll() {
       await generateDailyReminder();
+      await updateWeatherInfo(); // Ensure weather updates with daily reminders
     }
     
     initializeAll();

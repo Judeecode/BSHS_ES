@@ -2,8 +2,22 @@
 // This securely proxies weather API requests to hide the API key
 
 export default async function handler(req, res) {
-  // CORS headers for your domain
-  res.setHeader('Access-Control-Allow-Origin', 'https://bshs-es.vercel.app');
+  // CORS headers - allow requests from multiple origins
+  const allowedOrigins = [
+    'https://bshs-es.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:5000',
+    'http://localhost:8000',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:5000',
+    'http://127.0.0.1:8000'
+  ];
+  
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin) || !origin) {
+    res.setHeader('Access-Control-Allow-Origin', origin || '*');
+  }
+  
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
