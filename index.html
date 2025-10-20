@@ -3876,34 +3876,34 @@
               icon = '🌧️';
               statusText = `Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
               suspensionInfo = `<strong>🌧️ Light Rain (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Classes continue as normal'}<br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
                 • 🌂 Bring umbrella and raincoat<br>
                 • 👟 Wear appropriate footwear<br>
                 • 💧 Stay dry and avoid getting wet<br>
-                • 📱 Keep valuables protected from water${rainDayAdvice}`;
+                • 📱 Keep valuables protected from water`;
             } else if (rainfallIntensity >= 2) {
               icon = '🌦️';
               statusText = `Drizzle (${rainfallIntensity.toFixed(1)}mm/h)`;
               suspensionInfo = `<strong>🌦️ Drizzle (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
                 • 🌂 Bring umbrella just in case<br>
                 • 👕 Light rain gear recommended<br>
-                • 🚶 Walk carefully on wet surfaces${rainDayAdvice}`;
+                • 🚶 Walk carefully on wet surfaces`;
             } else if (rainfallIntensity >= 0.5) {
               icon = '🌦️';
               statusText = `Very Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
               suspensionInfo = `<strong>🌦️ Very Light Rain (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Normal class schedule'}<br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
                 • 🌂 Umbrella recommended<br>
-                • 👟 Watch your step on wet ground${rainDayAdvice}`;
+                • 👟 Watch your step on wet ground`;
             } else {
               // Rainfall is negligible (< 0.5mm/h), treat as cloudy with trace rain
               icon = '☁️';
               statusText = 'Cloudy with Trace Rain';
               suspensionInfo = `<strong>☁️ Cloudy with Trace Rain (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
                 • 🌂 Umbrella optional<br>
-                • 🌡️ Comfortable temperature expected${isWeekend ? '' : '<br>• 👕 Regular uniform appropriate'}${rainDayAdvice}`;
+                • 🌡️ Comfortable temperature expected${isWeekend ? '' : '<br>• 👕 Regular uniform appropriate'}`;
             }
           } else {
             // No rain detected, use weather condition from API
@@ -3924,8 +3924,9 @@
             } else if (conditionLower.includes('thunder')) {
               icon = '⛈️';
               statusText = condition;
+              const thunderDayAdvice = getDaySpecificAdvice(dayOfWeek, 'rain');
               suspensionInfo = `<strong>⛈️ Thunderstorm Possible (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Stay alert during school hours'}<br>
+                • ${isWeekend ? 'No classes - Weekend' : 'Stay alert during school hours'}${thunderDayAdvice}<br>
                 • ⚡ Stay indoors during lightning<br>
                 • 🌂 Bring umbrella and raincoat<br>
                 • 📱 Monitor weather updates closely<br>
