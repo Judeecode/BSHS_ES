@@ -3746,6 +3746,37 @@
         // Update temperature
         weatherTemp.textContent = `${temp}°C`;
         
+        // Helper function to get day-specific advice
+        const getDaySpecificAdvice = (dayOfWeek, adviceType = 'normal') => {
+          const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+          
+          if (isWeekend) {
+            if (adviceType === 'rain') {
+              return '<br>• 🎉 <strong>No classes today - It\'s the weekend!</strong><br>• Stay safe and dry at home';
+            } else if (adviceType === 'sunny') {
+              return '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong><br>• Perfect weather for outdoor activities!';
+            } else {
+              return '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong>';
+            }
+          } else if (dayOfWeek === 1) { // Monday
+            if (adviceType === 'rain') {
+              return '<br>• 🇵🇭 <strong>Flag Ceremony may be cancelled</strong> due to rain';
+            } else if (adviceType === 'sunny') {
+              return '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Be on time!';
+            } else {
+              return '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Bring umbrella just in case';
+            }
+          } else if (dayOfWeek === 5) { // Friday
+            return '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
+          }
+          return '';
+        };
+        
+        // Calculate heat index info (reusable across weather conditions)
+        const heatIndexInfo = feelsLike > temp 
+          ? `<br>• 🌡️ <strong>Temperature:</strong> ${temp}°C (Feels like ${feelsLike}°C)` 
+          : `<br>• 🌡️ <strong>Temperature:</strong> ${temp}°C`;
+        
         // Get current day for day-specific advice
         const currentDate = new Date();
         const dayOfWeek = currentDate.getDay(); // 0=Sunday, 1=Monday, etc.
@@ -3833,15 +3864,7 @@
           // Only show rain info if weather condition actually indicates rain
           if (isRaining && rainfallIntensity > 0) {
             const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
-            let rainDayAdvice = '';
-            
-            if (isWeekend) {
-              rainDayAdvice = '<br>• 🎉 <strong>No classes today - It\'s the weekend!</strong><br>• Stay safe and dry at home';
-            } else if (dayOfWeek === 1) { // Monday
-              rainDayAdvice = '<br>• 🇵🇭 <strong>Flag Ceremony may be cancelled</strong> due to rain';
-            } else if (dayOfWeek === 5) { // Friday
-              rainDayAdvice = '<br>• 🇵🇭 <strong>Flag Retreat may be cancelled</strong> due to rain';
-            }
+            const rainDayAdvice = getDaySpecificAdvice(dayOfWeek, 'rain');
             
             if (rainfallIntensity >= 5) {
               icon = '🌧️';
@@ -3886,14 +3909,7 @@
                 (conditionLower.includes('possible') && conditionLower.includes('rain'))) {
               icon = '🌥️';
               statusText = condition;
-              let patchyDayAdvice = '';
-              if (isWeekend) {
-                patchyDayAdvice = '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong>';
-              } else if (dayOfWeek === 1) { // Monday
-                patchyDayAdvice = '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Bring umbrella just in case';
-              } else if (dayOfWeek === 5) { // Friday
-                patchyDayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
-              }
+              const patchyDayAdvice = getDaySpecificAdvice(dayOfWeek);
               suspensionInfo = `<strong>🌥️ ${condition} (${currentDay}):</strong><br>
                 • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
                 • 🌂 Bring umbrella as precaution<br>
@@ -3912,14 +3928,7 @@
             } else if (conditionLower.includes('cloudy') || conditionLower.includes('overcast')) {
               icon = '☁️';
               statusText = condition;
-              let cloudyDayAdvice = '';
-              if (isWeekend) {
-                cloudyDayAdvice = '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong>';
-              } else if (dayOfWeek === 1) { // Monday
-                cloudyDayAdvice = '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Bring umbrella just in case';
-              } else if (dayOfWeek === 5) { // Friday
-                cloudyDayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
-              }
+              const cloudyDayAdvice = getDaySpecificAdvice(dayOfWeek);
               suspensionInfo = `<strong>☁️ Cloudy Weather (${currentDay}):</strong><br>
                 • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
                 • 🌂 Bring umbrella (rain possible)<br>
@@ -3927,14 +3936,7 @@
             } else if (conditionLower.includes('partly')) {
               icon = '⛅';
               statusText = condition;
-              let partlyDayAdvice = '';
-              if (isWeekend) {
-                partlyDayAdvice = '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong>';
-              } else if (dayOfWeek === 1) { // Monday
-                partlyDayAdvice = '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Be on time!';
-              } else if (dayOfWeek === 5) { // Friday
-                partlyDayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
-              }
+              const partlyDayAdvice = getDaySpecificAdvice(dayOfWeek, 'sunny');
               suspensionInfo = `<strong>⛅ Partly Cloudy (${currentDay}):</strong><br>
                 • ${isWeekend ? 'No classes - Weekend' : 'Perfect weather for classes!'}<br>
                 • ☀️ Some sunshine expected<br>
@@ -3943,19 +3945,7 @@
             } else if (conditionLower.includes('clear') || conditionLower.includes('sunny')) {
               icon = '☀️';
               statusText = condition;
-              let dayAdvice = '';
-              if (isWeekend) {
-                dayAdvice = '<br>• 🎉 <strong>No classes - Enjoy your weekend!</strong><br>• Perfect weather for outdoor activities!';
-              } else if (dayOfWeek === 1) { // Monday
-                dayAdvice = '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Be on time!';
-              } else if (dayOfWeek === 5) { // Friday
-                dayAdvice = '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
-              }
-              
-              // Add heat index information for sunny weather
-              const heatIndexInfo = feelsLike > temp 
-                ? `<br>• 🌡️ <strong>Temperature:</strong> ${temp}°C (Feels like ${feelsLike}°C)` 
-                : `<br>• 🌡️ <strong>Temperature:</strong> ${temp}°C`;
+              const dayAdvice = getDaySpecificAdvice(dayOfWeek, 'sunny');
               
               suspensionInfo = `<strong>☀️ Sunny Weather (${currentDay}):</strong><br>
                 • ${isWeekend ? 'No classes - Weekend' : 'Great day for learning!'}${heatIndexInfo}<br>
