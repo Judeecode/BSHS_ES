@@ -1,0 +1,19 @@
+{
+  "name": "bshs-es",
+  "version": "1.0.0",
+  "description": "Balangkayan Senior High School Website",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'No build step required'"
+  },
+  "keywords": [
+    "school",
+    "education",
+    "bshs"
+  ],
+  "author": "BSHS",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
