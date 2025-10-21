@@ -3772,6 +3772,8 @@
             } else {
               return '<br>• 🇵🇭 <strong>FLAG CEREMONY TODAY</strong> - Bring umbrella just in case';
             }
+          } else if (dayOfWeek === 3) { // Wednesday
+            return '<br>• 👕 <strong>WASH DAY</strong> - Proper civilian attire allowed';
           } else if (dayOfWeek === 5) { // Friday
             return '<br>• 🇵🇭 <strong>FLAG RETREAT at 4:00 PM</strong>';
           }
@@ -3903,7 +3905,7 @@
               suspensionInfo = `<strong>☁️ Cloudy with Trace Rain (${currentDay}):</strong><br>
                 • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
                 • 🌂 Umbrella optional<br>
-                • 🌡️ Comfortable temperature expected${isWeekend ? '' : '<br>• 👕 Regular uniform appropriate'}`;
+                • 🌡️ Comfortable temperature expected${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}`;
             }
           } else {
             // No rain detected, use weather condition from API
@@ -3920,7 +3922,7 @@
                 • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
                 • 🌂 Bring umbrella as precaution<br>
                 • ☁️ Rain possible but not currently falling<br>
-                • 📱 Monitor weather updates${isWeekend ? '' : '<br>• 👕 Regular uniform appropriate'}${patchyDayAdvice}`;
+                • 📱 Monitor weather updates${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}${patchyDayAdvice}`;
             } else if (conditionLower.includes('thunder')) {
               icon = '⛈️';
               statusText = condition;
@@ -3939,7 +3941,7 @@
               suspensionInfo = `<strong>☁️ Cloudy Weather (${currentDay}):</strong><br>
                 • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
                 • 🌂 Bring umbrella (rain possible)<br>
-                • 🌡️ Comfortable temperature expected${isWeekend ? '' : '<br>• 👕 Regular uniform appropriate'}${cloudyDayAdvice}`;
+                • 🌡️ Comfortable temperature expected${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}${cloudyDayAdvice}`;
             } else if (conditionLower.includes('partly')) {
               icon = '⛅';
               statusText = condition;
