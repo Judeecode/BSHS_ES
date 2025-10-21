@@ -2536,12 +2536,17 @@
       margin-bottom: 50px;
     }
 
-    .events-container {
+    .events-carousel-wrapper {
+      position: relative;
       max-width: 900px;
       margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
+      padding: 0 60px;
+    }
+
+    .events-container {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
     }
 
     .event-card {
@@ -2551,8 +2556,19 @@
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
       border: 2px solid rgba(74, 144, 226, 0.2);
       transition: all 0.4s ease;
-      position: relative;
+      position: absolute;
+      width: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(100%);
       overflow: hidden;
+    }
+
+    .event-card.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(0);
+      position: relative;
     }
     
     .event-card::before {
@@ -2662,6 +2678,69 @@
     .event-badge:hover {
       transform: translateY(-2px);
       box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
+    }
+
+    /* Carousel Navigation Buttons */
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(135deg, #4a90e2, #357abd);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 1.5em;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .carousel-btn:hover {
+      background: linear-gradient(135deg, #357abd, #2868a8);
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+    }
+
+    .carousel-btn-prev {
+      left: 0;
+    }
+
+    .carousel-btn-next {
+      right: 0;
+    }
+
+    /* Carousel Indicators */
+    .carousel-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(74, 144, 226, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .indicator:hover {
+      background: rgba(74, 144, 226, 0.6);
+      transform: scale(1.2);
+    }
+
+    .indicator.active {
+      background: #4a90e2;
+      width: 30px;
+      border-radius: 6px;
     }
 
     /* Empty State */
@@ -3206,9 +3285,11 @@
     <h2 class="transition-all duration-500 hover:scale-105">📢 Important Events & Schedules</h2>
     <p>Stay updated with upcoming exams, events, and important dates</p>
     
-    <div class="events-container">
-      <!-- Event Cards (add your important events and exams here) -->
-      <div class="event-card">
+    <div class="events-carousel-wrapper">
+      <button class="carousel-btn carousel-btn-prev" onclick="moveCarousel(-1)">❮</button>
+      <div class="events-container">
+        <!-- Event Cards (add your important events and exams here) -->
+        <div class="event-card active">
         <div class="event-header">
           <div class="event-icon">📝</div>
           <div class="event-header-text">
@@ -3236,7 +3317,48 @@
         <span class="event-badge">Important</span>
       </div>
 
-      <!-- Add more event cards here as needed -->
+      <!-- HOPE Exam Schedule -->
+      <div class="event-card">
+        <div class="event-header">
+          <div class="event-icon">🏃</div>
+          <div class="event-header-text">
+            <h3>HOPE Exam - Early Schedule Available</h3>
+            <span class="event-date-badge">📅 October 22, 2025 (Today)</span>
+          </div>
+        </div>
+        <div class="event-content">
+          <p>HOPE classes can take the exam early today because TVL 12 HOPE students are scheduled for their exam. Please coordinate with your HOPE teacher for the exact time.</p>
+        </div>
+        <div class="event-details">
+          <div class="event-detail-item">
+            <strong>📅 Date</strong>
+            Wednesday, October 22, 2025
+          </div>
+          <div class="event-detail-item">
+            <strong>📚 Subject</strong>
+            HOPE (Health Optimizing Physical Education)
+          </div>
+          <div class="event-detail-item">
+            <strong>👥 Priority</strong>
+            TVL 12 HOPE students scheduled
+          </div>
+          <div class="event-detail-item">
+            <strong>✏️ Requirements</strong>
+            Bring pens, pencils, and School ID (strictly required)
+          </div>
+        </div>
+        <span class="event-badge">Today</span>
+      </div>
+
+      </div>
+      <button class="carousel-btn carousel-btn-next" onclick="moveCarousel(1)">❯</button>
+    </div>
+    <div class="carousel-indicators">
+      <span class="indicator active" onclick="goToSlide(0)"></span>
+      <span class="indicator" onclick="goToSlide(1)"></span>
+    </div>
+    
+    <!-- Add more event cards here as needed -->
       <!-- Example:
       <div class="event-card">
         <div class="event-header">
@@ -5265,6 +5387,49 @@
     // Optional: Check every minute for more frequent updates
     // Uncomment the line below if you want announcements to disappear within a minute of expiring
     // setInterval(initializeAnnouncementSwiper, 60000);
+
+    // Carousel functionality
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.event-card');
+    const indicators = document.querySelectorAll('.indicator');
+    const totalSlides = slides.length;
+
+    function showSlide(index) {
+      // Remove active class from all slides and indicators
+      slides.forEach(slide => slide.classList.remove('active'));
+      indicators.forEach(indicator => indicator.classList.remove('active'));
+      
+      // Add active class to current slide and indicator
+      if (slides[index]) {
+        slides[index].classList.add('active');
+      }
+      if (indicators[index]) {
+        indicators[index].classList.add('active');
+      }
+    }
+
+    function moveCarousel(direction) {
+      currentSlide += direction;
+      
+      // Loop around
+      if (currentSlide >= totalSlides) {
+        currentSlide = 0;
+      } else if (currentSlide < 0) {
+        currentSlide = totalSlides - 1;
+      }
+      
+      showSlide(currentSlide);
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      showSlide(currentSlide);
+    }
+
+    // Auto-advance carousel every 5 seconds
+    setInterval(() => {
+      moveCarousel(1);
+    }, 5000);
   </script>
   
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
