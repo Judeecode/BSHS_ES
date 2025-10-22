@@ -5196,9 +5196,25 @@
       return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
     }
     
+    function getTimeBasedGreeting() {
+      const hour = new Date().getHours();
+      
+      if (hour >= 5 && hour < 12) {
+        return { greeting: 'Good morning', icon: '🌅', period: 'morning' };
+      } else if (hour >= 12 && hour < 17) {
+        return { greeting: 'Good afternoon', icon: '☀️', period: 'afternoon' };
+      } else if (hour >= 17 && hour < 21) {
+        return { greeting: 'Good evening', icon: '🌆', period: 'evening' };
+      } else {
+        return { greeting: 'Good evening', icon: '🌙', period: 'night' };
+      }
+    }
+    
     async function generateDailyReminder() {
       const now = new Date();
       const dayOfWeek = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
+      const currentHour = now.getHours();
+      const timeGreeting = getTimeBasedGreeting();
       const weather = await getWeatherCondition();
       const container = document.getElementById('daily-reminder-container');
       
@@ -5209,8 +5225,26 @@
       
       let reminder = null;
       
-      // Generate reminder based on day of week
-      switch(dayOfWeek) {
+      // Check if school is closed (after 5 PM on weekdays)
+      const isWeekday = dayOfWeek >= 1 && dayOfWeek <= 5;
+      if (isWeekday && currentHour >= 17) {
+        const nextDay = dayOfWeek === 5 ? 'Monday' : 'tomorrow';
+        reminder = {
+          icon: '🌙',
+          title: 'School is Closed',
+          content: `The school day has ended. Our school is now closed for the day. Thank you for another great day at BSHS!`,
+          details: [
+            { label: '⏰ School Hours', value: 'Monday - Friday, 7:00 AM - 5:00 PM' },
+            { label: '👋 See You', value: `See you ${nextDay}!` },
+            { label: '🏠 Reminder', value: 'Get home safely and rest well' },
+            { label: '📚 Tomorrow', value: 'Come prepared for another productive day' }
+          ]
+        };
+      }
+      
+      // Generate reminder based on day of week (only if not after hours)
+      if (!reminder) {
+        switch(dayOfWeek) {
         case 1: // Monday
           // Flag ceremony announcement - check rainfall intensity for accurate status
           const rainfall = weather.rainfallIntensity || 0;
@@ -5220,7 +5254,7 @@
             reminder = {
               icon: '🌧️',
               title: 'No Flag Ceremony Today',
-              content: `Good morning, students! Due to heavy rainfall, there will be <strong>NO Flag Ceremony</strong> today. Stay safe and dry!`,
+              content: `${timeGreeting.greeting}, students! Due to heavy rainfall, there will be <strong>NO Flag Ceremony</strong> today. Stay safe and dry!`,
               details: [
                 { label: '🌧️ Weather', value: `Heavy rain (${rainfall.toFixed(1)}mm/h)` },
                 { label: '👔 Dress Code', value: 'Complete uniform still required' },
@@ -5233,7 +5267,7 @@
             reminder = {
               icon: '🇵🇭',
               title: 'Flag Ceremony May Be Cancelled',
-              content: `Good morning, students! Due to light rain, the <strong>Flag Ceremony may be cancelled</strong>. Please bring your umbrella and wait for announcements.`,
+              content: `${timeGreeting.greeting}, students! Due to light rain, the <strong>Flag Ceremony may be cancelled</strong>. Please bring your umbrella and wait for announcements.`,
               details: [
                 { label: '🌦️ Weather', value: `Light rain (${rainfall.toFixed(1)}mm/h)` },
                 { label: '⏰ Time', value: '7:15 AM - Check for updates' },
@@ -5246,7 +5280,7 @@
             reminder = {
               icon: '🇵🇭',
               title: 'Flag Ceremony Today',
-              content: `Good morning, students! There will be a <strong>Flag Ceremony</strong> today. Let's show our respect to our national flag and start the week with pride!`,
+              content: `${timeGreeting.greeting}, students! There will be a <strong>Flag Ceremony</strong> today. Let's show our respect to our national flag and start the week with pride!`,
               details: [
                 { label: '⏰ Time', value: '7:15 AM sharp' },
                 { label: '☀️ Weather', value: 'Sunny - Ceremony will proceed' },
@@ -5259,7 +5293,7 @@
             reminder = {
               icon: '🇵🇭',
               title: 'Flag Ceremony Today',
-              content: `Good morning, students! There will be a <strong>Flag Ceremony</strong> today. Let's show our respect to our national flag and start the week with pride!`,
+              content: `${timeGreeting.greeting}, students! There will be a <strong>Flag Ceremony</strong> today. Let's show our respect to our national flag and start the week with pride!`,
               details: [
                 { label: '⏰ Time', value: '7:15 AM sharp' },
                 { label: '☁️ Weather', value: `${weather.condition || 'Good conditions'} - Ceremony will proceed` },
@@ -5274,7 +5308,7 @@
           reminder = {
             icon: '📚',
             title: 'Tuesday - Regular School Day',
-            content: `Good morning, students! Let's make today productive and focused. Have a great Tuesday!`,
+            content: `${timeGreeting.greeting}, students! Let's make today productive and focused. Have a great Tuesday!`,
             details: [
               { label: '👔 Dress Code', value: 'Complete school uniform' },
               { label: '🆔 Requirement', value: 'School ID is strictly required' },
@@ -5287,7 +5321,7 @@
           reminder = {
             icon: '👕',
             title: 'Wash Day - Civilian Attire',
-            content: `Good morning, students! Today is <strong>Wash Day</strong> - you may wear proper civilian attire. Enjoy your Wash Day while maintaining school decorum!`,
+            content: `${timeGreeting.greeting}, students! Today is <strong>Wash Day</strong> - you may wear proper civilian attire. Enjoy your Wash Day while maintaining school decorum!`,
             details: [
               { label: '👕 Dress Code', value: 'Proper civilian attire allowed' },
               { label: '🆔 Requirement', value: 'School ID is strictly required' },
@@ -5300,7 +5334,7 @@
           reminder = {
             icon: '💪',
             title: 'Thursday - Keep Going Strong',
-            content: `Good morning, students! We're almost at the weekend - stay focused and motivated! Have a productive Thursday!`,
+            content: `${timeGreeting.greeting}, students! We're almost at the weekend - stay focused and motivated! Have a productive Thursday!`,
             details: [
               { label: '👔 Dress Code', value: 'Complete school uniform' },
               { label: '🆔 Requirement', value: 'School ID is strictly required' },
@@ -5357,7 +5391,7 @@
             reminder = {
               icon: '🎉',
               title: 'Happy Friday!',
-              content: `Good morning, students! It's the last day of the school week - finish strong! Have a wonderful Friday!`,
+              content: `${timeGreeting.greeting}, students! It's the last day of the school week - finish strong! Have a wonderful Friday!`,
               details: [
                 { label: '👔 Dress Code', value: 'Complete school uniform' },
                 { label: '🆔 Requirement', value: 'School ID is strictly required' },
@@ -5381,6 +5415,7 @@
             ]
           };
           break;
+        }
       }
       
       // Create HTML for reminder
