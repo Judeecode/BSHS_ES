@@ -3355,7 +3355,7 @@
       <button class="carousel-btn carousel-btn-prev" onclick="moveCarousel(-1)">❮</button>
       <div class="events-container">
         <!-- Event Cards (add your important events and exams here) -->
-        <div class="event-card active">
+        <div class="event-card active" data-expiry="2025-10-24">
         <div class="event-header">
           <div class="event-icon">📝</div>
           <div class="event-header-text">
@@ -3384,7 +3384,7 @@
       </div>
 
       <!-- HOPE Exam Schedule -->
-      <div class="event-card">
+      <div class="event-card" data-expiry="2025-10-22">
         <div class="event-header">
           <div class="event-icon">🏃</div>
           <div class="event-header-text">
@@ -3420,8 +3420,7 @@
       <button class="carousel-btn carousel-btn-next" onclick="moveCarousel(1)">❯</button>
     </div>
     <div class="carousel-indicators">
-      <span class="indicator active" onclick="goToSlide(0)"></span>
-      <span class="indicator" onclick="goToSlide(1)"></span>
+      <!-- Indicators generated dynamically by JavaScript -->
     </div>
     
     <!-- Add more event cards here as needed -->
@@ -5455,10 +5454,42 @@
     // setInterval(initializeAnnouncementSwiper, 60000);
 
     // Carousel functionality
+    // Hide expired events
+    function hideExpiredEvents() {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset to start of day for comparison
+      
+      document.querySelectorAll('.event-card[data-expiry]').forEach(card => {
+        const expiryDate = new Date(card.getAttribute('data-expiry'));
+        expiryDate.setHours(23, 59, 59, 999); // End of expiry day
+        
+        if (today > expiryDate) {
+          card.style.display = 'none';
+          card.classList.remove('active');
+        }
+      });
+    }
+    
+    // Run on page load
+    hideExpiredEvents();
+    
     let currentSlide = 0;
-    const slides = document.querySelectorAll('.event-card');
+    const slides = document.querySelectorAll('.event-card:not([style*="display: none"])');
+    const indicatorsContainer = document.querySelector('.carousel-indicators');
+    let totalSlides = slides.length;
+    
+    // Update indicators based on visible slides
+    if (indicatorsContainer && totalSlides > 0) {
+      indicatorsContainer.innerHTML = '';
+      for (let i = 0; i < totalSlides; i++) {
+        const indicator = document.createElement('span');
+        indicator.className = i === 0 ? 'indicator active' : 'indicator';
+        indicator.onclick = () => goToSlide(i);
+        indicatorsContainer.appendChild(indicator);
+      }
+    }
+    
     const indicators = document.querySelectorAll('.indicator');
-    const totalSlides = slides.length;
 
     function showSlide(index) {
       // Remove active class from all slides and indicators
@@ -5475,6 +5506,8 @@
     }
 
     function moveCarousel(direction) {
+      if (totalSlides <= 1) return; // Don't move if only one or no slides
+      
       currentSlide += direction;
       
       // Loop around
@@ -5488,14 +5521,23 @@
     }
 
     function goToSlide(index) {
+      if (totalSlides <= 1) return; // Don't move if only one or no slides
       currentSlide = index;
       showSlide(currentSlide);
     }
 
-    // Auto-advance carousel every 5 seconds
-    setInterval(() => {
-      moveCarousel(1);
-    }, 5000);
+    // Auto-advance carousel every 5 seconds (only if multiple slides)
+    if (totalSlides > 1) {
+      setInterval(() => {
+        moveCarousel(1);
+      }, 5000);
+    }
+    
+    // Hide carousel buttons if only one slide
+    if (totalSlides <= 1) {
+      const carouselButtons = document.querySelectorAll('.carousel-btn');
+      carouselButtons.forEach(btn => btn.style.display = 'none');
+    }
   </script>
   
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
