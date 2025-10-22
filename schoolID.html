@@ -512,16 +512,16 @@
           <div class="form-group">
             <label for="emergencyContact">Emergency Contact Number <span class="required">*</span></label>
             <input 
-              type="tel" 
+              type="text" 
               id="emergencyContact" 
               name="Emergency Contact Number"
-              placeholder="+639123456789"
+              placeholder="+639123456789 or N/A"
               required
-              pattern="\+639[0-9]{9}"
-              title="Format: +639XXXXXXXXX (Philippine mobile number)"
+              pattern="(\+639[0-9]{9}|N/A|n/a)"
+              title="Format: +639XXXXXXXXX (Philippine mobile number) or N/A if none"
             >
-            <small>Format: +639XXXXXXXXX (Philippine mobile number)</small>
-            <span class="error-message" id="emergencyContactError">Please use format +639XXXXXXXXX</span>
+            <small>Format: +639XXXXXXXXX (Philippine mobile number) or type "N/A" if no phone number</small>
+            <span class="error-message" id="emergencyContactError">Please use format +639XXXXXXXXX or N/A</span>
           </div>
         </div>
 
@@ -586,8 +586,16 @@
       const value = e.target.value;
       const error = document.getElementById('emergencyContactError');
       
+      // Check if user is typing N/A
+      if (value.toLowerCase() === 'n/a' || value.toLowerCase() === 'n/' || value.toLowerCase() === 'n') {
+        // Allow N/A input
+        e.target.classList.remove('error');
+        error.classList.remove('show');
+        return;
+      }
+      
       // Auto-format: if user starts typing without +63, add it
-      if (value.length > 0 && !value.startsWith('+639')) {
+      if (value.length > 0 && !value.startsWith('+639') && !value.toLowerCase().startsWith('n')) {
         if (value.startsWith('09')) {
           e.target.value = '+63' + value.substring(1);
         } else if (value.startsWith('9')) {
@@ -597,7 +605,7 @@
         }
       }
       
-      const pattern = /^\+639[0-9]{9}$/;
+      const pattern = /^(\+639[0-9]{9}|N\/A|n\/a)$/;
       if (e.target.value && !pattern.test(e.target.value)) {
         e.target.classList.add('error');
         error.classList.add('show');
