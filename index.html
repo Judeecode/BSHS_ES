@@ -2809,6 +2809,268 @@
       border-radius: 6px;
     }
 
+    /* ICT Club Section */
+    .ict-club-section {
+      padding: 80px 60px;
+      background: linear-gradient(135deg, #f0f4ff 0%, #e6eeff 50%, #ffffff 100%);
+      position: relative;
+    }
+
+    .ict-club-container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .ict-club-card {
+      background: white;
+      border-radius: 25px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border: 3px solid #4a90e2;
+      transition: all 0.4s ease;
+    }
+
+    .ict-club-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 50px rgba(74, 144, 226, 0.2);
+    }
+
+    .ict-club-header {
+      background: linear-gradient(135deg, #4a90e2, #357abd);
+      padding: 35px 40px;
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      border-bottom: 4px solid #2868a8;
+    }
+
+    .ict-club-logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      object-fit: cover;
+    }
+
+    .ict-club-header-text h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.2em;
+      font-weight: 800;
+      color: white;
+      margin: 0 0 8px 0;
+    }
+
+    .ict-club-subtitle {
+      color: rgba(255, 255, 255, 0.95);
+      font-size: 1.1em;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .ict-club-content {
+      padding: 40px;
+    }
+
+    .ict-club-message {
+      background: #f8f9fa;
+      padding: 25px;
+      border-radius: 15px;
+      border-left: 5px solid #4a90e2;
+      margin-bottom: 30px;
+    }
+
+    .ict-club-message p {
+      margin: 0 0 12px 0;
+      color: var(--text-dark);
+      font-size: 1.05em;
+      line-height: 1.7;
+    }
+
+    .ict-club-message p:last-child {
+      margin-bottom: 0;
+    }
+
+    .ict-club-note {
+      color: #666;
+      font-size: 0.95em !important;
+      margin-top: 15px !important;
+    }
+
+    .student-id-list {
+      background: #ffffff;
+      border: 2px solid #e9ecef;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    .id-list-header {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      padding: 20px 25px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      border-bottom: 2px solid #dee2e6;
+    }
+
+    .id-icon {
+      font-size: 2em;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+
+    .id-list-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5em;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin: 0;
+    }
+
+    .id-items {
+      padding: 20px 25px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .id-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+      margin-bottom: 12px;
+      border-left: 4px solid #4a90e2;
+      transition: all 0.3s ease;
+    }
+
+    .id-item:hover {
+      background: #e6f2ff;
+      transform: translateX(5px);
+      box-shadow: 0 3px 10px rgba(74, 144, 226, 0.2);
+    }
+
+    .id-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .id-number {
+      font-family: 'Space Grotesk', monospace;
+      font-size: 1.2em;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .id-status {
+      color: #28a745;
+      font-weight: 700;
+      font-size: 1em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .no-ids-message {
+      text-align: center;
+      padding: 40px 20px;
+      color: #6c757d;
+    }
+
+    .no-ids-icon {
+      font-size: 4em;
+      display: block;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+
+    .no-ids-message p {
+      margin: 8px 0;
+      font-size: 1.1em;
+    }
+
+    .check-back {
+      font-size: 0.95em !important;
+      color: #999 !important;
+      font-style: italic;
+    }
+
+    .ict-club-footer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 25px;
+      background: #f8f9fa;
+      border-radius: 15px;
+    }
+
+    .footer-item {
+      color: var(--text-dark);
+      font-size: 0.95em;
+      line-height: 1.6;
+    }
+
+    .footer-item strong {
+      color: #4a90e2;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    /* Mobile Responsive for ICT Club */
+    @media (max-width: 768px) {
+      .ict-club-section {
+        padding: 60px 20px;
+      }
+
+      .ict-club-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px 20px;
+      }
+
+      .ict-club-logo {
+        width: 70px;
+        height: 70px;
+      }
+
+      .ict-club-header-text h2 {
+        font-size: 1.6em;
+      }
+
+      .ict-club-subtitle {
+        font-size: 1em;
+      }
+
+      .ict-club-content {
+        padding: 25px 20px;
+      }
+
+      .ict-club-message {
+        padding: 20px;
+      }
+
+      .id-items {
+        padding: 15px;
+      }
+
+      .id-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 12px 15px;
+      }
+
+      .id-number {
+        font-size: 1.1em;
+      }
+
+      .ict-club-footer {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 20px;
+      }
+    }
+
     /* Empty State */
     .empty-events {
       text-align: center;
@@ -3449,6 +3711,61 @@
         <span class="event-badge">Event</span>
       </div>
       -->
+    </div>
+  </section>
+
+  <!-- ICT CLUB - SCHOOL ID READY FOR RELEASE -->
+  <section class="ict-club-section animate-on-scroll transition-all duration-700" id="ict-club">
+    <div class="ict-club-container">
+      <div class="ict-club-card">
+        <div class="ict-club-header">
+          <img src="ictclub.jpg" alt="ICT Club Logo" class="ict-club-logo">
+          <div class="ict-club-header-text">
+            <h2>🆔 ICT Club Announcement</h2>
+            <p class="ict-club-subtitle">School ID Ready for Release</p>
+          </div>
+        </div>
+        
+        <div class="ict-club-content">
+          <div class="ict-club-message">
+            <p>📢 <strong>Attention Students!</strong> The following School IDs are now ready for release. Please proceed to the <strong>ICT Laboratory</strong> to claim your ID.</p>
+            <p class="ict-club-note">💡 <em>Please verify your identity when claiming your School ID.</em></p>
+          </div>
+          
+          <div class="student-id-list" id="studentIdList">
+            <!-- Student IDs will be displayed here -->
+            <div class="id-list-header">
+              <span class="id-icon">🎓</span>
+              <h3>Ready for Release</h3>
+            </div>
+            <div class="id-items" id="idItems">
+              <!-- Add student IDs here - Example format:
+              <div class="id-item">
+                <span class="id-number">2025-001234</span>
+                <span class="id-status">✓ Ready</span>
+              </div>
+              -->
+              <div class="no-ids-message">
+                <span class="no-ids-icon">📭</span>
+                <p>No IDs ready for release at the moment.</p>
+                <p class="check-back">Check back later for updates!</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="ict-club-footer">
+            <div class="footer-item">
+              <strong>📍 Location:</strong> ICT Laboratory
+            </div>
+            <div class="footer-item">
+              <strong>⏰ Office Hours:</strong> Monday - Friday, 8:00 AM - 4:00 PM
+            </div>
+            <div class="footer-item">
+              <strong>📞 Contact:</strong> ICT Club Officers
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -5573,6 +5890,58 @@
       const carouselButtons = document.querySelectorAll('.carousel-btn');
       carouselButtons.forEach(btn => btn.style.display = 'none');
     }
+
+    // ============================================
+    // ICT CLUB - SCHOOL ID MANAGEMENT
+    // ============================================
+    // TO ADD STUDENT IDs: Simply add student numbers to the array below
+    // Example: '2025-001234', '2024-005678', etc.
+    
+    const readyForReleaseIDs = [
+      // Add student IDs here - one per line
+      // Example format:
+      '122609130043',
+      '122607130016',
+      '122606130023',
+      '122606130061',
+      '122606130018',
+      '122606130064',
+    ];
+
+    // Function to display student IDs
+    function displayStudentIDs() {
+      const idItemsContainer = document.getElementById('idItems');
+      
+      if (!idItemsContainer) return;
+      
+      // Clear existing content
+      idItemsContainer.innerHTML = '';
+      
+      if (readyForReleaseIDs.length === 0) {
+        // Show "no IDs" message
+        idItemsContainer.innerHTML = `
+          <div class="no-ids-message">
+            <span class="no-ids-icon">📭</span>
+            <p>No IDs ready for release at the moment.</p>
+            <p class="check-back">Check back later for updates!</p>
+          </div>
+        `;
+      } else {
+        // Display all student IDs
+        readyForReleaseIDs.forEach(studentId => {
+          const idItem = document.createElement('div');
+          idItem.className = 'id-item';
+          idItem.innerHTML = `
+            <span class="id-number">${studentId}</span>
+            <span class="id-status">✓ Ready</span>
+          `;
+          idItemsContainer.appendChild(idItem);
+        });
+      }
+    }
+
+    // Initialize the student ID list on page load
+    displayStudentIDs();
   </script>
   
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
