@@ -4175,14 +4175,19 @@
       // PRIORITY 2: If no current precip, check hourly forecast for this hour
       if (rainfallIntensity === 0 && data.forecast && data.forecast.forecastday && data.forecast.forecastday[0]) {
         const today = data.forecast.forecastday[0];
-        const currentHour = new Date().getHours();
+        
+        // Use API's location time to get correct hour (not browser time)
+        // API returns location_localtime_epoch which is the location's current time
+        const locationTime = new Date((data.location.localtime_epoch || Math.floor(Date.now() / 1000)) * 1000);
+        const currentHour = locationTime.getHours();
         
         if (today.hour && today.hour[currentHour]) {
           const currentHourData = today.hour[currentHour];
-          const willRain = currentHourData.will_it_rain === 1;
           const hourlyPrecip = currentHourData.precip_mm || 0;
           
-          rainfallIntensity = (willRain && hourlyPrecip >= 0.1) ? hourlyPrecip : 0;
+          // Use actual precipitation value if >= 0.1mm (measurable)
+          // Don't rely on will_it_rain flag as it may not match actual precip data
+          rainfallIntensity = hourlyPrecip >= 0.1 ? hourlyPrecip : 0;
         }
       }
       
