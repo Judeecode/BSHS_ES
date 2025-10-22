@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School ID Application Form - BSHS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #4a90e2;
+      --primary-dark: #357abd;
+      --secondary: #50c878;
+      --text-dark: #2c3e50;
+      --text-light: #6c757d;
+      --bg-light: #f8f9fa;
+      --border: #dee2e6;
+      --error: #dc3545;
+      --success: #28a745;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+      color: var(--text-dark);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 25px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      padding: 40px;
+      text-align: center;
+      color: white;
+    }
+
+    .header h1 {
+      font-size: 2.5em;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 1.1em;
+      opacity: 0.95;
+    }
+
+    .form-container {
+      padding: 50px 40px;
+    }
+
+    .id-section {
+      margin-bottom: 40px;
+      padding: 30px;
+      background: var(--bg-light);
+      border-radius: 15px;
+      border-left: 5px solid var(--primary);
+    }
+
+    .id-section h2 {
+      font-size: 1.8em;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+      font-size: 1em;
+    }
+
+    .form-group label .required {
+      color: var(--error);
+      margin-left: 3px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-size: 1em;
+      font-family: 'Space Grotesk', sans-serif;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+    }
+
+    .form-group input.error,
+    .form-group select.error {
+      border-color: var(--error);
+    }
+
+    .error-message {
+      color: var(--error);
+      font-size: 0.9em;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .form-group small {
+      display: block;
+      color: var(--text-light);
+      font-size: 0.85em;
+      margin-top: 5px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.2em;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Space Grotesk', sans-serif;
+      margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(74, 144, 226, 0.3);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .submit-btn:disabled {
+      background: var(--text-light);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .info-box {
+      background: #e7f3ff;
+      border-left: 4px solid var(--primary);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+
+    .info-box p {
+      color: var(--text-dark);
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .info-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-box strong {
+      color: var(--primary);
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 20px 10px;
+      }
+
+      .header h1 {
+        font-size: 1.8em;
+      }
+
+      .header p {
+        font-size: 1em;
+      }
+
+      .form-container {
+        padding: 30px 20px;
+      }
+
+      .id-section {
+        padding: 20px;
+      }
+
+      .id-section h2 {
+        font-size: 1.4em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🆔 School ID Application Form</h1>
+      <p>Balangkayan Senior High School - Stand Alone</p>
+    </div>
+
+    <div class="form-container">
+      <div class="info-box">
+        <p><strong>📋 Instructions:</strong></p>
+        <p>Please fill out all required fields accurately. This information will be printed on your School ID.</p>
+        <p><strong>⚠️ Important:</strong> Double-check all information before submitting. Incorrect details may delay your ID processing.</p>
+      </div>
+
+      <form action="https://formsubmit.co/dalumiasjude@gmail.com" method="POST" id="schoolIdForm">
+        <!-- FormSubmit Configuration -->
+        <input type="hidden" name="_subject" value="New School ID Application">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        
+        <!-- Front of ID Section -->
+        <div class="id-section">
+          <h2>📄 Front of ID</h2>
+          
+          <div class="form-group">
+            <label for="fullName">Full Name <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="fullName" 
+              name="Full Name"
+              placeholder="Juan A. Dela Cruz"
+              required
+              pattern="[A-Za-z\s.]+"
+              title="Letters only (case sensitive, no numbers)"
+            >
+            <small>Enter your complete name as it appears on official documents (letters only)</small>
+            <span class="error-message" id="fullNameError">Please enter letters only</span>
+          </div>
+
+          <div class="form-group">
+            <label for="lrn">Learner Reference Number (LRN) <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="lrn" 
+              name="LRN"
+              placeholder="123456789012"
+              required
+              pattern="[0-9]{12}"
+              maxlength="12"
+              title="12-digit LRN (numbers only)"
+            >
+            <small>Enter your 12-digit LRN (numbers only)</small>
+            <span class="error-message" id="lrnError">Please enter exactly 12 digits</span>
+          </div>
+
+          <div class="form-group">
+            <label for="strand">Strand <span class="required">*</span></label>
+            <select id="strand" name="Strand" required>
+              <option value="">-- Select Your Strand --</option>
+              <option value="Humanities and Social Sciences">Humanities and Social Sciences</option>
+              <option value="Accountancy, Business and Management">Accountancy, Business and Management</option>
+              <option value="Electrical Installation and Maintenance">Electrical Installation and Maintenance</option>
+              <option value="Computer System Servicing">Computer System Servicing</option>
+              <option value="Home Economics">Home Economics</option>
+            </select>
+            <span class="error-message" id="strandError">Please select your strand</span>
+          </div>
+        </div>
+
+        <!-- Back of ID Section -->
+        <div class="id-section">
+          <h2>📄 Back of ID</h2>
+          
+          <div class="form-group">
+            <label for="gradeLevel">Grade Level <span class="required">*</span></label>
+            <select id="gradeLevel" name="Grade Level" required>
+              <option value="">-- Select Grade Level --</option>
+              <option value="11">Grade 11</option>
+              <option value="12">Grade 12</option>
+            </select>
+            <span class="error-message" id="gradeLevelError">Please select your grade level</span>
+          </div>
+
+          <div class="form-group">
+            <label for="guardian">Parent/Guardian <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="guardian" 
+              name="Parent/Guardian"
+              placeholder="Maria Dela Cruz"
+              required
+              pattern="[A-Za-z\s.]+"
+              title="Letters only"
+            >
+            <small>Enter parent or guardian's full name (letters only)</small>
+            <span class="error-message" id="guardianError">Please enter letters only</span>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Address <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="address" 
+              name="Address"
+              placeholder="Brgy. Poblacion, Balangkayan, Eastern Samar"
+              required
+            >
+            <small>Enter your complete home address</small>
+            <span class="error-message" id="addressError">Please enter your address</span>
+          </div>
+
+          <div class="form-group">
+            <label for="emergencyContact">Emergency Contact Number <span class="required">*</span></label>
+            <input 
+              type="tel" 
+              id="emergencyContact" 
+              name="Emergency Contact Number"
+              placeholder="+639123456789"
+              required
+              pattern="\+639[0-9]{9}"
+              title="Format: +639XXXXXXXXX (Philippine mobile number)"
+            >
+            <small>Format: +639XXXXXXXXX (Philippine mobile number)</small>
+            <span class="error-message" id="emergencyContactError">Please use format +639XXXXXXXXX</span>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">📤 Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Form validation
+    const form = document.getElementById('schoolIdForm');
+    
+    // Real-time validation for Full Name
+    document.getElementById('fullName').addEventListener('input', function(e) {
+      const value = e.target.value;
+      const error = document.getElementById('fullNameError');
+      const pattern = /^[A-Za-z\s.]+$/;
+      
+      if (value && !pattern.test(value)) {
+        e.target.classList.add('error');
+        error.classList.add('show');
+      } else {
+        e.target.classList.remove('error');
+        error.classList.remove('show');
+      }
+    });
+
+    // Real-time validation for LRN
+    document.getElementById('lrn').addEventListener('input', function(e) {
+      const value = e.target.value;
+      const error = document.getElementById('lrnError');
+      
+      // Only allow numbers
+      e.target.value = value.replace(/[^0-9]/g, '');
+      
+      if (e.target.value.length !== 12 && e.target.value.length > 0) {
+        e.target.classList.add('error');
+        error.classList.add('show');
+      } else {
+        e.target.classList.remove('error');
+        error.classList.remove('show');
+      }
+    });
+
+    // Real-time validation for Guardian
+    document.getElementById('guardian').addEventListener('input', function(e) {
+      const value = e.target.value;
+      const error = document.getElementById('guardianError');
+      const pattern = /^[A-Za-z\s.]+$/;
+      
+      if (value && !pattern.test(value)) {
+        e.target.classList.add('error');
+        error.classList.add('show');
+      } else {
+        e.target.classList.remove('error');
+        error.classList.remove('show');
+      }
+    });
+
+    // Real-time validation for Emergency Contact
+    document.getElementById('emergencyContact').addEventListener('input', function(e) {
+      const value = e.target.value;
+      const error = document.getElementById('emergencyContactError');
+      
+      // Auto-format: if user starts typing without +63, add it
+      if (value.length > 0 && !value.startsWith('+639')) {
+        if (value.startsWith('09')) {
+          e.target.value = '+63' + value.substring(1);
+        } else if (value.startsWith('9')) {
+          e.target.value = '+63' + value;
+        } else if (!value.startsWith('+')) {
+          e.target.value = '+639' + value.replace(/[^0-9]/g, '');
+        }
+      }
+      
+      const pattern = /^\+639[0-9]{9}$/;
+      if (e.target.value && !pattern.test(e.target.value)) {
+        e.target.classList.add('error');
+        error.classList.add('show');
+      } else {
+        e.target.classList.remove('error');
+        error.classList.remove('show');
+      }
+    });
+
+    // Form submission validation
+    form.addEventListener('submit', function(e) {
+      let isValid = true;
+      
+      // Validate all required fields
+      const requiredFields = form.querySelectorAll('[required]');
+      requiredFields.forEach(field => {
+        if (!field.value) {
+          isValid = false;
+          field.classList.add('error');
+        }
+      });
+      
+      if (!isValid) {
+        e.preventDefault();
+        alert('Please fill out all required fields correctly.');
+        return false;
+      }
+      
+      // Show loading state
+      const submitBtn = form.querySelector('.submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = '📤 Submitting...';
+    });
+  </script>
+</body>
+</html>
