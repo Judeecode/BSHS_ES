@@ -3016,6 +3016,30 @@
       margin-bottom: 5px;
     }
 
+    /* School ID Application Button */
+    .school-id-btn {
+      display: inline-block;
+      padding: 15px 40px;
+      background: linear-gradient(135deg, #4a90e2, #357abd);
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1em;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+    }
+
+    .school-id-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
+      background: linear-gradient(135deg, #357abd, #2868a8);
+    }
+
+    .school-id-btn:active {
+      transform: translateY(-1px);
+    }
+
     /* Mobile Responsive for ICT Club */
     @media (max-width: 768px) {
       .ict-club-section {
@@ -3763,6 +3787,16 @@
             <div class="footer-item">
               <strong>📞 Contact:</strong> ICT Club Officers
             </div>
+          </div>
+
+          <!-- School ID Application Button -->
+          <div style="margin-top: 30px; text-align: center;">
+            <a href="schoolID.html" class="school-id-btn" target="_blank">
+              🆔 Apply for School ID
+            </a>
+            <p style="margin-top: 12px; color: var(--text-light); font-size: 0.9em;">
+              Click here to fill out the School ID application form
+            </p>
           </div>
         </div>
       </div>
