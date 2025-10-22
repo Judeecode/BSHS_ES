@@ -195,6 +195,147 @@
       color: var(--primary);
     }
 
+    /* Back Button */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 25px;
+      background: white;
+      color: var(--primary);
+      text-decoration: none;
+      border: 2px solid var(--primary);
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 1em;
+      transition: all 0.3s ease;
+      margin-bottom: 20px;
+    }
+
+    .back-btn:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateX(-5px);
+    }
+
+    .back-btn:active {
+      transform: translateX(-3px);
+    }
+
+    /* Photo Upload Section */
+    .photo-upload-wrapper {
+      background: #fff9e6;
+      border: 2px dashed #ffc107;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 10px;
+    }
+
+    .photo-upload-wrapper label {
+      color: var(--text-dark);
+    }
+
+    .photo-guidelines {
+      background: #e7f3ff;
+      border-left: 4px solid var(--primary);
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    .photo-guidelines h4 {
+      color: var(--primary);
+      font-size: 0.95em;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .photo-guidelines ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text-dark);
+    }
+
+    .photo-guidelines li {
+      margin-bottom: 6px;
+      font-size: 0.9em;
+      line-height: 1.5;
+    }
+
+    .photo-guidelines li:last-child {
+      margin-bottom: 0;
+    }
+
+    input[type="file"] {
+      padding: 10px;
+      background: white;
+      cursor: pointer;
+    }
+
+    input[type="file"]::file-selector-button {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-right: 10px;
+      transition: all 0.3s ease;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Photo Preview */
+    .photo-preview-container {
+      margin-top: 15px;
+      text-align: center;
+      display: none;
+    }
+
+    .photo-preview-container.show {
+      display: block;
+    }
+
+    .photo-preview {
+      width: 150px;
+      height: 150px;
+      border: 3px solid var(--primary);
+      border-radius: 10px;
+      object-fit: cover;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      margin: 0 auto;
+      display: block;
+    }
+
+    .preview-label {
+      display: block;
+      margin-top: 10px;
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 0.9em;
+    }
+
+    .remove-photo-btn {
+      margin-top: 10px;
+      padding: 8px 20px;
+      background: var(--error);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9em;
+      transition: all 0.3s ease;
+    }
+
+    .remove-photo-btn:hover {
+      background: #c82333;
+      transform: scale(1.05);
+    }
+
     @media (max-width: 768px) {
       body {
         padding: 20px 10px;
@@ -230,6 +371,10 @@
     </div>
 
     <div class="form-container">
+      <a href="index.html" class="back-btn">
+        ← Back to Homepage
+      </a>
+      
       <div class="info-box">
         <p><strong>📋 Instructions:</strong></p>
         <p>Please fill out all required fields accurately. This information will be printed on your School ID.</p>
@@ -259,6 +404,39 @@
             >
             <small>Enter your complete name as it appears on official documents (letters only)</small>
             <span class="error-message" id="fullNameError">Please enter letters only</span>
+          </div>
+
+          <div class="form-group">
+            <div class="photo-upload-wrapper">
+              <label for="idPhoto">1x1 ID Picture <span class="required">*</span></label>
+              <input 
+                type="file" 
+                id="idPhoto" 
+                name="1x1 ID Picture"
+                accept="image/jpeg,image/jpg,image/png"
+                required
+              >
+              <small>Upload a 1 inch x 1 inch photo (JPG, JPEG, or PNG format)</small>
+              <span class="error-message" id="idPhotoError">Please upload your 1x1 ID picture</span>
+              
+              <!-- Photo Preview -->
+              <div class="photo-preview-container" id="photoPreviewContainer">
+                <span class="preview-label">📷 Preview:</span>
+                <img id="photoPreview" class="photo-preview" alt="ID Photo Preview">
+                <button type="button" class="remove-photo-btn" id="removePhotoBtn">🗑️ Remove Photo</button>
+              </div>
+            </div>
+            
+            <div class="photo-guidelines">
+              <h4>📸 School ID Picture Guidelines:</h4>
+              <ul>
+                <li>✅ <strong>Background:</strong> White background only</li>
+                <li>✅ <strong>Attire:</strong> School uniform (or white plain t-shirt if no school uniform yet)</li>
+                <li>✅ <strong>Pose:</strong> Proper pose for school ID (face forward, neutral expression)</li>
+                <li>✅ <strong>Size:</strong> 1 inch x 1 inch (standard ID photo size)</li>
+                <li>✅ <strong>Quality:</strong> Clear, recent photo with good lighting</li>
+              </ul>
+            </div>
           </div>
 
           <div class="form-group">
@@ -454,6 +632,49 @@
       const submitBtn = form.querySelector('.submit-btn');
       submitBtn.disabled = true;
       submitBtn.textContent = '📤 Submitting...';
+    });
+
+    // Photo Preview Functionality
+    const photoInput = document.getElementById('idPhoto');
+    const photoPreview = document.getElementById('photoPreview');
+    const photoPreviewContainer = document.getElementById('photoPreviewContainer');
+    const removePhotoBtn = document.getElementById('removePhotoBtn');
+
+    photoInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      
+      if (file) {
+        // Check file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          alert('Photo size must be less than 5MB');
+          e.target.value = '';
+          return;
+        }
+        
+        // Check file type
+        if (!file.type.match('image/(jpeg|jpg|png)')) {
+          alert('Please upload a JPG, JPEG, or PNG image');
+          e.target.value = '';
+          return;
+        }
+        
+        // Create preview
+        const reader = new FileReader();
+        
+        reader.onload = function(event) {
+          photoPreview.src = event.target.result;
+          photoPreviewContainer.classList.add('show');
+        };
+        
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Remove photo
+    removePhotoBtn.addEventListener('click', function() {
+      photoInput.value = '';
+      photoPreview.src = '';
+      photoPreviewContainer.classList.remove('show');
     });
   </script>
 </body>
