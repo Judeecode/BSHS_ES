@@ -3729,7 +3729,7 @@
         <div class="ict-club-content">
           <div class="ict-club-message">
             <p>📢 <strong>Attention Students!</strong> The following School IDs are now ready for release. Please proceed to the <strong>ICT Laboratory</strong> to claim your ID.</p>
-            <p class="ict-club-note">💡 <em>Please verify your identity when claiming your School ID.</em></p>
+            <p class="ict-club-note">💡 <em>Please verify your LRN when claiming your School ID.</em></p>
           </div>
           
           <div class="student-id-list" id="studentIdList">
@@ -4822,6 +4822,11 @@
         keywords: ['weather', 'rain', 'rainfall', 'forecast', 'climate', 'temperature', 'suspension', 'class suspension', 'cancel', 'typhoon', 'storm'],
         response: 'WEATHER_WIDGET',
         action: 'showWeather'
+      },
+      'schoolid': {
+        keywords: ['school id', 'id card', 'identification', 'id release', 'ready id', 'claim id', 'ict club', 'id ready', 'my id'],
+        response: 'SCHOOL_ID_LIST',
+        action: 'showSchoolIDs'
       }
     };
 
@@ -4844,6 +4849,22 @@
         return 'Goodbye! Have a great day! Feel free to come back if you have more questions. 👋';
       }
 
+      // Check for ICT section scroll request
+      if (message.match(/\b(yes|show|ict section|ict club section|take me|go to ict)\b/)) {
+        setTimeout(() => {
+          const chatbotWindow = document.getElementById('chatbotWindow');
+          const chatbotToggle = document.getElementById('chatbotToggle');
+          if (chatbotWindow) chatbotWindow.classList.remove('active');
+          if (chatbotToggle) chatbotToggle.classList.remove('active');
+          
+          const ictSection = document.getElementById('ict-club');
+          if (ictSection) {
+            ictSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 1000);
+        return 'Taking you to the ICT Club section now! 🎯';
+      }
+
       // Search knowledge base
       for (const [key, value] of Object.entries(knowledgeBase)) {
         for (const keyword of value.keywords) {
@@ -4854,7 +4875,7 @@
       }
 
       // Default response
-      return { response: 'I\'m here to help! You can ask me about:\n\n• Our programs and tracks\n• Enrollment process\n• Contact information\n• Mission and vision\n• School facilities\n• School location (map)\n• Weather and rainfall warnings\n• Class suspension updates\n\nWhat would you like to know?' };
+      return { response: 'I\'m here to help! You can ask me about:\n\n• Our programs and tracks\n• Enrollment process\n• Contact information\n• Mission and vision\n• School facilities\n• School location (map)\n• Weather and rainfall warnings\n• Class suspension updates\n• School ID ready for release\n\nWhat would you like to know?' };
     }
 
     // Function to add message to chat
@@ -5003,6 +5024,37 @@
           }
           
           addMessage(weatherResponse);
+        } else if (response === 'SCHOOL_ID_LIST') {
+          // Generate school ID response
+          let idResponse = '🆔 <strong>ICT Club - School ID Ready for Release</strong>\n\n';
+          
+          if (readyForReleaseIDs.length === 0) {
+            idResponse += '📭 <strong>No IDs ready for release at the moment.</strong>\n\n';
+            idResponse += 'Please check back later for updates!\n\n';
+            idResponse += 'You can also scroll down to the ICT Club section on our homepage for the latest information.';
+          } else {
+            idResponse += '✅ <strong>The following Student IDs are ready for claiming:</strong>\n\n';
+            
+            readyForReleaseIDs.forEach((id, index) => {
+              idResponse += `${index + 1}. <strong>${id}</strong>\n`;
+            });
+            
+            idResponse += '\n📍 <strong>Where to claim:</strong> ICT Laboratory\n';
+            idResponse += '⏰ <strong>Office Hours:</strong> Monday - Friday, 8:00 AM - 4:00 PM\n';
+            idResponse += '💡 <strong>Reminder:</strong> Please verify your identity when claiming your School ID.\n\n';
+            idResponse += 'You can also scroll down to the ICT Club section on our homepage to see the full list!';
+          }
+          
+          addMessage(idResponse);
+          
+          // Optionally scroll to ICT Club section after a delay
+          setTimeout(() => {
+            const ictSection = document.getElementById('ict-club');
+            if (ictSection && readyForReleaseIDs.length > 0) {
+              // Ask if they want to see the section
+              addMessage('Would you like me to take you to the ICT Club section to see more details? Just say "yes" or "show ict section"! 😊');
+            }
+          }, 1500);
         } else {
           addMessage(response);
         }
