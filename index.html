@@ -4461,45 +4461,8 @@
             // If cloud cover is low (<40%), UV is moderate/high (>3), and it's daytime, it's likely sunny
             const isActuallySunny = isDay && cloudCover < 40 && uvIndex > 3;
             
-            // Handle "Patchy rain" or similar conditions when there's no measurable rainfall
-            if ((conditionLower.includes('patchy') && conditionLower.includes('rain')) || 
-                (conditionLower.includes('possible') && conditionLower.includes('rain'))) {
-              
-              // If indicators show it's actually sunny, override the patchy rain forecast
-              if (isActuallySunny) {
-                const dayAdvice = getDaySpecificAdvice(dayOfWeek, 'sunny');
-                icon = '☀️';
-                statusText = 'Sunny';
-                
-                suspensionInfo = `<strong>☀️ Sunny Weather (${currentDay}):</strong><br>
-                  • ${isWeekend ? 'No classes - Weekend' : 'Great day for learning!'}${heatIndexInfo}<br>
-                  • ☀️ Wear sun protection if needed<br>
-                  • 💧 Drink plenty of water<br>
-                  • 🧴 Apply sunscreen for outdoor activities<br>
-                  • 🧢 Hat recommended for ${isWeekend ? 'outdoor fun' : 'PE class'}${dayAdvice}`;
-              } else if (!isDay) {
-                // Nighttime with patchy rain forecast but no actual rain
-                icon = '☁️';
-                statusText = 'Cloudy Night';
-                const patchyDayAdvice = getDaySpecificAdvice(dayOfWeek);
-                suspensionInfo = `<strong>☁️ Cloudy Night (${currentDay}):</strong><br>
-                  • ${isWeekend ? 'No classes - Weekend' : 'School is closed for the day'}<br>
-                  • 🌙 Overcast skies tonight<br>
-                  • 🌂 Rain possible later<br>
-                  • 🏠 Stay cozy indoors<br>
-                  • 😊 Rest well!`;
-              } else {
-                // It's genuinely cloudy with possible rain
-                icon = '🌥️';
-                statusText = 'Partly Cloudy';
-                const patchyDayAdvice = getDaySpecificAdvice(dayOfWeek);
-                suspensionInfo = `<strong>🌥️ Partly Cloudy (${currentDay}):</strong><br>
-                  • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
-                  • 🌂 Bring umbrella as precaution<br>
-                  • ☁️ Rain possible but not currently falling<br>
-                  • 📱 Monitor weather updates${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}${patchyDayAdvice}`;
-              }
-            } else if (conditionLower.includes('thunder')) {
+            // PRIORITY 1: Check for severe weather first (thunderstorms)
+            if (conditionLower.includes('thunder') || conditionLower.includes('storm')) {
               icon = '⛈️';
               statusText = condition;
               const thunderDayAdvice = getDaySpecificAdvice(dayOfWeek, 'rain');
@@ -4587,6 +4550,44 @@
                 • 👀 Reduced visibility - walk carefully<br>
                 • 🚶 Take extra care when crossing<br>
                 • 🌡️ May feel cooler than usual`;
+            } else if ((conditionLower.includes('patchy') && conditionLower.includes('rain')) || 
+                       (conditionLower.includes('possible') && conditionLower.includes('rain'))) {
+              // Handle "Patchy rain" or similar conditions when there's no measurable rainfall
+              
+              // If indicators show it's actually sunny, override the patchy rain forecast
+              if (isActuallySunny) {
+                const dayAdvice = getDaySpecificAdvice(dayOfWeek, 'sunny');
+                icon = '☀️';
+                statusText = 'Sunny';
+                
+                suspensionInfo = `<strong>☀️ Sunny Weather (${currentDay}):</strong><br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'Great day for learning!'}${heatIndexInfo}<br>
+                  • ☀️ Wear sun protection if needed<br>
+                  • 💧 Drink plenty of water<br>
+                  • 🧴 Apply sunscreen for outdoor activities<br>
+                  • 🧢 Hat recommended for ${isWeekend ? 'outdoor fun' : 'PE class'}${dayAdvice}`;
+              } else if (!isDay) {
+                // Nighttime with patchy rain forecast but no actual rain
+                icon = '☁️';
+                statusText = 'Cloudy Night';
+                const patchyDayAdvice = getDaySpecificAdvice(dayOfWeek);
+                suspensionInfo = `<strong>☁️ Cloudy Night (${currentDay}):</strong><br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'School is closed for the day'}<br>
+                  • 🌙 Overcast skies tonight<br>
+                  • 🌂 Rain possible later<br>
+                  • 🏠 Stay cozy indoors<br>
+                  • 😊 Rest well!`;
+              } else {
+                // It's genuinely cloudy with possible rain
+                icon = '🌥️';
+                statusText = 'Partly Cloudy';
+                const patchyDayAdvice = getDaySpecificAdvice(dayOfWeek);
+                suspensionInfo = `<strong>🌥️ Partly Cloudy (${currentDay}):</strong><br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                  • 🌂 Bring umbrella as precaution<br>
+                  • ☁️ Rain possible but not currently falling<br>
+                  • 📱 Monitor weather updates${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}${patchyDayAdvice}`;
+              }
             } else {
               icon = '🌤️';
               statusText = condition;
