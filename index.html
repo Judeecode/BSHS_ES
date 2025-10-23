@@ -4412,44 +4412,41 @@
           document.body.classList.remove('banner-active');
           
           // Check if there's any rain first (even if below warning threshold)
-          // Only show rain info if weather condition actually indicates rain
-          if (isRaining && rainfallIntensity > 0) {
-            const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
-            const rainDayAdvice = getDaySpecificAdvice(dayOfWeek, 'rain');
-            
-            if (rainfallIntensity >= 5) {
-              icon = '🌧️';
-              statusText = `Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
-              suspensionInfo = `<strong>🌧️ Light Rain (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
-                • 🌂 Bring umbrella and raincoat<br>
-                • 👟 Wear appropriate footwear<br>
-                • 💧 Stay dry and avoid getting wet<br>
-                • 📱 Keep valuables protected from water`;
-            } else if (rainfallIntensity >= 2) {
-              icon = '🌦️';
-              statusText = `Drizzle (${rainfallIntensity.toFixed(1)}mm/h)`;
-              suspensionInfo = `<strong>🌦️ Drizzle (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
-                • 🌂 Bring umbrella just in case<br>
-                • 👕 Light rain gear recommended<br>
-                • 🚶 Walk carefully on wet surfaces`;
-            } else if (rainfallIntensity >= 0.5) {
-              icon = '🌦️';
-              statusText = `Very Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
-              suspensionInfo = `<strong>🌦️ Very Light Rain (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
-                • 🌂 Umbrella recommended<br>
-                • 👟 Watch your step on wet ground`;
-            } else {
-              // Rainfall is negligible (< 0.5mm/h), treat as cloudy with trace rain
-              icon = '☁️';
-              statusText = 'Cloudy with Trace Rain';
-              suspensionInfo = `<strong>☁️ Cloudy with Trace Rain (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
-                • 🌂 Umbrella optional<br>
-                • 🌡️ Comfortable temperature expected${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}`;
-            }
+          const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
+          const rainDayAdvice = getDaySpecificAdvice(dayOfWeek, 'rain');
+          
+          if (rainfallIntensity >= 5) {
+            icon = '🌧️';
+            statusText = `Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
+            suspensionInfo = `<strong>🌧️ Light Rain (${currentDay}):</strong><br>
+              • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
+              • 🌂 Bring umbrella and raincoat<br>
+              • 👟 Wear appropriate footwear<br>
+              • 💧 Stay dry and avoid getting wet<br>
+              • 📱 Keep valuables protected from water`;
+          } else if (rainfallIntensity >= 2) {
+            icon = '🌦️';
+            statusText = `Drizzle (${rainfallIntensity.toFixed(1)}mm/h)`;
+            suspensionInfo = `<strong>🌦️ Drizzle (${currentDay}):</strong><br>
+              • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
+              • 🌂 Bring umbrella just in case<br>
+              • 👕 Light rain gear recommended<br>
+              • 🚶 Walk carefully on wet surfaces`;
+          } else if (rainfallIntensity >= 0.5) {
+            icon = '🌦️';
+            statusText = `Very Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
+            suspensionInfo = `<strong>🌦️ Very Light Rain (${currentDay}):</strong><br>
+              • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
+              • 🌂 Umbrella recommended<br>
+              • 👟 Watch your step on wet ground`;
+          } else if (rainfallIntensity > 0 && rainfallIntensity < 0.5) {
+            // Trace rain: measurable but very light (< 0.5mm/h)
+            icon = '☁️';
+            statusText = 'Cloudy with Trace Rain';
+            suspensionInfo = `<strong>☁️ Cloudy with Trace Rain (${currentDay}):</strong><br>
+              • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
+              • 🌂 Umbrella optional<br>
+              • 🌡️ Comfortable temperature expected${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}`;
           } else {
             // No rain detected, use weather condition from API
             const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
@@ -4470,9 +4467,9 @@
               
               // If indicators show it's actually sunny, override the patchy rain forecast
               if (isActuallySunny) {
+                const dayAdvice = getDaySpecificAdvice(dayOfWeek, 'sunny');
                 icon = '☀️';
                 statusText = 'Sunny';
-                const dayAdvice = getDaySpecificAdvice(dayOfWeek, 'sunny');
                 
                 suspensionInfo = `<strong>☀️ Sunny Weather (${currentDay}):</strong><br>
                   • ${isWeekend ? 'No classes - Weekend' : 'Great day for learning!'}${heatIndexInfo}<br>
@@ -4480,6 +4477,17 @@
                   • 💧 Drink plenty of water<br>
                   • 🧴 Apply sunscreen for outdoor activities<br>
                   • 🧢 Hat recommended for ${isWeekend ? 'outdoor fun' : 'PE class'}${dayAdvice}`;
+              } else if (!isDay) {
+                // Nighttime with patchy rain forecast but no actual rain
+                icon = '☁️';
+                statusText = 'Cloudy Night';
+                const patchyDayAdvice = getDaySpecificAdvice(dayOfWeek);
+                suspensionInfo = `<strong>☁️ Cloudy Night (${currentDay}):</strong><br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'School is closed for the day'}<br>
+                  • 🌙 Overcast skies tonight<br>
+                  • 🌂 Rain possible later<br>
+                  • 🏠 Stay cozy indoors<br>
+                  • 😊 Rest well!`;
               } else {
                 // It's genuinely cloudy with possible rain
                 icon = '🌥️';
@@ -4503,33 +4511,74 @@
                 • 🏃 Seek shelter if thunder is heard<br>
                 • ⚠️ Avoid open areas and tall objects`;
             } else if (conditionLower.includes('clear') || conditionLower.includes('sunny')) {
-              icon = '☀️';
-              statusText = condition;
               const dayAdvice = getDaySpecificAdvice(dayOfWeek, 'sunny');
               
-              suspensionInfo = `<strong>☀️ Sunny Weather (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Great day for learning!'}${heatIndexInfo}<br>
-                • ☀️ Wear sun protection if needed<br>
-                • 💧 Drink plenty of water<br>
-                • 🧴 Apply sunscreen for outdoor activities<br>
-                • 🧢 Hat recommended for ${isWeekend ? 'outdoor fun' : 'PE class'}${dayAdvice}`;
+              if (isDay) {
+                // Daytime clear/sunny
+                icon = '☀️';
+                statusText = condition;
+                suspensionInfo = `<strong>☀️ Sunny Weather (${currentDay}):</strong><br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'Great day for learning!'}${heatIndexInfo}<br>
+                  • ☀️ Wear sun protection if needed<br>
+                  • 💧 Drink plenty of water<br>
+                  • 🧴 Apply sunscreen for outdoor activities<br>
+                  • 🧢 Hat recommended for ${isWeekend ? 'outdoor fun' : 'PE class'}${dayAdvice}`;
+              } else {
+                // Nighttime clear
+                icon = '🌙';
+                statusText = 'Clear Night';
+                suspensionInfo = `<strong>🌙 Clear Night (${currentDay}):</strong><br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'School is closed for the day'}<br>
+                  • ⭐ Stars visible tonight<br>
+                  • 🌡️ Cool and pleasant evening<br>
+                  • 🏠 Perfect night for rest<br>
+                  • 😊 Have a peaceful evening!`;
+              }
             } else if (conditionLower.includes('partly')) {
-              icon = '⛅';
-              statusText = condition;
               const partlyDayAdvice = getDaySpecificAdvice(dayOfWeek, 'sunny');
-              suspensionInfo = `<strong>⛅ Partly Cloudy (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Perfect weather for classes!'}<br>
-                • ☀️ Some sunshine expected<br>
-                • 🌂 Umbrella optional<br>
-                • 💧 Stay hydrated${partlyDayAdvice}`;
+              
+              if (isDay) {
+                // Daytime partly cloudy
+                icon = '⛅';
+                statusText = condition;
+                suspensionInfo = `<strong>⛅ Partly Cloudy (${currentDay}):</strong><br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'Perfect weather for classes!'}<br>
+                  • ☀️ Some sunshine expected<br>
+                  • 🌂 Umbrella optional<br>
+                  • 💧 Stay hydrated${partlyDayAdvice}`;
+              } else {
+                // Nighttime partly cloudy
+                icon = '☁️';
+                statusText = 'Partly Cloudy Night';
+                suspensionInfo = `<strong>☁️ Partly Cloudy Night (${currentDay}):</strong><br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'School is closed for the day'}<br>
+                  • 🌙 Some stars may be visible<br>
+                  • 🌡️ Mild evening temperature<br>
+                  • 🏠 Good night for rest<br>
+                  • 😊 Sleep well!`;
+              }
             } else if (conditionLower.includes('cloudy') || conditionLower.includes('overcast')) {
-              icon = '☁️';
-              statusText = condition;
               const cloudyDayAdvice = getDaySpecificAdvice(dayOfWeek);
-              suspensionInfo = `<strong>☁️ Cloudy Weather (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
-                • 🌂 Bring umbrella (rain possible)<br>
-                • 🌡️ Comfortable temperature expected${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}${cloudyDayAdvice}`;
+              
+              if (isDay) {
+                // Daytime cloudy
+                icon = '☁️';
+                statusText = condition;
+                suspensionInfo = `<strong>☁️ Cloudy Weather (${currentDay}):</strong><br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                  • 🌂 Bring umbrella (rain possible)<br>
+                  • 🌡️ Comfortable temperature expected${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}${cloudyDayAdvice}`;
+              } else {
+                // Nighttime cloudy
+                icon = '☁️';
+                statusText = 'Cloudy Night';
+                suspensionInfo = `<strong>☁️ Cloudy Night (${currentDay}):</strong><br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'School is closed for the day'}<br>
+                  • 🌙 Overcast skies tonight<br>
+                  • 🌡️ Mild evening temperature<br>
+                  • 🏠 Cozy night indoors<br>
+                  • 😊 Sleep well!`;
+              }
             } else if (conditionLower.includes('mist') || conditionLower.includes('fog')) {
               icon = '🌫️';
               statusText = condition;
