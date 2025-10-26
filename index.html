@@ -4339,6 +4339,18 @@
         const getDaySpecificAdvice = (dayOfWeek, adviceType = 'normal') => {
           const isWeekend = (dayOfWeek === 0 || dayOfWeek === 6);
           
+          // Check for DepEd Wellness Break (October 27-31, 2025)
+          const today = new Date();
+          const currentDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+          const wellnessStart = new Date(2025, 9, 27); // October 27, 2025
+          const wellnessEnd = new Date(2025, 9, 31); // October 31, 2025
+          const isWellnessBreak = currentDateOnly >= wellnessStart && currentDateOnly <= wellnessEnd;
+          const isWeekday = dayOfWeek >= 1 && dayOfWeek <= 5;
+          
+          if (isWellnessBreak && isWeekday) {
+            return '<br>• 🌿 <strong>NO CLASSES - DepEd Wellness Break</strong> (Oct 27-31, 2025)<br>• Rest and recharge with your family';
+          }
+          
           if (isWeekend) {
             if (adviceType === 'rain') {
               return '<br>• 🎉 <strong>No classes today - It\'s the weekend!</strong><br>• Stay safe and dry at home';
@@ -4459,7 +4471,7 @@
             icon = '🌧️';
             statusText = `Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
             suspensionInfo = `<strong>🌧️ Light Rain (${currentDay}):</strong><br>
-              • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
+              • ${isWeekend ? 'No classes - Weekend' : 'Classes continue as scheduled with normal operations'}<br>
               • 🌂 Bring umbrella and raincoat<br>
               • 👟 Wear appropriate footwear<br>
               • 💧 Stay dry and avoid getting wet<br>
@@ -4468,7 +4480,7 @@
             icon = '🌦️';
             statusText = `Drizzle (${rainfallIntensity.toFixed(1)}mm/h)`;
             suspensionInfo = `<strong>🌦️ Drizzle (${currentDay}):</strong><br>
-              • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
+              • ${isWeekend ? 'No classes - Weekend' : 'Classes continue as scheduled with normal operations'}<br>
               • 🌂 Bring umbrella just in case<br>
               • 👕 Light rain gear recommended<br>
               • 🚶 Walk carefully on wet surfaces`;
@@ -4476,7 +4488,7 @@
             icon = '🌦️';
             statusText = `Very Light Rain (${rainfallIntensity.toFixed(1)}mm/h)`;
             suspensionInfo = `<strong>🌦️ Very Light Rain (${currentDay}):</strong><br>
-              • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
+              • ${isWeekend ? 'No classes - Weekend' : 'Classes continue as scheduled with normal operations'}<br>
               • 🌂 Umbrella recommended<br>
               • 👟 Watch your step on wet ground`;
           } else if (rainfallIntensity > 0 && rainfallIntensity < 0.5) {
@@ -4484,7 +4496,7 @@
             icon = '☁️';
             statusText = 'Cloudy with Trace Rain';
             suspensionInfo = `<strong>☁️ Cloudy with Trace Rain (${currentDay}):</strong><br>
-              • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}${rainDayAdvice}<br>
+              • ${isWeekend ? 'No classes - Weekend' : 'Classes continue as scheduled with normal operations'}<br>
               • 🌂 Umbrella optional<br>
               • 🌡️ Comfortable temperature expected${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}`;
           } else {
@@ -4568,7 +4580,7 @@
                 icon = '☁️';
                 statusText = condition;
                 suspensionInfo = `<strong>☁️ Cloudy Weather (${currentDay}):</strong><br>
-                  • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'Classes continue as scheduled with normal operations'}<br>
                   • 🌂 Bring umbrella (rain possible)<br>
                   • 🌡️ Comfortable temperature expected${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}${cloudyDayAdvice}`;
               } else {
@@ -4623,7 +4635,7 @@
                 statusText = 'Partly Cloudy';
                 const patchyDayAdvice = getDaySpecificAdvice(dayOfWeek);
                 suspensionInfo = `<strong>🌥️ Partly Cloudy (${currentDay}):</strong><br>
-                  • ${isWeekend ? 'No classes - Weekend' : 'Classes proceed normally'}<br>
+                  • ${isWeekend ? 'No classes - Weekend' : 'Classes continue as scheduled with normal operations'}<br>
                   • 🌂 Bring umbrella as precaution<br>
                   • ☁️ Rain possible but not currently falling<br>
                   • 📱 Monitor weather updates${isWeekend || dayOfWeek === 3 ? '' : '<br>• 👕 Regular uniform appropriate'}${patchyDayAdvice}`;
@@ -4632,7 +4644,7 @@
               icon = '🌤️';
               statusText = condition;
               suspensionInfo = `<strong>🌤️ Good Weather (${currentDay}):</strong><br>
-                • ${isWeekend ? 'No classes - Enjoy your weekend!' : 'Classes proceed normally'}<br>
+                • ${isWeekend ? 'No classes - Enjoy your weekend!' : 'Classes continue as scheduled with normal operations'}<br>
                 • 📚 Perfect day for ${isWeekend ? 'relaxing' : 'learning'}<br>
                 • 💧 Stay hydrated<br>
                 • 😊 Have a great ${isWeekend ? 'weekend' : 'day at school'}!`;
@@ -5748,9 +5760,29 @@
       
       let reminder = null;
       
-      // Check if school is closed (after 5 PM on weekdays)
+      // Check for DepEd Wellness Break (October 27-31, 2025)
+      const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const wellnessStart = new Date(2025, 9, 27); // October 27, 2025 (month is 0-indexed)
+      const wellnessEnd = new Date(2025, 9, 31); // October 31, 2025
       const isWeekday = dayOfWeek >= 1 && dayOfWeek <= 5;
-      if (isWeekday && currentHour >= 17) {
+      
+      if (currentDate >= wellnessStart && currentDate <= wellnessEnd && isWeekday) {
+        // DepEd Wellness Break announcement for weekdays
+        reminder = {
+          icon: '🌿',
+          title: 'DepEd Wellness Break - No Classes',
+          content: `${timeGreeting.greeting}, students! There are <strong>NO CLASSES</strong> today as part of the DepEd Wellness Break for learners and teachers (October 27-31, 2025). Take this time to rest, recharge, and spend quality time with your family!`,
+          details: [
+            { label: '📅 Wellness Break', value: 'October 27-31, 2025' },
+            { label: '🏫 Classes', value: 'No classes during wellness break' },
+            { label: '😊 Reminder', value: 'Rest well and recharge' },
+            { label: '👨‍👩‍👧‍👦 Enjoy', value: 'Spend quality time with family' },
+            { label: '📚 Return', value: 'Classes resume on November 3, 2025 (Monday)' }
+          ]
+        };
+      }
+      // Check if school is closed (after 5 PM on weekdays)
+      else if (isWeekday && currentHour >= 17) {
         const nextDay = dayOfWeek === 5 ? 'Monday' : 'tomorrow';
         reminder = {
           icon: '🌙',
@@ -6150,4 +6182,3 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </body>
 </html>
-
