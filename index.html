@@ -5952,6 +5952,38 @@
   
   <!-- Initialize Swiper -->
   <script>
+    // Remove All Saints' Day announcement after November 1, 2025
+    document.addEventListener('DOMContentLoaded', function() {
+      const today = new Date();
+      const expiryDate = new Date('2025-11-02T00:00:00'); // After November 1, 2025
+      
+      if (today > expiryDate) {
+        const allSaintsDayEvent = document.querySelector('.event-card[data-expiry="2025-11-01"]');
+        if (allSaintsDayEvent) {
+          allSaintsDayEvent.remove();
+          
+          // Update carousel indicators if they exist
+          const indicators = document.querySelectorAll('.carousel-indicators span');
+          if (indicators.length > 0) {
+            // Remove one indicator since we removed an event
+            if (indicators.length > 1) {
+              indicators[indicators.length - 1].remove();
+            } else if (indicators.length === 1) {
+              // If this was the last event, show a message
+              const eventsContainer = document.querySelector('.events-container');
+              if (eventsContainer && eventsContainer.children.length === 0) {
+                eventsContainer.innerHTML = `
+                  <div class="no-events-message" style="text-align: center; padding: 40px 20px; color: #666;">
+                    <p style="font-size: 1.2em; margin-bottom: 15px;">No upcoming events at the moment.</p>
+                    <p style="font-size: 0.9em; color: #999;">Please check back later for updates.</p>
+                  </div>
+                `;
+              }
+            }
+          }
+        }
+      }
+    });
     // ===== AI AUTO-ANNOUNCEMENT GENERATOR =====
     // This function automatically generates daily announcements based on the day of the week and weather
     
