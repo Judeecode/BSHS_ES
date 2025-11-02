@@ -3526,9 +3526,10 @@
     }
 
   </style>
+  </style>
 </head>
 <body>
-  <!-- Weather Background Effects -->
+<!-- Weather Background Effects -->
   <div class="weather-background" id="weatherBackground"></div>
 
   <!-- Emergency Alert Banner -->
@@ -3630,7 +3631,7 @@
   </section>
 
   <!-- DAILY REMINDERS -->
-  <section class="daily-reminders-section animate-on-scroll transition-all duration-700" id="daily-reminders">
+  <section class="daily-reminders-section animate-on-scroll transition-all duration-700" id="daily-reminders" style="display: none;">
     <h2 class="transition-all duration-500 hover:scale-105">📅 Today's Reminder</h2>
     <p>Your daily guide for uniforms, ceremonies, and school activities</p>
     
@@ -3723,7 +3724,98 @@
         <span class="event-badge" style="background: #dc3545; color: white;">Emergency Notice</span>
       </div>
 
+      <!-- Typhoon Tino Tracker Card -->
+      <div class="event-card" data-expiry="2025-11-10" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 5px solid #0d47a1; animation: pulse 2s infinite;">
+        <div class="event-header">
+          <div class="event-icon" style="background: #0d47a1; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
+            🌀
+          </div>
+          <div class="event-header-text">
+            <h3 style="color: #0d47a1;">TYPHOON TINO TRACKER</h3>
+            <span class="event-date-badge" style="background: #0d47a1; color: white;">🚨 Active Typhoon Alert</span>
+          </div>
+        </div>
+        <div class="event-content">
+          <div style="text-align: center; margin: 15px 0; padding: 15px; background: rgba(13, 71, 161, 0.1); border-radius: 8px; border: 1px dashed #0d47a1;">
+            <div style="font-size: 1.3em; font-weight: 700; color: #0d47a1; margin-bottom: 10px;">🌪️ SEVERE TROPICAL STORM TINO (INTERNATIONAL NAME: RAMMASUN)</div>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; margin: 15px 0;">
+              <div style="text-align: center;">
+                <div style="font-size: 0.9em; color: #333; font-weight: 600;">Category</div>
+                <div style="font-weight: bold; color: #d32f2f; font-size: 1.2em; margin: 5px 0;">Severe Tropical Storm</div>
+                <div style="font-size: 0.85em; color: #444; margin-top: 3px; font-weight: 500;">(May intensify to Typhoon)</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 0.9em; color: #333; font-weight: 600;">Maximum Winds</div>
+                <div style="font-weight: bold; color: #d32f2f; font-size: 1.2em; margin: 5px 0;">100 km/h</div>
+                <div style="font-size: 0.85em; color: #444; margin-top: 3px; font-weight: 500;">(Expected to reach 150-165 km/h)</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 0.9em; color: #333; font-weight: 600;">Gustiness</div>
+                <div style="font-weight: bold; color: #d32f2f; font-size: 1.2em; margin: 5px 0 0 0;">125 km/h</div>
+              </div>
+              <div style="text-align: center;">
+                <div style="font-size: 0.9em; color: #333; font-weight: 600;">Movement</div>
+                <div style="font-weight: bold; color: #d32f2f; font-size: 1.2em; margin: 5px 0 0 0;">West at 30 km/h</div>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin: 20px 0;">
+            <h4 style="color: #0d47a1; border-bottom: 2px solid #0d47a1; padding-bottom: 5px; display: inline-block;">📌 Current Location (as of 11:00 PM PHT, Nov 2, 2025)</h4>
+            <p style="color: #222; margin: 10px 0; font-weight: 500;">📍 11.4°N, 131.3°E (605 km East of Guiuan, Eastern Samar)</p>
+            <p style="color: #222; margin: 10px 0; font-weight: 500;">🌊 <strong>Storm Surge Warning:</strong> 3-5 meters possible in coastal areas of Eastern Visayas and Caraga</p>
+            <p style="color: #222; margin: 10px 0; font-weight: 500;">🚨 <strong>Signal #1</strong> raised over: Eastern Samar, Siargao, Bucas Grande, and Dinagat Islands</p>
+            <p style="color: #d32f2f; margin: 10px 0; font-weight: 600;">⚠️ <strong>Signal #2 may be raised in the next 12 hours</strong></p>
+          </div>
+          
+          <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ff9800;">
+            <h4 style="margin-top: 0; color: #e65100;">⏰ Expected Landfall:</h4>
+            <p style="color: #222; margin: 10px 0; font-weight: 600; font-size: 1.1em;">November 3, 2025 (Tonight) - November 4, 2025 (Early Morning)</p>
+            <p style="color: #222; margin: 10px 0; font-weight: 500;">📍 <strong>Projected Landfall Area:</strong> Eastern Samar, Leyte, or Dinagat Islands</p>
+            <p style="color: #d32f2f; margin: 10px 0; font-weight: 600;">⚠️ Heavy to intense rainfall expected within 300 km of the storm's diameter</p>
+            <p style="color: #d32f2f; margin: 10px 0; font-weight: 600;">🌧️ Flooding and landslides likely in highly susceptible areas</p>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+            <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; border-left: 4px solid #2e7d32;">
+              <h4 style="margin-top: 0; color: #1b5e20; font-size: 1.1em; font-weight: 700;">📱 EASTERN SAMAR EMERGENCY HOTLINES</h4>
+              <ul style="padding-left: 20px; margin: 10px 0 0 0; list-style-type: none;">
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">National Emergency Hotline: <span style="color: #b71c1c; font-weight: 700;">911</span></li>
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">Eastern Samar PDRRMO: <span style="color: #b71c1c; font-weight: 700;">(055) 560-9660</span></li>
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">Eastern Samar PNP: <span style="color: #b71c1c; font-weight: 700;">(055) 560-8397</span> or <span style="color: #b71c1c; font-weight: 700;">117</span></li>
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">BFP Eastern Samar: <span style="color: #b71c1c; font-weight: 700;">(055) 560-9661</span></li>
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">PAGASA Guiuan: <span style="color: #b71c1c; font-weight: 700;">(055) 271-2009</span></li>
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">Eastern Samar Provincial Hospital: <span style="color: #b71c1c; font-weight: 700;">(055) 560-8204</span></li>
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">PAGASA: <span style="color: #b71c1c;">(02) 8284-0800</span></li>
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">PNP: <span style="color: #b71c1c;">117 or 911</span></li>
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">BFP: <span style="color: #b71c1c;">(02) 8426-0219</span></li>
+              </ul>
+            </div>
+            
+            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #1565c0;">
+              <h4 style="margin-top: 0; color: #0d47a1; font-size: 1.1em; font-weight: 700;">📡 STAY UPDATED</h4>
+              <ul style="padding-left: 20px; margin: 10px 0 0 0; list-style-type: none;">
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">• PAGASA Website</li>
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">• DZMM Teleradyo</li>
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">• Local DRRMO</li>
+                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">• BSHS Official FB Page</li>
+              </ul>
+            </div>
+          </div>
+          
+          <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ff6f00;">
+            <h4 style="margin-top: 0; color: #e65100;">⚠️ School Announcement</h4>
+            <p>As per DepEd Order No. 37, s. 2022, classes in all levels are automatically suspended in areas under:</p>
+            <ul style="padding-left: 20px; margin: 10px 0 0 0;">
+              <li>Signal #1 or higher (public schools)</li>
+              <li>Signal #2 or higher (private schools)</li>
+            </ul>
+            <p style="margin: 10px 0 0 0; font-weight: bold; color: #d32f2f;">Next update: November 4, 2025 - 11:00 AM</p>
+          </div>
+        </div>
+        <span class="event-badge" style="background: #0d47a1; color: white;">Live Tracker</span>
       </div>
+      
       <button class="carousel-btn carousel-btn-next" onclick="moveCarousel(1)">❯</button>
       <div class="carousel-indicators">
         <!-- Indicators generated dynamically by JavaScript -->
@@ -5196,7 +5288,7 @@
       container.appendChild(windContainer);
     }
 
-    // Auto-update weather every 3 minutes for better accuracy
+// Auto-update weather every 3 minutes for better accuracy
     setInterval(updateWeatherInfo, 180000);
     
     // Initial weather check (silent, in background)
@@ -6429,12 +6521,13 @@
       showSlide(currentSlide);
     }
 
-    // Auto-advance carousel every 5 seconds (only if multiple slides)
-    if (totalSlides > 1) {
-      setInterval(() => {
-        moveCarousel(1);
-      }, 5000);
-    }
+    // Auto-advance disabled - users can navigate manually
+    // To re-enable auto-sliding, uncomment the code below:
+    // if (totalSlides > 1) {
+    //   setInterval(() => {
+    //     moveCarousel(1);
+    //   }, 8000);
+    // }
     
     // Hide carousel buttons if only one slide
     if (totalSlides <= 1) {
