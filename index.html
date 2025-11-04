@@ -3532,15 +3532,6 @@
 <!-- Weather Background Effects -->
   <div class="weather-background" id="weatherBackground"></div>
 
-  <!-- Emergency Alert Banner -->
-  <div class="emergency-alert-banner" id="emergencyBanner">
-    <div class="banner-content">
-      <span class="banner-icon" id="bannerIcon">⚠️</span>
-      <span id="bannerText">Weather Alert</span>
-    </div>
-    <button class="banner-close" id="bannerClose" aria-label="Close alert banner">×</button>
-  </div>
-
   <!-- Running Student Animation -->
   <div class="running-student" title="Click me - BSHS on the move!">
     <img src="bshs logo.jfif" alt="Balangkayan Senior High School Logo" loading="lazy">
@@ -3579,38 +3570,7 @@
     </nav>
   </header>
 
-  <!-- WEATHER ALERT MODAL -->
-  <div class="weather-modal" id="weatherModal">
-    <div class="weather-modal-content">
-      <button class="weather-modal-close" id="weatherModalClose">×</button>
-      <div class="weather-modal-header">
-        <div class="weather-modal-icon" id="weatherModalIcon">🌤️</div>
-        <h3 class="weather-modal-title">Weather & Rainfall Alert</h3>
-        <span class="weather-status normal" id="weatherStatus">Normal Conditions</span>
-      </div>
-      <div class="weather-info" id="weatherInfo">
-        <p><strong>Current Status:</strong> <span id="weatherDescription">Checking weather conditions...</span></p>
-        <p><strong>Rainfall Warning:</strong> <span id="rainfallWarning">None</span></p>
-        <p><strong>Temperature:</strong> <span id="weatherTemp">--°C</span></p>
-        <p style="font-size: 0.85em; margin-top: 15px; padding: 12px; background: rgba(255, 152, 0, 0.1); border-left: 3px solid #ff9800; border-radius: 8px;">
-          <strong>⚠️ IMPORTANT:</strong> This is automated weather data. For official rainfall warnings and class suspensions, always prioritize:
-          <br>• <strong>PAGASA</strong> (Philippine Atmospheric, Geophysical and Astronomical Services Administration)
-          <br>• <strong>NDRRMC</strong> (National Disaster Risk Reduction and Management Council)
-          <br>• <strong>DepEd Official Announcements</strong>
-          <br>• <strong>Local Government Units (LGU)</strong>
-        </p>
-        <p style="font-size: 0.85em; margin-top: 10px; opacity: 0.8;"><em>Weather data updates every 10 minutes but may lag behind real-time conditions during severe weather events.</em></p>
-      </div>
-      <div class="suspension-notice" id="suspensionNotice" style="display: none;">
-        <h4>⚠️ Class Suspension Guidelines</h4>
-        <p id="suspensionText"></p>
-      </div>
-      <div class="weather-update-time" id="weatherUpdateTime">
-        Last updated: --
-      </div>
-    </div>
-  </div>
-
+  
   <!-- HERO -->
   <section class="hero" id="hero">
     <div class="hero-content animate-slide-up">
@@ -3644,180 +3604,6 @@
   <section class="announcements-section animate-on-scroll transition-all duration-700" id="announcements">
     <h2 class="transition-all duration-500 hover:scale-105">📢 Important Events & Schedules</h2>
     <p>Stay updated with upcoming exams, events, and important dates</p>
-    
-    <div class="events-carousel-wrapper">
-      <button class="carousel-btn carousel-btn-prev" onclick="moveCarousel(-1)">❮</button>
-      <div class="events-container">
-        <!-- Event Cards (add your important events and exams here) -->
-      <div class="event-card active" data-expiry="2025-11-05" style="background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); border-left: 5px solid #dc3545; animation: pulse 2s infinite;">
-        <div class="event-header">
-          <div class="event-icon" style="background: #dc3545; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
-            ⚠️
-          </div>
-          <div class="event-header-text">
-            <h3 style="color: #721c24;">EMERGENCY: Class Suspension</h3>
-            <span class="event-date-badge" style="background: #dc3545; color: white;">📅 November 3-4, 2025</span>
-          </div>
-        </div>
-        <div class="event-content">
-          <p style="color: #721c24; font-weight: 600; font-size: 1.1em; text-align: center; padding: 10px; background: rgba(220, 53, 69, 0.1); border-radius: 8px; border-left: 4px solid #dc3545; margin-bottom: 15px;">
-            🌀 <strong>TYPHOON TINO ALERT</strong> 🌀<br>
-            <span style="font-size: 0.9em;">Classes suspended due to inclement weather conditions</span>
-          </p>
-          <p style="color: #721c24; font-weight: 600;">IMPORTANT ANNOUNCEMENT: Classes in all levels are SUSPENDED on November 3-4, 2025 (Monday-Tuesday) due to inclement weather conditions and in accordance with the Order Suspension of Work and Classes in Government Offices (Executive Order No. RVE 2025-11-14, Series of 2025). Please monitor official PAGASA updates for the latest weather information.</p>
-        </div>
-        <div class="event-details">
-          <div class="event-detail-item">
-            <strong style="color: #000000;">📅 Coverage</strong>
-            <span style="color: #000000;">November 3-4, 2025 (Monday-Tuesday)</span>
-          </div>
-          <div class="event-detail-item">
-            <strong style="color: #000000;">🏫 Classes</strong>
-            <span style="color: #000000;">All levels - NO CLASSES</span>
-          </div>
-          <div class="event-detail-item">
-            <strong style="color: #000000;">🏢 School Office</strong>
-            <span style="color: #000000;">Closed - No office operations</span>
-          </div>
-          <div class="event-detail-item">
-            <strong style="color: #000000;">📜 Reference</strong>
-            <span style="color: #000000;">Executive Order No. RVE 2025-11-14, s. 2025</span>
-          </div>
-        </div>
-        <div style="background: rgba(13, 110, 253, 0.15); padding: 20px; border-radius: 10px; margin: 25px 0; border: 2px solid #0d6efd; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-          <h3 style="color: #0d6efd; margin-top: 0; margin-bottom: 15px; text-align: center; font-size: 1.3em; font-weight: 700;">🌧️ WEATHER SAFETY MEASURES 🌧️</h3>
-          <ul style="margin: 0; padding: 0; list-style: none; display: grid; gap: 12px;">
-            <li style="display: flex; align-items: flex-start;">
-              <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #0d6efd; color: white; border-radius: 50%; margin-right: 10px; flex-shrink: 0;">1</span>
-              <span style="font-weight: 500; color: #1a1a1a;">Stay indoors and secure all windows and doors</span>
-            </li>
-            <li style="display: flex; align-items: flex-start;">
-              <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #0d6efd; color: white; border-radius: 50%; margin-right: 10px; flex-shrink: 0;">2</span>
-              <span style="font-weight: 500; color: #1a1a1a;">Prepare emergency kits with food, water, and first aid supplies</span>
-            </li>
-            <li style="display: flex; align-items: flex-start;">
-              <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #0d6efd; color: white; border-radius: 50%; margin-right: 10px; flex-shrink: 0;">3</span>
-              <span style="font-weight: 500; color: #1a1a1a;">Charge all devices and power banks</span>
-            </li>
-            <li style="display: flex; align-items: flex-start;">
-              <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #0d6efd; color: white; border-radius: 50%; margin-right: 10px; flex-shrink: 0;">4</span>
-              <span style="font-weight: 500; color: #1a1a1a;">Secure loose objects outside your home</span>
-            </li>
-            <li style="display: flex; align-items: flex-start;">
-              <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #0d6efd; color: white; border-radius: 50%; margin-right: 10px; flex-shrink: 0;">5</span>
-              <span style="font-weight: 500; color: #1a1a1a;">Monitor weather updates from PAGASA</span>
-            </li>
-            <li style="display: flex; align-items: flex-start;">
-              <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #0d6efd; color: white; border-radius: 50%; margin-right: 10px; flex-shrink: 0;">6</span>
-              <span style="font-weight: 500; color: #1a1a1a;">Know your nearest evacuation center</span>
-            </li>
-            <li style="display: flex; align-items: flex-start;">
-              <span style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; background: #0d6efd; color: white; border-radius: 50%; margin-right: 10px; flex-shrink: 0;">7</span>
-              <span style="font-weight: 500; color: #1a1a1a;">Avoid crossing flooded areas</span>
-            </li>
-          </ul>
-        </div>
-        
-        <div style="background: rgba(220, 53, 69, 0.1); padding: 12px; border-radius: 8px; margin-top: 15px; text-align: center; font-style: italic; color: #721c24; border: 1px dashed #dc3545;">
-          <strong>NOTICE TO ALL:</strong> Please take all necessary precautions. Stay safe and monitor official announcements from local authorities for updates on the typhoon's path and intensity.
-        </div>
-        <span class="event-badge" style="background: #dc3545; color: white;">Emergency Notice</span>
-      </div>
-
-      <!-- Typhoon Tino Tracker Card -->
-      <div class="event-card" data-expiry="2025-11-10" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 5px solid #0d47a1; animation: pulse 2s infinite;">
-        <div class="event-header">
-          <div class="event-icon" style="background: #0d47a1; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5em;">
-            🌀
-          </div>
-          <div class="event-header-text">
-            <h3 style="color: #0d47a1;">TYPHOON TINO TRACKER</h3>
-            <span class="event-date-badge" style="background: #0d47a1; color: white;">🚨 Active Typhoon Alert</span>
-          </div>
-        </div>
-        <div class="event-content">
-          <div style="text-align: center; margin: 15px 0; padding: 15px; background: rgba(13, 71, 161, 0.1); border-radius: 8px; border: 1px dashed #0d47a1;">
-            <div style="font-size: 1.3em; font-weight: 700; color: #0d47a1; margin-bottom: 10px;">🌪️ SEVERE TROPICAL STORM TINO (INTERNATIONAL NAME: KALMAEGI)</div>
-            <div style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 15px; margin: 15px 0;">
-              <div style="text-align: center;">
-                <div style="font-size: 0.9em; color: #333; font-weight: 600;">Category</div>
-                <div style="font-weight: bold; color: #d32f2f; font-size: 1.2em; margin: 5px 0;">Severe Tropical Storm</div>
-                <div style="font-size: 0.85em; color: #444; margin-top: 3px; font-weight: 500;">(May intensify to Typhoon)</div>
-              </div>
-              <div style="text-align: center;">
-                <div style="font-size: 0.9em; color: #333; font-weight: 600;">Maximum Winds</div>
-                <div style="font-weight: bold; color: #d32f2f; font-size: 1.2em; margin: 5px 0;">100 km/h</div>
-                <div style="font-size: 0.85em; color: #444; margin-top: 3px; font-weight: 500;">(Expected to reach 150-165 km/h)</div>
-              </div>
-              <div style="text-align: center;">
-                <div style="font-size: 0.9em; color: #333; font-weight: 600;">Gustiness</div>
-                <div style="font-weight: bold; color: #d32f2f; font-size: 1.2em; margin: 5px 0 0 0;">125 km/h</div>
-              </div>
-              <div style="text-align: center;">
-                <div style="font-size: 0.9em; color: #333; font-weight: 600;">Movement</div>
-                <div style="font-weight: bold; color: #d32f2f; font-size: 1.2em; margin: 5px 0 0 0;">West at 30 km/h</div>
-              </div>
-            </div>
-          </div>
-          
-          <div style="margin: 20px 0;">
-            <h4 style="color: #0d47a1; border-bottom: 2px solid #0d47a1; padding-bottom: 5px; display: inline-block;">📌 Current Location (as of 11:00 PM PHT, Nov 2, 2025)</h4>
-            <p style="color: #222; margin: 10px 0; font-weight: 500;">📍 11.4°N, 131.3°E (605 km East of Guiuan, Eastern Samar)</p>
-            <p style="color: #222; margin: 10px 0; font-weight: 500;">🌊 <strong>Storm Surge Warning:</strong> 3-5 meters possible in coastal areas of Eastern Visayas and Caraga</p>
-            <p style="color: #222; margin: 10px 0; font-weight: 500;">🚨 <strong>Signal #1</strong> raised over: Eastern Samar, Siargao, Bucas Grande, and Dinagat Islands</p>
-            <p style="color: #d32f2f; margin: 10px 0; font-weight: 600;">⚠️ <strong>Signal #2 may be raised in the next 12 hours</strong></p>
-          </div>
-          
-          <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ff9800;">
-            <h4 style="margin-top: 0; color: #e65100;">⏰ Expected Landfall:</h4>
-            <p style="color: #222; margin: 10px 0; font-weight: 600; font-size: 1.1em;">November 3, 2025 (Tonight) - November 4, 2025 (Early Morning)</p>
-            <p style="color: #222; margin: 10px 0; font-weight: 500;">📍 <strong>Projected Landfall Area:</strong> Eastern Samar, Leyte, or Dinagat Islands</p>
-            <p style="color: #d32f2f; margin: 10px 0; font-weight: 600;">⚠️ Heavy to intense rainfall expected within 300 km of the storm's diameter</p>
-            <p style="color: #d32f2f; margin: 10px 0; font-weight: 600;">🌧️ Flooding and landslides likely in highly susceptible areas</p>
-          </div>
-          
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
-            <div style="background: #e8f5e9; padding: 15px; border-radius: 8px; border-left: 4px solid #2e7d32;">
-              <h4 style="margin-top: 0; color: #1b5e20; font-size: 1.1em; font-weight: 700;">📱 LOCAL EMERGENCY HOTLINES</h4>
-              <ul style="padding-left: 20px; margin: 10px 0 0 0; list-style-type: none;">
-                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">MDRRMO: <span style="color: #b71c1c; font-weight: 700;">0997-166-3032</span></li>
-                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">PNP: <span style="color: #b71c1c; font-weight: 700;">0915-956-7882</span></li>
-                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">BFP: <span style="color: #b71c1c; font-weight: 700;">0931-968-9972</span></li>
-                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">PCG: <span style="color: #b71c1c; font-weight: 700;">0927-198-2890</span></li>
-                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">MSWDO: <span style="color: #b71c1c; font-weight: 700;">0995-388-9065</span></li>
-                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">National Emergency Hotline: <span style="color: #b71c1c; font-weight: 700;">911</span></li>
-              </ul>
-            </div>
-            
-            <div style="background: #e3f2fd; padding: 15px; border-radius: 8px; border-left: 4px solid #1565c0;">
-              <h4 style="margin-top: 0; color: #0d47a1; font-size: 1.1em; font-weight: 700;">📡 STAY UPDATED</h4>
-              <ul style="padding-left: 20px; margin: 10px 0 0 0; list-style-type: none;">
-                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">• PAGASA Website</li>
-                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">• DZMM Teleradyo</li>
-                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">• Local DRRMO</li>
-                <li style="color: #1a237e; margin: 8px 0; font-weight: 600;">• BSHS Official FB Page</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div style="background: #fff3e0; padding: 15px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #ff6f00;">
-            <h4 style="margin-top: 0; color: #e65100;">⚠️ School Announcement</h4>
-            <p>As per DepEd Order No. 37, s. 2022, classes in all levels are automatically suspended in areas under:</p>
-            <ul style="padding-left: 20px; margin: 10px 0 0 0;">
-              <li>Signal #1 or higher (public schools)</li>
-              <li>Signal #2 or higher (private schools)</li>
-            </ul>
-            <p style="margin: 10px 0 0 0; font-weight: bold; color: #d32f2f;">Next update: November 4, 2025 - 11:00 AM</p>
-          </div>
-        </div>
-        <span class="event-badge" style="background: #0d47a1; color: white;">Live Tracker</span>
-      </div>
-      
-      <button class="carousel-btn carousel-btn-next" onclick="moveCarousel(1)">❯</button>
-      <div class="carousel-indicators">
-        <!-- Indicators generated dynamically by JavaScript -->
-      </div>
-    </div>
   </section>
 
         <!-- HALLOWEEN GAME -->
@@ -4144,8 +3930,8 @@
         left: 80%;
       }
     </style>
+    
   </section>
-
   <!-- Add more event cards here as needed -->
       <!-- Example:
       <div class="event-card">
@@ -6585,5 +6371,3 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 </body>
 </html>
-
-
